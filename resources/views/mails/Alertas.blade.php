@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <h2>Prueba de correo</h2>
-    <p>Este es el primer correo que envio desde laravel</p>
+    <p>Correo de alerta </p>
 </head>
 <body>
     
