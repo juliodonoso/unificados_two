@@ -150,3 +150,11 @@ route::get('alertas', function(){
     return ("Mensaje enviado");
 });
 
+
+// Auditorias 
+
+Route::get('/Audit', [App\Http\Controllers\AuditController::class, 'index'])->name('ingresoAudit');
+
+
+
+
