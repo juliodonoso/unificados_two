@@ -570,11 +570,11 @@
             },
 
             isInDisabledDates = function(testDate) {
-                return options.disabledDates[testDate.format('YYYY-MM-DD')] === true;
+                return options.disabledDates[testDate.format('DD-MM-YYYY')] === true;
             },
 
             isInEnabledDates = function(testDate) {
-                return options.enabledDates[testDate.format('YYYY-MM-DD')] === true;
+                return options.enabledDates[testDate.format('DD-MM-YYYY')] === true;
             },
 
             isInDisabledHours = function(testDate) {

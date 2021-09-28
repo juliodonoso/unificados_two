@@ -18,9 +18,16 @@ class Alertmail extends Mailable
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($leje,$lcamp,$lfecha,$lidgrab,$lobserv,$lasunto)
     {
         //
+        $this->eje = $leje;
+        $this->camp = $lcamp;
+        $this->venta = $lfecha;
+        $this->grab = $lidgrab;
+        $this->observ = $lobserv;
+        $this->lasunto = $lasunto;
+  
     }
 
     /**
@@ -30,6 +37,15 @@ class Alertmail extends Mailable
      */
     public function build()
     {
-        return $this->view('mails.alertas');
+        return $this->view('mails.alertas')
+        ->with([
+            'subject' => '1',
+            'eje' => $this->eje,
+            'camp' => $this->camp,
+            'venta' => $this->venta,
+            'grab' => $this->grab,
+            'observ' => $this->observ,
+            'lasunto' => $this->lasunto
+        ]);
     }
 }
