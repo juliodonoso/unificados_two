@@ -1,8 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Mail\Alertmail;
-use Illuminate\Support\Facades\Mail;  
+
 
 /*
 |--------------------------------------------------------------------------
@@ -142,18 +141,22 @@ Route::get('/llsacs/{ldid}', [App\Http\Controllers\CallController::class, 'gtsac
 Route::POST('/savesacs/{Nrocar}/{ldid}', [App\Http\Controllers\CallController::class, 'grabacallsacs'])->name('grabarsacs');
 
 
-// Correos de alertas
 
-route::get('alertas', function(){
-    $correo = new Alertmail;
-    mail::to("ddavimo@gmail.com")->send($correo);
-    return ("Mensaje enviado");
-});
+
 
 
 // Auditorias 
 
 Route::get('/Audit', [App\Http\Controllers\AuditController::class, 'index'])->name('ingresoAudit');
+Route::get('/newAudit', [App\Http\Controllers\AuditController::class, 'create'])->name('NewAudit');
+Route::POST('/saveing', [App\Http\Controllers\AuditController::class, 'grabaudi'])->name('gingreso');
+
+// Correos de alertas
+
+Route::get('/alertas/{idx}', [App\Http\Controllers\MailController::class, 'sendmail'])->name('alertmail');
+
+
+
 
 
 

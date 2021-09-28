@@ -84,8 +84,8 @@ return [
     */
 
     'from' => [
-        'address' => env('MAIL_FROM_ADDRESS', 'dvillalobos@unificados.cl'),
-        'name' => env('MAIL_FROM_NAME', 'Delvis'),
+        'address' => env('MAIL_FROM_ADDRESS', 'alertas@unificados.cl'),
+        'name' => env('MAIL_FROM_NAME', 'Alertas'),
     ],
 
     /*
