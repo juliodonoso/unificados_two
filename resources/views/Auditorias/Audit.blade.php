@@ -131,7 +131,7 @@
                                     @endforeach
                                 </tbody>
                             </table>  
-                            {{$auditadas->links()}}
+                            <!-- {{$auditadas->links()}} -->
                         @else
                             <div class="alert alert-info alert-with-icon" data-notify="container" id="cumple">                    
                                 <span data-notify="icon" class="nc-icon nc-bell-55"></span>
