@@ -82,65 +82,79 @@
                     </div>
                 </div>          
             </div>  
-            <div>         
-                <a href="{{ route('NewAudit') }}" class="btn btn-warning" ><i class="fa fa-file-excel-o" aria-hidden="true"></i>Nuevo</a>  
-            </div>               
+            <div id="botn">                     
+                    <a href="{{ route('NewAudit') }}" class="btn btn-warning" ><i class="fa fa-file-excel-o" aria-hidden="true"></i>Nuevo</a>                    
+                    <a href="{{ route('excelaud') }}" class="btn btn-success" ><i class="fa fa-file-excel-o" aria-hidden="true"></i>Excel</a>  
+                    <div id="bqrut">        
+                    <input type="text" class="form-control" name="inputUno" id="search" placeholder="Buscar">              
+                </div> 
+            </div>                       
         </div>   
         <div class="card-body ">  
-        <hr>
-                                 
-            <form method="POST" id="formedit" name="formedit" action="">  
-                {{ csrf_field() }}                
-                <div id="c01">
-                    <div class="card-body">
-                        @if($auditCount > 0)
-                            <table class="table table-hover" id="tb01">
-                                <thead>
-                                    <th data-field="name" data-sortable="true">Id</th>
-                                    <th data-field="name" data-sortable="true">Sponsor</th>
-                                    <th data-field="name" data-sortable="true">Campaña</th>
-                                    <th data-field="name" data-sortable="true">Operador</th>  
-                                    <th data-field="name" data-sortable="true">Cliente</th> 
-                                    <th data-field="name" data-sortable="true">Fecha</th> 
-                                    <th data-field="name" data-sortable="true">Estado</th>
-                                    <th data-field="name" data-sortable="true">Parcial</th>
-                                    <th data-field="name" data-sortable="true">Final</th> 
-                                    <th data-field="name" data-sortable="true">Det</th>                                                                                                                                                       
-                                </thead>
-                                <tbody>
-                                    @foreach($auditadas as $resp)                                                                         
-                                        <tr>
-                                            <td>{!! $resp->id !!}</td>  
-                                            <td>{!! $resp->sname !!}</td>  
-                                            <td>{!! $resp->campania !!}</td>  
-                                            <td>{!! $resp->opereva !!}</td>                                        
-                                            <td>{!! $resp->rutcli !!}-{!! $resp->dvcli !!}</td>   
-                                            <td>{!! date('d-m-Y', strtotime($resp->created_at)) !!}</td>
-                                            @if($resp->Estado == "ALERTA")                 
-                                                <td style="color:red;"> 
-                                            @else
-                                                <td> 
-                                            @endif{!! $resp->Estado !!}</td> 
-                                            <td>{!! $resp->npartial !!} %</td> 
-                                            <td>{!! $resp->nfinal !!} %</td>                                        
-                                            <td class="text-right">
-                                                <a href="#PlaceModal-{{$resp->id}}" data-toggle="modal"><i class="fa fa-search"></i></a>
-                                            </td>  
-                                                                                                                
-                                        </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>  
-                            <!-- {{$auditadas->links()}} -->
-                        @else
-                            <div class="alert alert-info alert-with-icon" data-notify="container" id="cumple">                    
-                                <span data-notify="icon" class="nc-icon nc-bell-55"></span>
-                                <span><b> Sin registros - </b> No existen Registros que mostrar.</span>
-                            </div>
-                        @endif
+        <hr>                             
+        <div id="c01">
+            <div class="card-body">
+                @if($auditCount > 0)
+                    <table class="table table-hover" id="tb01">
+                        <thead>
+                            <th data-field="name" data-sortable="true">Id</th>
+                            <th data-field="name" data-sortable="true">Sponsor</th>
+                            <th data-field="name" data-sortable="true">Canal</th>
+                            <th data-field="name" data-sortable="true">Campaña</th>
+                            <th data-field="name" data-sortable="true">Operador</th>  
+                            <th data-field="name" data-sortable="true">Cliente</th> 
+                            <th data-field="name" data-sortable="true">Fecha</th> 
+                            <th data-field="name" data-sortable="true">Estado</th>
+                            <th data-field="name" data-sortable="true">Parcial</th>
+                            <th data-field="name" data-sortable="true">Final</th>
+                            @if($emp_type == 7)  
+                            <th data-field="name" data-sortable="true">Eje</th> 
+                            <th data-field="name" data-sortable="true">Del</th>
+                            @endif                                    
+                            <th data-field="name" data-sortable="true">Det</th> 
+                        </thead>
+                        <tbody>
+                            @foreach($auditadas as $resp)                                                                                                                
+                                <tr>
+                                    <td>{!! $resp->id !!}</td>  
+                                    <td>{!! $resp->sname !!}</td>
+                                    <td>{!! $resp->canal !!}</td>  
+                                    <td>{!! $resp->campania !!}</td>  
+                                    <td>{!! $resp->nombre !!}</td>                                        
+                                    <td>{!! $resp->rutcli !!}-{!! $resp->dvcli !!}</td>   
+                                    <td>{!! date('d-m-Y', strtotime($resp->created_at)) !!}</td>
+                                    @if($resp->Estado == "ALERTA")                 
+                                        <td style="color:red;"> 
+                                    @else
+                                        <td> 
+                                    @endif{!! $resp->Estado !!}</td> 
+                                    <td>{!! $resp->npartial !!} %</td> 
+                                    <td>{!! $resp->nfinal !!} %</td>
+                                    @if($emp_type == 7) 
+                                    <td>{!! $resp->name !!}</td>                                          
+                                    <td class="text-right">                                                
+                                    <form name="formedit" id="formedit" action="{{ route('delereg',$resp->id) }}" method="post">
+                                        {!! csrf_field() !!}
+                                        {!! method_field('DELETE') !!}                                             
+                                        <button id="del" type="submit" ><i class="fa fa-trash" ></i></button>                                       
+                                    </form>
+                                    </td>  
+                                    @endif
+                                    <td class="text-right">
+                                        <a href="#PlaceModal-{{$resp->id}}" data-toggle="modal"><i class="fa fa-search"></i></a>
+                                    </td>                                                                                                                  
+                                </tr>                                        
+                            @endforeach
+                        </tbody>
+                    </table>                       
+                @else
+                    <div class="alert alert-danger alert-with-icon" data-notify="container" id="cumple">                    
+                        <span data-notify="icon" class="nc-icon nc-bell-55"></span>
+                        <span><b> Atencion:  </b> No existen Registros que mostrar.</span>
                     </div>
-                </div>
-            </form>
+                @endif
+            </div>
+        </div>  
         </div>
     </div>
 </div>
@@ -162,11 +176,8 @@
                     <div class="modal-body">   
                         <hr> 
                         <div class="row" id="det01">
-                            <div class="col-sm-8" > Sponsor : {{$resp->sname}} </div>                           
-                        </div> 
-                        <div class="row" id="det01">
-                            <div class="col-sm-8" >Campaña : {{$resp->campania}} </div>                           
-                        </div> 
+                            <div class="col-sm-12" > Sponsor : {{$resp->sname}}  -  Canal: {{$resp->sname}} - Campaña : {{$resp->campania}} </div>                           
+                        </div>                       
                         <div class="row" id="det01">                           
                             <div class="col-sm-8" >Rut-Tit : {{$resp->rutcli}}-{{$resp->dvcli}}</div>
                         </div>
@@ -175,6 +186,9 @@
                         </div> 
                         <div class="row" id="det01">  
                             <div class="col-sm-12" >Fecha Venta : {{date('d-m-Y', strtotime($resp->fvta))}}   / Fecha Asig: {{date('d-m-Y', strtotime($resp->fgrab))}}  / Fecha Audit: {{date('d-m-Y', strtotime($resp->created_at))}}  </div> 
+                        </div>
+                        <div class="row" id="det01">  
+                            <div class="col-sm-12" >Id Grab :  {{$resp->idGrab}}  </div> 
                         </div>
                         <div class="row" id="det01">  
                             <div class="col-sm-12" >Periodo: {{$resp->mes}}-{{$resp->anio}}</div> 
@@ -252,9 +266,35 @@
 @endsection
 @endauth
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+<!-- BUSQUEDA  -->
+<script>
+    $(document).ready(function(){
+        $("#search").keyup(function(){
+            _this = this;
+            $.each($("#tb01 tbody tr"), function() {
+                if($(this).text().toLowerCase().indexOf($(_this).val().toLowerCase()) === -1)
+                    $(this).hide();
+                else
+                    $(this).show();
+            });
+        });
+    });
+</script>
+
+
 
 
 <style>
+    #del {
+        border: none;text-align: center;
+        padding:0px;
+        color: red; 
+        background-color: Transparent;
+        cursor: pointer;
+    }
 
     table td {
         font-size:10px;
@@ -266,5 +306,15 @@
 
     #divest {
         width: 50%;
+    }
+
+    #botn {
+        display:inline;       
+    }
+
+    #bqrut {
+        display:flex; 
+        margin-right: 5px;
+	float: right;
     }
 </style>

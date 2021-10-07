@@ -1,7 +1,3 @@
-
-@extends('layouts.menu')
-
-@if(Auth::user()->idtype  == 1 or Auth::user()->idtype  == 2) 
 @section('content')
 <div class="container">
     <div class="container-fluid">
@@ -271,18 +267,12 @@
             labels: [sites[0], sites[1], sites[2], sites[3]],
             series: [sites[0], sites[1], sites[2], sites[3]]
         });
-
         Chartist.Pie('#chartPreferences2', dataPreferences, optionsPreferences2);
         var sites = {!! json_encode($info) !!};
         Chartist.Pie('#chartPreferences2', {
             labels: [sites[0], sites[1]],
             series: [sites[0], sites[1]]
         });
-
-
-
-
-
 
     });
 
@@ -321,8 +311,3 @@
 </style>
 
 @endsection
-@endif
-
-@if(Auth::user()->idtype  == 6 or Auth::user()->idtype  == 7)  
-    @include('dash.home-audits')
-@endif

@@ -22,13 +22,13 @@
         <div class="sidebar" data-color="orange" data-image="{{ asset('assets/img/sidebar-5.jpg')}}">
             <div class="sidebar-wrapper">
                 <div class="logo">                   
-                    <a href="" class="simple-text logo-normal">                      
-                        <img src="{!! asset('img/logo_unificados.webp') !!}" alt="Unifif" width=180 height=70>
+                    <a href="{{ url('/home') }}" class="simple-text logo-normal">                      
+                        <img src="{!! asset('img/logo_unificados.webp') !!}" alt="Unifif" width=180 height=70>                       
                     </a>
                 </div>
                 <ul class="nav">
                     <li class="nav-item ">
-                        <a class="nav-link" href="home">
+                        <a class="nav-link" href="{{ url('/home') }}">
                             <i class="nc-icon nc-layers-3"></i>
                             <p>Inicio</p>
                         </a>
@@ -172,6 +172,8 @@
                             </div>
                             
                         </li>
+                        @endif
+                        @if(Auth::user()->idtype  == 6 or Auth::user()->idtype  == 7) 
                         <li class="nav-item">
                             <a class="nav-link" data-toggle="collapse" href="#tablesaudir">
                                 <i class="nc-icon nc-headphones-2"></i>
@@ -180,14 +182,8 @@
                                     <b class="caret"></b>
                                 </p>
                             </a>
-                            <div class="collapse " id="tablesaudir">
-                                <ul class="nav">
-                                    <li class="nav-item ">
-                                        <a class="nav-link" href="{{ route('editusers') }}">                                       
-                                            <span class="sidebar-normal"> <i class="nc-icon nc-cloud-upload-94"></i> Importar</span>
-                                        </a>
-                                    </li>                             
-                                </ul>
+                            <div class="collapse " id="tablesaudir">                                
+                                
                                 <ul class="nav">
                                     <li class="nav-item ">
                                         <a class="nav-link" href="{{ route('ingresoAudit') }}">                                       
@@ -195,40 +191,68 @@
                                         </a>
                                     </li>                             
                                 </ul>
-                                <ul class="nav">
-                                    <li class="nav-item ">
-                                        <a class="nav-link" href="{{ route('pruebas') }}">                                       
-                                            <span class="sidebar-normal"> <i class="nc-icon nc-single-copy-04"></i>Reportes</span>
-                                        </a>
-                                    </li>                             
-                                </ul>
-                                <ul class="nav">                                         
-                            </div>                            
-                        </li>
-                    @endif  
-                    <li class="nav-item">
-                            <a class="nav-link" data-toggle="collapse" href="#Call">
-                                <i class="fa fa-phone"></i>
+                            </div>  
+                            @if(Auth::user()->idtype  == 7)                               
+
+                            <a class="nav-link" data-toggle="collapse" href="#Reportesaudit">
+                                <i class="nc-icon nc-single-copy-04"></i>
                                 <p>
-                                    LLamadas
+                                    Reportes
                                     <b class="caret"></b>
                                 </p>
                             </a>
-                            <div class="collapse " id="Call">
+                            <div class="collapse " id="Reportesaudit">
                                 <ul class="nav">
                                     <li class="nav-item ">
-                                        <a class="nav-link" href="{{ route('call') }}">                                       
-                                            <span class="sidebar-normal"> <i class="fa fa-headphones"></i> Gestion</span>
+                                        <a class="nav-link" href="{{ route('Sponsor') }}">                                       
+                                            <span class="sidebar-normal"> <i class="nc-icon nc-money-coins"></i>Sponsor</span>
                                         </a>
-                                    </li> 
-                                    <li class="nav-item ">
-                                        <a class="nav-link" href="{{ route('callsacs') }}">                                       
-                                            <span class="sidebar-normal"> <i class="fa fa-mobile"></i>SACS</span>
-                                        </a>
-                                    </li>                                 
+                                    </li>                             
                                 </ul>
-                            </div>                          
-                        </li>                 
+                                <ul class="nav">
+                                    <li class="nav-item ">
+                                        <a class="nav-link" href="{{ route('ejecut') }}">                                       
+                                            <span class="sidebar-normal"> <i class="nc-icon nc-single-02"></i>Ejecutivos</span>
+                                        </a>
+                                    </li>                             
+                                </ul>
+                                <ul class="nav">
+                                    <li class="nav-item ">
+                                        <a class="nav-link" href="{{ route('pruebas') }}">                                       
+                                            <span class="sidebar-normal"> <i class="nc-icon nc-settings-gear-64"></i>Conceptos</span>
+                                        </a>
+                                    </li>                             
+                                </ul>
+                            </div>
+                            @endif                                    
+                                                        
+                        </li>
+                        @endif
+                        @if(Auth::user()->idtype  == 5 or Auth::user()->idtype  == 1) 
+                        <li class="nav-item">
+                                <a class="nav-link" data-toggle="collapse" href="#Call">
+                                    <i class="fa fa-phone"></i>
+                                    <p>
+                                        LLamadas
+                                        <b class="caret"></b>
+                                    </p>
+                                </a>
+                                <div class="collapse " id="Call">
+                                    <ul class="nav">
+                                        <li class="nav-item ">
+                                            <a class="nav-link" href="{{ route('call') }}">                                       
+                                                <span class="sidebar-normal"> <i class="fa fa-headphones"></i> Gestion</span>
+                                            </a>
+                                        </li> 
+                                        <li class="nav-item ">
+                                            <a class="nav-link" href="{{ route('callsacs') }}">                                       
+                                                <span class="sidebar-normal"> <i class="fa fa-mobile"></i>SACS</span>
+                                            </a>
+                                        </li>                                 
+                                    </ul>
+                                </div>                          
+                            </li>  
+                        @endif               
                 </ul>
             </div>
         </div>
@@ -282,20 +306,20 @@
             <br>   
         </div> 
     </div>
-</body>          
-<!-- <footer class="footer">            
-    <div class="container">
+</body>      
+<footer class="footer">            
+    <div class="container" id="ctfoot">
         <nav>
             <p class="copyright text-center">
                 ©
                 <script>
                     document.write(new Date().getFullYear())
                 </script>
-                <a href="https://www.unificadosgroup.com/">Unificados</a>, @ddavimo
+                <a href="https://www.unificadosgroup.com/">Unificados</a>
             </p>
         </nav>
     </div>
-</footer> -->
+</footer>
 <!--   Core JS Files   -->
 <script src="{{ asset('assets/js/core/jquery.3.2.1.min.js')}}" type="text/javascript"></script>
 <script src="{{ asset('assets/js/core/popper.min.js')}}" type="text/javascript"></script>
@@ -352,16 +376,7 @@
         text-align:center;
     }
     
-    footer {
-    
-    position: absolute;
-    bottom: 0;
-    height: 10px; 
-    
-    
-    }
-
-
+  
 
  </style>
 
@@ -390,3 +405,19 @@
         });
     }
 </script>
+
+<style>
+.footer {
+    bottom: 0;
+    clear: both;
+    padding:0px;
+}
+
+#ctfoot {
+   height:10px;/*importante*/
+ 
+ 
+}
+
+
+</style>

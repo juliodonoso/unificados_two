@@ -8,6 +8,9 @@ use App\Models\Audit;
 use App\Models\sponsor;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\AuditExport;
+use App\Exports\SponsorExport;
 
 class Auditcontroller extends Controller
 {
@@ -20,33 +23,38 @@ class Auditcontroller extends Controller
 
     public function index()
     {       
-        $userid = Auth::user()->id;
-        $auditadas = audit::select('audits.*','sponsors.name as sname')
-        ->where('emp_id',$userid)
-        ->leftjoin('sponsors','sponsors.id', '=', 'audits.sponsor')
-        ->orderby('id','DESC')
-        ->paginate(25);        
-        $auditCount = $auditadas->count(); 
+        $usuarios = Auth::user();
+        $userid = $usuarios->id;;
+        $emp_type =   $usuarios->idtype; 
+        if($emp_type == 6  OR  $emp_type == 7) {
+            if($emp_type == 6){
+                $auditadas = audit::select('audits.*','sponsors.name as sname','teleoperadores.name as nombre')
+                ->where('emp_id',$userid)
+                ->leftjoin('sponsors','sponsors.id', '=', 'audits.sponsor') 
+                ->join('teleoperadores','teleoperadores.id', '=', 'audits.idoper')               
+                ->orderby('id','DESC')
+                ->get();  
+            } else {
+                $auditadas = audit::select('audits.*','sponsors.name as sname','users.name as name','teleoperadores.name as nombre')             
+                ->leftjoin('sponsors','sponsors.id', '=', 'audits.sponsor')
+                ->leftjoin('users','users.id', '=', 'audits.emp_id')
+                ->join('teleoperadores','teleoperadores.id', '=', 'audits.idoper')
+                ->orderby('id','DESC')
+                ->get();                 
+            }
+        }       
+    
+        $auditCount = $auditadas->count();
+        $cumple =  $auditadas->where('Estado',"CUMPLE")->count();
+        $alerta =  $auditadas->where('Estado',"ALERTA")->count();
 
-        $estado = audit::select('Estado',\DB::raw('count(*) as cant'))
-        ->where('emp_id',$userid)
-        ->groupby('Estado')
-        ->orderby('cant','DESC')
-        ->get();   
-        
-        $cumple = audit::where('Estado',"CUMPLE")
-        ->where('emp_id',$userid)
-        ->count();
-
-        $alerta = audit::where('Estado',"ALERTA")
-        ->where('emp_id',$userid)
-        ->count();
 
         return view('Auditorias.Audit')
         ->with('auditadas',$auditadas)
         ->with('auditCount',$auditCount)
         ->with('cumple',$cumple)
-        ->with('alerta',$alerta);
+        ->with('alerta',$alerta)
+        ->with('emp_type',$emp_type);
 
         
     }
@@ -58,34 +66,54 @@ class Auditcontroller extends Controller
         $campanias =  \DB::table('campanias')
         ->get();
         $teleop =  \DB::table('teleoperadores')
-        ->get();     
+        ->orderby('name','ASC')
+        ->get();
+        $ejecutivos = auth::user()->get();
+
+        $canal = \DB::table('canal')->get();
+        
+     
+        $usuarios = Auth::user();
+        $userid = $usuarios->id;;
+        $emp_type =   $usuarios->idtype;   
+        // dd($ejecutivos);  
        
         $carbon = new \Carbon\Carbon();
-        $date = $carbon->now();
-        // $officialDate = $date->format('d-m-Y H:i:s');
+        $date = $carbon->now();  
         $titulo = "Auditorias";
         return view('Auditorias.ingreso')
         ->with('sponsor',$sponsor)
         ->with('teleop',$teleop)
         ->with('campanias',$campanias)        
-        ->with('date',$date);
+        ->with('date',$date)
+        ->with('emp_type',$emp_type)
+        ->with('usuarios',$usuarios)
+        ->with('ejecutivos',$ejecutivos)
+        ->with('canal',$canal);
        
     }
 
     public function grabaudi () {   
-        // var_dump($_POST);    
-        $userid = Auth::user()->id;
+        // dd($_POST);   
+
+        if(isset($_POST['chkasig']) ){
+            if($_POST['chkasig'] == 1 ) {
+                $userid = $_POST['asigna'];
+            } 
+        }    else {
+            $userid = Auth::user()->id;
+        }
         $lsponsor = $_POST['sponsor'];
         $ldsp = Sponsor::where('id',$lsponsor)->first(); 
         $mes = $ldsp->mes; 
         $anio = $ldsp->anio;        
-        $lcia = $_POST['cia'];          
-        $lteleop = $_POST['telop'];       
+        // $lcia = $_POST['cia'];          
+        // $lteleop = $_POST['telop'];       
         $datevta = $_POST['fventa'];          
         $dateasi = $_POST['fasig'];      
-        $lrutcar = $_POST['rutcar'];          
-        $ldvcar = $_POST['dvcar'];          
-        $lidgrab = $_POST['idgrab'];               
+        // $lrutcar = $_POST['rutcar'];          
+        // $ldvcar = $_POST['dvcar'];          
+        // $lidgrab = $_POST['idgrab'];               
         $lfventa = Carbon::createFromFormat('m/d/Y', $datevta)->format('Y/m/d H:i:s');
         $lfasig = Carbon::createFromFormat('m/d/Y', $dateasi)->format('Y/m/d H:i:s'); 
         // Preguntas    
@@ -309,83 +337,268 @@ class Auditcontroller extends Controller
             } else {
                 $lH7 = 0;
             }       
-   
-     
-        audit::insert([  
-            'sponsor' => $_POST['sponsor'][0],
-            'campania'=> $_POST['cia'][0],
-            'opereva'  => $_POST['telop'],
-            'idgrab' => $_POST['idgrab'],
-            'rutcli' => $_POST['rutcar'],          
-            'dvcli' => $_POST['dvcar'],
-            'fvta' => $lfventa, 
-            'fgrab' => $lfasig, 
+        
+            $audit = new audit;
+            $audit->sponsor = $_POST['sponsor'];  
+            $audit->sponame = $_POST['hisuper'];           
+            $audit->idcia =  $_POST['cia'];
+            $audit->campania =  $_POST['hicia'];
+            $audit->idoper =  $_POST['telop'];
+            $audit->idcanal =  $_POST['canal'];
+            $audit->canal =  $_POST['hicanal'];
+            $audit->opereva =  $_POST['hioper'];
+            $audit->idgrab =  $_POST['idgrab'];
+            $audit->rutcli =  $_POST['rutcar'];
+            $audit->dvcli =  $_POST['dvcar'];
+            $audit->fvta =  $lfventa;
+            $audit->fgrab =  $lfasig;
+            $audit->idgrab =  $_POST['idgrab'];
+            $audit->rutcli =  $_POST['rutcar'];
+            $audit->dvcli =  $_POST['dvcar'];      
             // A 
-            'PrgA' => $_POST['pA'],
-            'PrgA1' => $lA1,
-            'PrgA2' => $lA2,
-            'PrgA3' => $lA3,
-            'PrgA4' => $lA4,
-            'PrgA5' => $lA5,
-            // B
-            'PrgB' => $_POST['pB'],
-            'PrgB1' => $lB1,
-            'PrgB2' => $lB2,
-            'PrgB3' => $lB3,
-            'PrgB4' => $lB4, 
-            // C
-            'PrgC' => $_POST['pC'],     
-            'PrgC1' => $lC1,
-            'PrgC2' => $lC2,
-            'PrgC3' => $lC3,
-            'PrgC4' => $lC4,
-            'PrgC5' => $lC5,
-            'PrgC6' => $lC6,
+            $audit->PrgA = $_POST['pA'];
+            $audit->PrgA1 = $lA1;
+            $audit->PrgA2 = $lA2;
+            $audit->PrgA3 = $lA3;
+            $audit->PrgA4 = $lA4;
+            $audit->PrgA5 = $lA5;
+            // B 
+            $audit->PrgB = $_POST['pB'];
+            $audit->PrgB1 = $lB1;
+            $audit->PrgB2 = $lB2;
+            $audit->PrgB3 = $lB3;
+            $audit->PrgB4 = $lB4;
+            // C 
+            $audit->PrgC = $_POST['pC'];     
+            $audit->PrgC1 = $lC1;
+            $audit->PrgC2 = $lC2;
+            $audit->PrgC3 = $lC3;
+            $audit->PrgC4 = $lC4;
+            $audit->PrgC5 = $lC5;
+            $audit->PrgC6 = $lC6;
             // D 
-            'PrgD' => $_POST['pD'],
-            'PrgD1' => $lD1,
-            'PrgD2' => $lD2,
-            'PrgD3' => $lD3,
-            'PrgD4' => $lD4,
-            'PrgD5' => $lD5,
-            'PrgD6' => $lD6,
-            'PrgD7' => $lD7,
-            'PrgD8' => $lD8,
+            $audit->PrgD  = $_POST['pD'];
+            $audit->PrgD1 = $lD1;
+            $audit->PrgD2 = $lD2;
+            $audit->PrgD3 = $lD3;
+            $audit->PrgD4 = $lD4;
+            $audit->PrgD5 = $lD5;
+            $audit->PrgD6 = $lD6;
+            $audit->PrgD7 = $lD7;
+            $audit->PrgD8 = $lD8;
             // E 
-            'PrgE' => $_POST['pE'],
-            'PrgE1' => $lE1,
-            'PrgE2' => $lE2,
-            'PrgE3' => $lE3,
-            'PrgE4' => $lE4,
+            $audit->PrgE  = $_POST['pE'];
+            $audit->PrgE1 = $lE1;
+            $audit->PrgE2 = $lE2;
+            $audit->PrgE3 = $lE3;
+            $audit->PrgE4 = $lE4;
             // F 
-            'PrgF' => $_POST['pF'],
-            'PrgF1' => $lF1,
-            'PrgF2' => $lF2,
-            'PrgF3' => $lF3,
+            $audit->PrgF  = $_POST['pF'];
+            $audit->PrgF1 = $lF1;
+            $audit->PrgF2 = $lF2;
+            $audit->PrgF3 = $lF3;
             // G 
-            'PrgG' => $_POST['pG'],
-            'PrgG1' => $lG1,
-            'PrgG2' => $lG2,
-            'PrgG3' => $lG3,
-            'PrgG4' => $lG4,
-            'PrgG5' => $lG5,
+            $audit->PrgG  = $_POST['pG'];
+            $audit->PrgG1 = $lG1;
+            $audit->PrgG2 = $lG2;
+            $audit->PrgG3 = $lG3;
+            $audit->PrgG4 = $lG4;
+            $audit->PrgG5 = $lG5;
             // H 
-            'PrgH1' => $lH1,
-            'PrgH2' => $lH2,
-            'PrgH3' => $lH3,
-            'PrgH4' => $lH4,
-            'PrgH5' => $lH5,
-            'PrgH6' => $lH6,
-            'PrgH7' => $lH7,  
-            'npartial' => $_POST['npct'],
-            'nfinal' => $_POST['ntlt'],
-            'estado' => $_POST['estado'],
-            'emp_id' => $userid,
-            'mes'=> $mes,
-            'anio' =>$anio,  
-        ]);
+            $audit->PrgH1 = $lH1;
+            $audit->PrgH2 = $lH2;
+            $audit->PrgH3 = $lH3;
+            $audit->PrgH4 = $lH4;
+            $audit->PrgH5 = $lH5;
+            $audit->PrgH6 = $lH6;
+            $audit->PrgH7 = $lH7;  
+            $audit->npartial = $_POST['npct'];
+            $audit->nfinal = $_POST['ntlt'];
+            $audit->estado = $_POST['estado'];
+            $audit->emp_id = $userid;
+            $audit->mes = $mes;
+            $audit->anio =$anio;
+            $audit->observ = $_POST['observ'];
+            $audit->save();
+
         return redirect()->route('ingresoAudit');
     }
+
+
+    public function destroy($id) {        
+        $usuarios = Auth::user();
+        $userid = $usuarios->id;;
+        $reg=audit::where('id', '=', $id)->first(); 
+        // Grabo quien quiere borrarlo 
+        $reg->auditreg =  $userid;  
+        $reg->save();
+        // lo borro 
+        $reg->delete();          
+        return redirect()->route('ingresoAudit');
+    }
+
+    public function export(Request $request) {       
+        $usuarios = Auth::user();
+        $userid = $usuarios->id;;
+        $emp_type =   $usuarios->idtype; 
+        $username = $usuarios->name;
+        if($emp_type == 6  OR  $emp_type == 7) {
+            if($emp_type == 6){
+                $auditadas = audit::select('audits.id','sponsors.name as sname','audits.canal as canal',
+                'audits.campania','audits.rutcli','audits.fvta','teleoperadores.name as nombre','audits.idGrab','users.name',
+                'audits.Fgrab',
+                'audits.PrgA','audits.PrgA1','audits.PrgA2','audits.PrgA3','audits.PrgA4','audits.PrgA5',
+                'audits.PrgB','audits.PrgB1','audits.PrgB2','audits.PrgB3','audits.PrgB4',
+                'audits.PrgC','audits.PrgC1','audits.PrgC2','audits.PrgC3','audits.PrgC4','audits.PrgC5','audits.PrgC6',
+                'audits.PrgD','audits.PrgD1','audits.PrgD2','audits.PrgD3','audits.PrgD4','audits.PrgD5','audits.PrgD6','audits.PrgD7','audits.PrgD8',
+                'audits.PrgE','audits.PrgE1','audits.PrgE2','audits.PrgE3','audits.PrgE4',
+                'audits.PrgF','audits.PrgF1','audits.PrgF2','audits.PrgF3',
+                'audits.PrgG','audits.PrgG1','audits.PrgG2','audits.PrgG3','audits.PrgG4','audits.PrgG5',
+                'audits.npartial',
+                'audits.PrgH1','audits.PrgH2','audits.PrgH3','audits.PrgH4','audits.PrgH5','audits.PrgH6','audits.PrgH7',
+                'audits.nfinal','audits.Estado','audits.observ','audits.mes','audits.anio')
+                ->where('emp_id',$userid)
+                ->leftjoin('sponsors','sponsors.id', '=', 'audits.sponsor') 
+                ->leftjoin('users','users.id', '=', 'audits.emp_id') 
+                ->join('teleoperadores','teleoperadores.id', '=', 'audits.idoper')   
+                ->orderby('id','DESC')    
+                ->get();
+            } else {
+                $auditadas = audit::select('audits.id','sponsors.name as sname','audits.canal as canal',
+                'audits.campania','audits.rutcli','audits.fvta','teleoperadores.name as nombre','audits.idGrab','users.name',
+                'audits.Fgrab',
+                'audits.PrgA','audits.PrgA1','audits.PrgA2','audits.PrgA3','audits.PrgA4','audits.PrgA5',
+                'audits.PrgB','audits.PrgB1','audits.PrgB2','audits.PrgB3','audits.PrgB4',
+                'audits.PrgC','audits.PrgC1','audits.PrgC2','audits.PrgC3','audits.PrgC4','audits.PrgC5','audits.PrgC6',
+                'audits.PrgD','audits.PrgD1','audits.PrgD2','audits.PrgD3','audits.PrgD4','audits.PrgD5','audits.PrgD6','audits.PrgD7','audits.PrgD8',
+                'audits.PrgE','audits.PrgE1','audits.PrgE2','audits.PrgE3','audits.PrgE4',
+                'audits.PrgF','audits.PrgF1','audits.PrgF2','audits.PrgF3',
+                'audits.PrgG','audits.PrgG1','audits.PrgG2','audits.PrgG3','audits.PrgG4','audits.PrgG5',
+                'audits.npartial',
+                'audits.PrgH1','audits.PrgH2','audits.PrgH3','audits.PrgH4','audits.PrgH5','audits.PrgH6','audits.PrgH7',
+                'audits.nfinal','audits.Estado','audits.observ','audits.mes','audits.anio')              
+                ->leftjoin('sponsors','sponsors.id', '=', 'audits.sponsor') 
+                ->leftjoin('users','users.id', '=', 'audits.emp_id')  
+                ->join('teleoperadores','teleoperadores.id', '=', 'audits.idoper')  
+                ->orderby('id','DESC')    
+                ->get();
+            }
+        }
+        $lname = 'Audits-'.$username.'-'.'.xlsx';        
+        return Excel::download(new AuditExport($auditadas), $lname);
+    }
+
+    public function repsponsor() {
+        $sponsor = audit::select('sponsors.name as nombre','audits.canal as canal','campania',\DB::raw('count(*) as cant'),
+        \DB::raw('COUNT(CASE WHEN Estado ="ALERTA" THEN Estado END) as alerta'),
+        \DB::raw('COUNT(CASE WHEN Estado ="CUMPLE" THEN Estado END) as cumple'),
+        \DB::raw('SUM(npartial) as tparcial'),
+        \DB::raw('SUM(nfinal) as tfinal'))                 
+        ->join('sponsors','sponsors.id', '=', 'audits.sponsor')
+        ->groupby('nombre','campania','canal')
+        ->orderby('cant','DESC')
+        ->get();
+
+      
+
+        // dd($sponsor);
+
+        $alertas = audit::where('Estado',"ALERTA")->count();
+        $cumple = audit::where('Estado',"CUMPLE")->count();
+        $total = audit::count();
+        if($total > 0) {
+        $sumpartial = round(audit::sum('npartial')/$total);
+
+        // dd($sumpartial);
+        $sumfinal = round(audit::sum('nfinal')/$total);
+        $cumpli = round(($cumple/$total)*100,2);
+        
+        } else {
+            $sumfinal = 0;
+            $cumpli = 0;
+            $sumpartial = 0;
+        }
+
+        
+
+         return view('Auditorias.reportes.Sponsor')
+         ->with('sponsor',$sponsor)
+         ->with('alertas',$alertas)
+         ->with('cumple',$cumple)
+         ->with('total',$total)
+         ->with('sumfinal',$sumfinal)
+         ->with('sumpartial',$sumpartial)
+         ->with('cumpli',$cumpli);
+
+    }
+
+
+    public function exportsponsor() {
+        $sponsor = audit::select('sponsors.name as nombre','audits.canal as canal','campania',
+        \DB::raw('COUNT(CASE WHEN Estado ="ALERTA" THEN Estado END) as alerta'),
+        \DB::raw('COUNT(CASE WHEN Estado ="CUMPLE" THEN Estado END) as cumple'),
+        \DB::raw('avg(npartial) as tparcial'),       
+        \DB::raw('avg(nfinal) as tfinal'),
+        \DB::raw('count(*) as cant'),
+        \DB::raw('avg(CASE WHEN Estado ="CUMPLE" THEN 1 ELSE 0 END) AS npcumple'))      
+        ->join('sponsors','sponsors.id', '=', 'audits.sponsor')
+        ->groupby('nombre','campania','canal')
+        ->orderby('cant','DESC')
+        ->get();
+        $lname = 'Sponsor-'.'.xlsx';        
+        return Excel::download(new SponsorExport($sponsor), $lname);
+    }
+
+
+
+    public function repejecut() {
+
+        $ejecutivos = audit::select('sponsors.name as nombres','campania','teleoperadores.name as nombre',
+        \DB::raw('COUNT(CASE WHEN Estado ="ALERTA" THEN Estado END) as alerta'),
+        \DB::raw('COUNT(CASE WHEN Estado ="CUMPLE" THEN Estado END) as cumple'),
+        \DB::raw('avg(npartial) as tparcial'),
+        \DB::raw('avg(nfinal) as tfinal'),
+        \DB::raw('count(*) as cant'),
+        \DB::raw('avg(CASE WHEN Estado ="CUMPLE" THEN 1 ELSE 0 END) AS npcumple'))                 
+        ->join('teleoperadores','teleoperadores.id', '=', 'audits.idoper')
+        ->join('sponsors','sponsors.id', '=', 'audits.sponsor')
+        ->groupby('nombres','campania','nombre')
+        ->orderby('cant','DESC')
+        ->get();
+
+        $alertas = audit::where('Estado',"ALERTA")->count();
+        $cumple = audit::where('Estado',"CUMPLE")->count();
+        $total = audit::count();
+
+        if($total >0 ) {
+        $sumpartial = round(audit::sum('npartial')/$total);
+
+        // dd($sumpartial);
+        $sumfinal = round(audit::sum('nfinal')/$total);
+        $cumpli = round(($cumple/$total)*100,2);
+        } else {
+            $sumpartial = 0;
+            $sumfinal = 0;
+            $cumpli = 0;
+        }
+        return view('Auditorias.reportes.ejecutivos')
+        ->with('ejecutivos',$ejecutivos)
+        ->with('alertas',$alertas)
+        ->with('cumple',$cumple)
+        ->with('total',$total)
+        ->with('sumfinal',$sumfinal)
+        ->with('sumpartial',$sumpartial)
+        ->with('cumpli',$cumpli);
+
+
+
+    }
+    public function repconcep() {
+
+
+
+    }
+
 
 }
 
