@@ -42,7 +42,7 @@
                                 </tr>                                        
                             @endforeach
                         </tbody>
-                        <tfoot>
+                        <!-- <tfoot>
                             <th></th>
                             <th>TOTALES</th>
                             <th>{{ $alertas }}</th>
@@ -51,7 +51,7 @@
                             <th id="final"></th>
                             <th>{{ $total }}</th>
                             <th>{{$cumpli}} %</th>
-                        </tfoot>
+                        </tfoot> -->
                     </table>
             </form>
         </div>
