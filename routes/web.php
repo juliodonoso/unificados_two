@@ -151,13 +151,23 @@ Route::get('/Audit', [App\Http\Controllers\AuditController::class, 'index'])->na
 Route::get('/newAudit', [App\Http\Controllers\AuditController::class, 'create'])->name('NewAudit');
 Route::POST('/saveing', [App\Http\Controllers\AuditController::class, 'grabaudi'])->name('gingreso');
 
+Route::delete('/del/{id}', [App\Http\Controllers\AuditController::class, 'destroy'])->name('delereg');
+
 // Correos de alertas
 
 Route::get('/alertas/{idx}', [App\Http\Controllers\MailController::class, 'sendmail'])->name('alertmail');
 
+// Exportar Excel 
 
+Route::get('/export', [App\Http\Controllers\AuditController::class, 'export'])->name('excelaud');
 
+// reportes de audfitoria
 
+Route::get('/Reportes/Sponsor', [App\Http\Controllers\AuditController::class, 'repsponsor'])->name('Sponsor');
+Route::get('/exportSponsor', [App\Http\Controllers\AuditController::class, 'exportsponsor'])->name('excelsponsor');
+
+Route::get('/Reportes/ejecutivos', [App\Http\Controllers\AuditController::class, 'repejecut'])->name('ejecut');
+Route::get('/exportejecutivos', [App\Http\Controllers\AuditController::class, 'exportejecut'])->name('excelejecut');
 
 
 
