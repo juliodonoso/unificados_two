@@ -82,6 +82,7 @@ class HomeController extends Controller
             $dashcount  = 0;
             $ltopcount  = 0; 
             $ejeccount = 0;
+            $calend = 0;
             if($emp_type == 6 OR  $emp_type == 7) {
                 if($emp_type == 6){
                     $auditorias = $query_emp->get();
@@ -144,11 +145,13 @@ class HomeController extends Controller
                         $ejeccount = $ejecutivos->count();
 
                         $calend = \DB::table('audits')
-                        ->select(\DB::raw('DATE(created_at) as fecha'), \DB::raw('count(*) as cant'),
+                        ->select(\DB::raw('DAY(created_at) as fecha'), \DB::raw('count(*) as cant'),
                         \DB::raw('COUNT(CASE WHEN Estado ="ALERTA" THEN Estado END) as alerta'),
                         \DB::raw('COUNT(CASE WHEN Estado ="CUMPLE" THEN Estado END) as cumple'))
+                        ->where('deleted_at', null)
                         ->groupBy('fecha')
                         ->get();
+                        // dd($calend);
                         
                         $lporcumple = round(($lscumple/$lcounta)*100);           
                         $lporalerta = round(($lsalertas/$lcounta)*100); 

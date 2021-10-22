@@ -230,59 +230,50 @@
     @endif
 @endif
 
-
 @if($lcounta > 0)
-    @if($emp_type == 7 or $emp_type == 8)   
-        <!-- <div class="card  card-tasks"> -->
-            <div class="row">   
-                <div class="col-md-12">
-                    <div class="card regular-table-with-color">
-                        <div class="card-header ">
-                            <h4 class="card-title">Gestion de Auditorias</h4>
-                            <p class="card-category">Detalle x dia</p>
-                        </div>
-                        <div class="card-body table-full-width table-responsive">
-                            <table class="table table-hover">
-                                <thead>
-                                    <th>Dias</th>
+    @if($emp_type == 7 or $emp_type == 8)     
+        <div class="row">   
+            <div class="col-md-12">
+                <div class="card regular-table-with-color">
+                    <div class="card-header ">
+                        <h4 class="card-title">Gestion de Auditorias</h4>
+                        <p class="card-category">Detalle x dia</p>
+                    </div>
+                    <div class="card-body table-full-width table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <th>Dias</th>
+                                @foreach($calend as $dias)                                                                     
+                                    <th >{{$dias->fecha}}</th>                                    
+                                @endforeach
+                            </thead>
+                            <tbody>
+                                <tr class="info">
+                                    <td class='titd'>Cumple</td>
                                     @foreach($calend as $dias)                                                                     
-                                        <th>{{date('d-m-Y', strtotime($dias->fecha))}}</th>                                    
+                                        <td  class="tit">{{ $dias->cumple }}</td>                                    
                                     @endforeach
-                                </thead>
-                                <tbody>
-                                    <tr class="info">
-                                        <td>Cumple</td>
-                                        @foreach($calend as $dias)                                                                     
-                                            <td>{{ $dias->cumple }}</td>                                    
-                                        @endforeach
-                                    </tr>
-                                    <tr>
-                                        <td>Alertas</td>
-                                        @foreach($calend as $dias)                                                                     
-                                            <td>{{ $dias->alerta }}</td>                                    
-                                        @endforeach
-                                    </tr>
-                                    <tr class="warning">
-                                        <td>Total</td>
-                                        @foreach($calend as $dias)                                                                     
-                                            <td>{{ $dias->cant }}</td>                                    
-                                        @endforeach                                              
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
+                                </tr>
+                                <tr>
+                                    <td class='titd'>Alertas</td>
+                                    @foreach($calend as $dias)                                                                     
+                                        <td  class="tit">{{ $dias->alerta }}</td>                                    
+                                    @endforeach
+                                </tr>
+                                <tr class="warning">
+                                    <td class='titd'>Total</td>
+                                    @foreach($calend as $dias)                                                                     
+                                        <td  class="tit">{{ $dias->cant }}</td>                                    
+                                    @endforeach                                              
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
-        <!-- </div> -->
+        </div>
     @endif
-@else 
-    <div class="col-md-12"><br>
-        <div class="alert alert-info alert-with-icon" data-notify="container" id="cumple">                    
-            <span data-notify="icon" class="nc-icon nc-bell-55"></span>
-            <span><b> Info: </b> No se han Registrado Auditorias.</span>
-        </div> 
-    </div>  
+
 @endif
 
 
@@ -412,8 +403,6 @@
 
 </script>
 
-
-
 <style>
     .tdeje {
         text-align: center;
@@ -430,9 +419,17 @@
     }   
 </style>
 
-
-
 <style>
+
+
+
+ .tit, {
+    width: 4%;
+}
+
+ .titd {
+    width: 10%;
+}
 
     .card .card-header-warning .card-icon,
     .card .card-header-warning .card-text,

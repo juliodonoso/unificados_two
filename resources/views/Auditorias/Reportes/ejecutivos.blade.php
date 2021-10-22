@@ -41,7 +41,7 @@
                                             <td class="tdsp2">{!! round($resp->tparcial) !!} %</td> 
                                             <td class="tdsp4">{!! round($resp->tfinal) !!} %</td>                                   
                                             <td class="tdsp3">{!! $resp->cant !!}</td>                 
-                                            <td class="tdsp">{!! $resp->npcumple / $resp->cant !!} %</td> 
+                                            <td class="tdsp">{!! round(($resp->npcumple / $resp->cant)*100) !!} %</td> 
                                             <td>{!! $resp->auditor !!}</td>                                                                                                  
                                         </tr>                                        
                                     @endforeach

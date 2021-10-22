@@ -400,12 +400,11 @@ class Auditcontroller extends Controller
             $audit->idcanal =  $_POST['canal'];
             $audit->canal =  $_POST['hicanal'];
             $audit->opereva =  $_POST['hioper'];
-            $audit->idgrab =  $_POST['idgrab'];
+            $audit->idgrab =  strtoupper($_POST['idgrab']);
             $audit->rutcli =  $_POST['rutcar'];
             $audit->dvcli =  $_POST['dvcar'];
             $audit->fvta =  $lfventa;
-            $audit->fgrab =  $lfasig;
-            $audit->idgrab =  $_POST['idgrab'];
+            $audit->fgrab =  $lfasig;          
             $audit->rutcli =  $_POST['rutcar'];
             $audit->dvcli =  $_POST['dvcar'];      
             // A 
@@ -471,7 +470,7 @@ class Auditcontroller extends Controller
             $audit->emp_id = $userid;
             $audit->mes = $mes;
             $audit->anio =$anio;
-            $audit->observ = $_POST['observ'];
+            $audit->observ = strtoupper($_POST['observ']);
             $audit->save();
 
         return redirect()->route('ingresoAudit');

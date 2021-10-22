@@ -124,7 +124,7 @@
                             </div>                  
                         </div> 
                     </div>
-                <!-- id Grabacion   -->
+                <!-- id Grabacion   -->                
                     <div class="row">
                         <div class="col-sm-12" id="idgrab"> 
                             <div class="row">                                           
@@ -133,7 +133,7 @@
                                         <label>
                                             Id Grabacion                                           
                                         </label>
-                                        <input id="rutcar" name ="idgrab" class="form-control" required />                                                            
+                                        <input id="rutcar" name ="idgrab" class="form-control" required  style="text-transform:uppercase" />                                                            
                                     </div>
                                 </div>                                                                                                                                                                      
                             </div>
@@ -420,7 +420,7 @@
                 <!-- Observaciones  -->
                     <div class="form-group">
                         <label for="exampleFormControlTextarea1">Observaciones</label>
-                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="4" name="observ"></textarea>
+                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="4" name="observ" style="text-transform:uppercase"></textarea>
                     </div>       
             </div> 
             <input type="hidden" name="estado" id="estado" value="CUMPLE">        
