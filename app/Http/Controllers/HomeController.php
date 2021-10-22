@@ -36,7 +36,7 @@ class HomeController extends Controller
         $titulo = "Inicio";         
         $today = Carbon::today();   
 
-        $querytop = audit::query(); 
+        $querytopalerts = audit::query(); 
         $query_emp = audit::query(); 
         $query = audit::query(); 
      
@@ -46,7 +46,7 @@ class HomeController extends Controller
             foreach($ltspon as $key => $value){             
             
                 if($key == 0 ) {
-                    $querytop =  $querytop->where('Estado',"ALERTA")
+                    $querytopalerts =  $querytopalerts->where('Estado',"ALERTA")
                     ->where("sponsor",$value->id)
                     ->where("audits.mes",$value->mes);   
                     
@@ -57,7 +57,7 @@ class HomeController extends Controller
                     $query = $query->where("sponsor",$value->id)
                     ->where("audits.mes",$value->mes);   
                 } else {
-                    $querytop =  $querytop->orwhere('Estado',"ALERTA")
+                    $querytopalerts =  $querytopalerts->orwhere('Estado',"ALERTA")
                     ->where("sponsor",$value->id)
                     ->where("audits.mes",$value->mes); 
 
@@ -87,12 +87,17 @@ class HomeController extends Controller
                     $auditorias = $query_emp->get();
                 } else {
                     $auditorias = $query->get();
-                    $ltop = $querytop->select('sponsors.name as sponsor','canal',
+                     // Top 5 alertas 
+                    $ltop = $querytopalerts->select('sponsors.name as sponsor','canal',
                     'campanias.name as cia',\DB::raw('COUNT(CASE WHEN Estado ="ALERTA" THEN Estado END) as alerta'))               
                     ->join('sponsors','sponsors.id','=','audits.sponsor')
                     ->join('campanias','campanias.id','=','audits.idcia')
                     ->groupby('sponsors.name','canal','cia')
                     ->get();
+
+                    // $date = Carbon::createFromFormat('d/m/Y H:i:s T', $row['date']);
+
+                    
 
                     // dd($ltop);
                     $ltopcount = $ltop->count();
@@ -138,6 +143,13 @@ class HomeController extends Controller
                         ->get();
                         $ejeccount = $ejecutivos->count();
 
+                        $calend = \DB::table('audits')
+                        ->select(\DB::raw('DATE(created_at) as fecha'), \DB::raw('count(*) as cant'),
+                        \DB::raw('COUNT(CASE WHEN Estado ="ALERTA" THEN Estado END) as alerta'),
+                        \DB::raw('COUNT(CASE WHEN Estado ="CUMPLE" THEN Estado END) as cumple'))
+                        ->groupBy('fecha')
+                        ->get();
+                        
                         $lporcumple = round(($lscumple/$lcounta)*100);           
                         $lporalerta = round(($lsalertas/$lcounta)*100); 
                         array_push($infograb2,$pctfinal,$lporcumple);
@@ -161,7 +173,8 @@ class HomeController extends Controller
                     ->with('cum',$cum)
                     ->with('ltopcount',$ltopcount)
                     ->with('today',$today)
-                    ->with('ejeccount',$ejeccount);
+                    ->with('ejeccount',$ejeccount)
+                    ->with('calend',$calend);
                
             }
           
