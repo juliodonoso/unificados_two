@@ -69,23 +69,21 @@
                                     </li>                                   
                                     @endif
                                     @if(Auth::user()->idtype  == 1 or Auth::user()->idtype  == 2) 
-                                    <!-- <li class="nav-item ">
-                                        <a class="nav-link" href="">                                       
-                                            <span class="sidebar-normal"><i class="nc-icon nc-mobile"></i>Procesar para Llamadas</span>
-                                        </a>
-                                    </li>                                 -->
-                                    <!-- <li class="nav-item ">
-                                        <a class="nav-link" href="">                                        
-                                            <span class="sidebar-normal"><i class="nc-icon nc-single-copy-04"></i>Reportes</span>
-                                        </a>
-                                    </li>  -->
-                                    <li class="nav-item ">
-                                        <a class="nav-link" href="{{ route('periodo') }}">                                        
-                                            <span class="sidebar-normal"><i class="nc-icon nc-key-25"></i>Cierre Periodo</span>
-                                        </a>
-                                    </li> 
-                                    
-                                  
+                                        <!-- <li class="nav-item ">
+                                            <a class="nav-link" href="">                                       
+                                                <span class="sidebar-normal"><i class="nc-icon nc-mobile"></i>Procesar para Llamadas</span>
+                                            </a>
+                                        </li>                                 -->
+                                        <!-- <li class="nav-item ">
+                                            <a class="nav-link" href="">                                        
+                                                <span class="sidebar-normal"><i class="nc-icon nc-single-copy-04"></i>Reportes</span>
+                                            </a>
+                                        </li>  -->
+                                        <li class="nav-item ">
+                                            <a class="nav-link" href="{{ route('periodo') }}">                                        
+                                                <span class="sidebar-normal"><i class="nc-icon nc-key-25"></i>Cierre Periodo</span>
+                                            </a>
+                                        </li>                                   
                                     @endif                              
                                 </ul>
                             </div>
@@ -204,21 +202,21 @@
                             <div class="collapse " id="Reportesaudit">
                                 <ul class="nav">
                                     <li class="nav-item ">
-                                        <a class="nav-link" href="{{ route('Sponsor') }}">                                       
+                                        <a class="nav-link" href="{{ route('indexSponsor') }}">                                       
                                             <span class="sidebar-normal"> <i class="nc-icon nc-money-coins"></i>Sponsor</span>
                                         </a>
                                     </li>                             
                                 </ul>
                                 <ul class="nav">
                                     <li class="nav-item ">
-                                        <a class="nav-link" href="{{ route('ejecut') }}">                                       
+                                        <a class="nav-link" href="{{ route('indexejecut') }}">                                       
                                             <span class="sidebar-normal"> <i class="nc-icon nc-single-02"></i>Ejecutivos</span>
                                         </a>
                                     </li>                             
                                 </ul>
                                 <ul class="nav">
                                     <li class="nav-item ">
-                                        <a class="nav-link" href="{{ route('pruebas') }}">                                       
+                                        <a class="nav-link" href="{{ route('conceptos') }}">                                       
                                             <span class="sidebar-normal"> <i class="nc-icon nc-settings-gear-64"></i>Conceptos</span>
                                         </a>
                                     </li>                             
@@ -288,7 +286,7 @@
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
                                             document.getElementById('logout-form').submit();">
-                                        {{ __('Logout') }}
+                                        {{ __('Salir') }}
                                         <i class="nc-icon nc-button-power"></i>
                                     </a>
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">

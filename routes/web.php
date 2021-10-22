@@ -83,8 +83,8 @@ Route::get('/Usuarioslist', [App\Http\Controllers\Auth\ConfirmPasswordController
 Route::POST('/Usuariosedit', [App\Http\Controllers\Auth\ConfirmPasswordController::class, 'edituser'])->name('usersedit');
 Route::POST('/updateusers/{luserid}', [App\Http\Controllers\Auth\ConfirmPasswordController::class, 'upuser'])->name('upusers');
 
-Route::get('/pruebas', [App\Http\Controllers\HomeController::class, 'pruebas'])->name('pruebas');
-// Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+
 
 
 // Reportes 
@@ -148,10 +148,15 @@ Route::POST('/savesacs/{Nrocar}/{ldid}', [App\Http\Controllers\CallController::c
 // Auditorias 
 
 Route::get('/Audit', [App\Http\Controllers\AuditController::class, 'index'])->name('ingresoAudit');
+
+Route::POST('/Combos', [App\Http\Controllers\AuditController::class, 'combos'])->name('combos');
+
+
+
 Route::get('/newAudit', [App\Http\Controllers\AuditController::class, 'create'])->name('NewAudit');
 Route::POST('/saveing', [App\Http\Controllers\AuditController::class, 'grabaudi'])->name('gingreso');
 
-Route::delete('/del/{id}', [App\Http\Controllers\AuditController::class, 'destroy'])->name('delereg');
+Route::post('/del', [App\Http\Controllers\AuditController::class, 'destroy'])->name('delereg');
 
 // Correos de alertas
 
@@ -161,13 +166,21 @@ Route::get('/alertas/{idx}', [App\Http\Controllers\MailController::class, 'sendm
 
 Route::get('/export', [App\Http\Controllers\AuditController::class, 'export'])->name('excelaud');
 
-// reportes de audfitoria
+// reportes de auditoria
 
-Route::get('/Reportes/Sponsor', [App\Http\Controllers\AuditController::class, 'repsponsor'])->name('Sponsor');
+Route::get('/Sponsor/index', [App\Http\Controllers\AuditController::class, 'RepSindex'])->name('indexSponsor');
+Route::POST('/Reportes/Sponsor', [App\Http\Controllers\AuditController::class, 'repsponsor'])->name('Sponsor');
 Route::get('/exportSponsor', [App\Http\Controllers\AuditController::class, 'exportsponsor'])->name('excelsponsor');
 
-Route::get('/Reportes/ejecutivos', [App\Http\Controllers\AuditController::class, 'repejecut'])->name('ejecut');
+
+Route::get('/ejecut/index', [App\Http\Controllers\AuditController::class, 'RepEindex'])->name('indexejecut');
+Route::POST('/Reportes/ejecutivos', [App\Http\Controllers\AuditController::class, 'repejecut'])->name('ejecut');
 Route::get('/exportejecutivos', [App\Http\Controllers\AuditController::class, 'exportejecut'])->name('excelejecut');
 
 
+Route::get('/Concep', [App\Http\Controllers\AuditController::class, 'repCindex'])->name('conceptos');
+Route::POST('/Conceptos', [App\Http\Controllers\AuditController::class, 'resultcpt'])->name('concept');
 
+
+Route::get('/pruebas', [App\Http\Controllers\testcontoller::class, 'pruebas'])->name('pruebas');
+// Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

@@ -101,14 +101,15 @@
                             <th data-field="name" data-sortable="true">Sponsor</th>
                             <th data-field="name" data-sortable="true">Canal</th>
                             <th data-field="name" data-sortable="true">Campaña</th>
+                            <th data-field="name" data-sortable="true">Periodo</th> 
                             <th data-field="name" data-sortable="true">Operador</th>  
                             <th data-field="name" data-sortable="true">Cliente</th> 
                             <th data-field="name" data-sortable="true">Fecha</th> 
                             <th data-field="name" data-sortable="true">Estado</th>
-                            <th data-field="name" data-sortable="true">Parcial</th>
-                            <th data-field="name" data-sortable="true">Final</th>
+                            <th data-field="name" data-sortable="true">%Pcl</th>
+                            <th data-field="name" data-sortable="true">%Final</th>
                             @if($emp_type == 7)  
-                            <th data-field="name" data-sortable="true">Eje</th> 
+                            <th data-field="name" data-sortable="true">Ejec</th>                           
                             <th data-field="name" data-sortable="true">Del</th>
                             @endif                                    
                             <th data-field="name" data-sortable="true">Det</th> 
@@ -120,7 +121,12 @@
                                     <td>{!! $resp->sname !!}</td>
                                     <td>{!! $resp->canal !!}</td>  
                                     <td>{!! $resp->campania !!}</td>  
-                                    <td>{!! $resp->nombre !!}</td>                                        
+                                    <td class="text-right">{!! $resp->mes !!}/{!! $resp->anio !!}</td>                                     
+                                    @if($resp->nombre == "EJECUTIVO SIN PRESENTACION")
+                                        <td style="color:red;">{!! $resp->nombre !!}</td> 
+                                    @else 
+                                        <td>{!! $resp->nombre !!}</td> 
+                                    @endif
                                     <td>{!! $resp->rutcli !!}-{!! $resp->dvcli !!}</td>   
                                     <td>{!! date('d-m-Y', strtotime($resp->created_at)) !!}</td>
                                     @if($resp->Estado == "ALERTA")                 
@@ -128,17 +134,13 @@
                                     @else
                                         <td> 
                                     @endif{!! $resp->Estado !!}</td> 
-                                    <td>{!! $resp->npartial !!} %</td> 
-                                    <td>{!! $resp->nfinal !!} %</td>
+                                    <td class="text-right">{!! $resp->npartial !!} %</td> 
+                                    <td class="text-right">{!! $resp->nfinal !!} %</td>
                                     @if($emp_type == 7) 
-                                    <td>{!! $resp->name !!}</td>                                          
-                                    <td class="text-right">                                                
-                                    <form name="formedit" id="formedit" action="{{ route('delereg',$resp->id) }}" method="post">
-                                        {!! csrf_field() !!}
-                                        {!! method_field('DELETE') !!}                                             
-                                        <button id="del" type="submit" ><i class="fa fa-trash" ></i></button>                                       
-                                    </form>
-                                    </td>  
+                                        <td>{!! $resp->name !!}</td>                                                                                 
+                                        <td class="text-right">                                    
+                                            <button id="del" onclick="eliminarArticulo({{$resp->id}})" class="btn btn-outline btn-danger"><i class="fa fa-trash"></i></button>
+                                        </td>  
                                     @endif
                                     <td class="text-right">
                                         <a href="#PlaceModal-{{$resp->id}}" data-toggle="modal"><i class="fa fa-search"></i></a>
@@ -176,7 +178,7 @@
                     <div class="modal-body">   
                         <hr> 
                         <div class="row" id="det01">
-                            <div class="col-sm-12" > Sponsor : {{$resp->sname}}  -  Canal: {{$resp->sname}} - Campaña : {{$resp->campania}} </div>                           
+                            <div class="col-sm-12" > Sponsor : {{$resp->sname}}  -  Canal: {{$resp->canal}} - Campaña : {{$resp->campania}} </div>                           
                         </div>                       
                         <div class="row" id="det01">                           
                             <div class="col-sm-8" >Rut-Tit : {{$resp->rutcli}}-{{$resp->dvcli}}</div>
@@ -270,19 +272,89 @@
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
 <!-- BUSQUEDA  -->
-<script>
-    $(document).ready(function(){
-        $("#search").keyup(function(){
-            _this = this;
-            $.each($("#tb01 tbody tr"), function() {
-                if($(this).text().toLowerCase().indexOf($(_this).val().toLowerCase()) === -1)
-                    $(this).hide();
-                else
-                    $(this).show();
+    <script>
+        $(document).ready(function(){
+            $("#search").keyup(function(){
+                _this = this;
+                $.each($("#tb01 tbody tr"), function() {
+                    if($(this).text().toLowerCase().indexOf($(_this).val().toLowerCase()) === -1)
+                        $(this).hide();
+                    else
+                        $(this).show();
+                });
             });
         });
-    });
+    </script>
+
+
+<script>
+
+function eliminarArticulo(id) {  
+        swal({
+            title: "Estas Seguro de Borrar el registro?",
+            text: "Evaluacion de Ventas",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Si, Borrar!",
+            cancelButtonText: "No, Cancelar",
+            closeOnConfirm: false,
+            closeOnCancel: false
+        }, function(isConfirm) {
+            if (isConfirm) {             
+              swal("Borrado", "Tu Registro fue Borrado.", "success");
+                    var params = {"_token": "{{ csrf_token() }}",
+                    "id" : id};      
+                $.ajax({    
+                    url: "{{route('delereg')}}", 
+                    type: 'post',
+                    data: params,
+                    dataType: 'json',  
+                    success: function(reg) {               
+                        // top.location.href = 'https://localhost/ddavimo_v12/public/Audit'
+                        window.location.href = "{{URL::to('Audit')}}"
+                    }
+                });
+            } else {
+                swal("Cancelado", "Proceso Cancelado", "error");
+            }
+        });
+    }
+
+
 </script>
+
+
+
+
+
+<script>
+
+    function eliminarArticuloXXXXX(id) {
+        var params = {"_token": "{{ csrf_token() }}",
+        "id" : id};      
+        $.ajax({    
+            url: "{{route('delereg')}}", 
+            type: 'post',
+            data: params,
+            dataType: 'json',  
+            success: function(reg) {               
+                // top.location.href = 'https://localhost/ddavimo_v12/public/Audit'
+                window.location.href = "{{URL::to('Audit')}}"
+            }
+        });
+    }
+</script>
+
+
+
+
+
+
+
+
+
+
+
 
 
 

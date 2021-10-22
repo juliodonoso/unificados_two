@@ -25,7 +25,8 @@ class Mailcontroller extends Controller
         $correo = new Alertmail($leje,$lcamp,$lfecha,$lidgrab,$lobserv,$lasunto);
         $correo->subject = $lasunto;
         $correo->eje = $leje;
-        mail::to("ddavimo@gmail.com")->send($correo);       
+        mail::to("ddavimo@gmail.com")->send($correo);  
+        return redirect()->route('ingresoAudit');
     }
 
 }

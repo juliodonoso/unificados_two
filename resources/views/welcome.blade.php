@@ -37,7 +37,7 @@
 
             <div class="max-w-6xl mx-auto sm:px-6 lg:px-8">
                 <div class="flex justify-center pt-8 sm:justify-start sm:pt-0">                   
-                    <img src="{!! asset('img/logo_unificados.webp') !!}"width=580 height=300 alt="Unifif" class="img-thumbnail center-block">
+                    <img src="{!! asset('img/logo_unificados.webp') !!}"width=780 height=350 alt="Unifif" class="img-thumbnail center-block">
                 </div>               
                 <div class="ml-4 text-center text-sm text-gray-500 sm:text-right sm:ml-0">                      
                     <p class="copyright">&copy; 2021 Copyright <a href="https://www.unificados.cl" target="_blank">@ddavimo -</a> Unificados.</p>

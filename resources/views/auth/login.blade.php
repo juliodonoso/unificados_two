@@ -26,43 +26,18 @@
                 <div class="navbar-wrapper">
                     <a href="" class="simple-text logo-normal">  
                     <br>  <br>  <br>                
-                        <img src="{!! asset('img/logo_unificados.webp') !!}" alt="Unifif" width=280 height=100>
+                        <img src="{!! asset('img/logo_unificados.webp') !!}" alt="Unifif" width=280 height=110>
                     </a>
                     <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-bar burger-lines"></span>
                         <span class="navbar-toggler-bar burger-lines"></span>
                         <span class="navbar-toggler-bar burger-lines"></span>
                     </button>
-                </div>
-                <!-- <div class="collapse navbar-collapse justify-content-end" id="navbar">
-                    <ul class="navbar-nav">
-                        <li class="nav-item">
-                            <a href="" class="nav-link">
-                                <i class="nc-icon nc-chart-pie-35"></i> Inicio
-                            </a>
-                        </li>
-                        <li class="nav-item ">
-                            <a href="" class="nav-link">
-                                <i class="nc-icon nc-badge"></i> Registro
-                            </a>
-                        </li>
-                        <li class="nav-item  active ">
-                            <a href="" class="nav-link">
-                                <i class="nc-icon nc-mobile"></i> Login
-                            </a>
-                        </li>
-                        <li class="nav-item ">
-                            <a href="" class="nav-link">
-                                <i class="nc-icon nc-key-25"></i> Lock
-                            </a>
-                        </li>
-                    </ul>
-                </div> -->
+                </div>           
             </div>
         </nav>
         <!-- End Navbar -->
-        <div class="full-page  section-image" data-color="black" data-image="{{ asset('assets/img/full-screen-image-2.jpg')}}" ;>
-            <!--   you can change the color of the filter page using: data-color="blue | purple | green | orange | red | rose " -->
+        <div class="full-page  section-image" data-color="black" data-image="{{ asset('assets/img/full-screen-image-2.jpg')}}" ;>         
             <div class="content">
                 <div class="container">
                     <div class="col-md-4 col-sm-6 ml-auto mr-auto">
