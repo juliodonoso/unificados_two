@@ -54,8 +54,6 @@ Route::get('/pdfimport', [App\Http\Controllers\ProposalController::class, 'pdfin
 Route::POST('/cargarpdf', [App\Http\Controllers\ProposalController::class, 'pdfUP'])->name('pdfcarga');
 Route::POST('/verpdf', [App\Http\Controllers\ProposalController::class, 'pdfsee'])->name('pdfsee');
 
-
-
 // Exportar Excel
 Route::get('/export/{lopcion}/{lbuscar}', [App\Http\Controllers\ProposalController::class, 'export'])->name('excel');
 Route::get('/exportmov/{sep}/{lbuscar}/{lopcion}', [App\Http\Controllers\ProposalController::class, 'expDuplic'])->name('exlduplic');
@@ -74,7 +72,6 @@ Route::get('/upgestion', [App\Http\Controllers\ProposalController::class, 'updat
 Route::POST('/updategt', [App\Http\Controllers\ProposalController::class, 'updateexcel'])->name('Upgtexcel');
 Route::get('/up/{sep}', [App\Http\Controllers\ProposalController::class, 'pdfupdate'])->name('pdfup');
 
-
 // Mantenimiento 
 
 //Usuarios
@@ -82,10 +79,6 @@ Route::get('/up/{sep}', [App\Http\Controllers\ProposalController::class, 'pdfupd
 Route::get('/Usuarioslist', [App\Http\Controllers\Auth\ConfirmPasswordController::class, 'usersindex'])->name('editusers');
 Route::POST('/Usuariosedit', [App\Http\Controllers\Auth\ConfirmPasswordController::class, 'edituser'])->name('usersedit');
 Route::POST('/updateusers/{luserid}', [App\Http\Controllers\Auth\ConfirmPasswordController::class, 'upuser'])->name('upusers');
-
-
-
-
 
 // Reportes 
 
@@ -113,20 +106,12 @@ Route::POST('/gensup', [App\Http\Controllers\ReportController::class, 'gensup'])
 Route::get('/devsup', [App\Http\Controllers\ReportController::class, 'devsup'])->name('devsup');
 Route::POST('/gendev', [App\Http\Controllers\ReportController::class, 'gendev'])->name('gendev');
 
-
-
 // txt
 
 Route::get('/txt', [App\Http\Controllers\ReportController::class, 'txt'])->name('txt');
 Route::POST('/gentxt', [App\Http\Controllers\ReportController::class, 'gentxt'])->name('gentxt');
 
-
-
-
-
-
 // Llamadas
-
 
 Route::get('/gtllamadas', [App\Http\Controllers\CallController::class, 'index'])->name('call');
 Route::POST('/callS', [App\Http\Controllers\CallController::class, 'filtradas'])->name('callsf');
@@ -141,16 +126,11 @@ Route::get('/llsacs/{ldid}', [App\Http\Controllers\CallController::class, 'gtsac
 Route::POST('/savesacs/{Nrocar}/{ldid}', [App\Http\Controllers\CallController::class, 'grabacallsacs'])->name('grabarsacs');
 
 
-
-
-
-
 // Auditorias 
 
 Route::get('/Audit', [App\Http\Controllers\AuditController::class, 'index'])->name('ingresoAudit');
 
 Route::POST('/Combos', [App\Http\Controllers\AuditController::class, 'combos'])->name('combos');
-
 
 
 Route::get('/newAudit', [App\Http\Controllers\AuditController::class, 'create'])->name('NewAudit');
@@ -184,3 +164,13 @@ Route::POST('/Conceptos', [App\Http\Controllers\AuditController::class, 'resultc
 
 Route::get('/pruebas', [App\Http\Controllers\testcontoller::class, 'pruebas'])->name('pruebas');
 // Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+// Mantenedor de Auditoria
+
+// Operadores 
+
+Route::get('/Teleoperadores', [App\Http\Controllers\AuditController::class, 'teleop'])->name('teleop');
+Route::get('/newoper', [App\Http\Controllers\AuditController::class, 'newop'])->name('newoper');
+Route::POST('/GrabarOper', [App\Http\Controllers\AuditController::class, 'Grabaroper'])->name('upoper');
+Route::POST('/editopers', [App\Http\Controllers\AuditController::class, 'editop'])->name('opersedit');
+Route::POST('/Grabeditopers', [App\Http\Controllers\AuditController::class, 'Grabeditop'])->name('Grabeditop');

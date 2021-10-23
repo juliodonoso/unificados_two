@@ -31,17 +31,17 @@ class HomeController extends Controller
     public function index()
     {        
         // variables Generales del home 
-        $emp_idu =  Auth::user()->id;      // Id del Usuario logeado      
-        $emp_type =  Auth::user()->idtype;  // Tipo de Usuario
-        $titulo = "Inicio";         
-        $today = Carbon::today();   
+            $emp_idu =  Auth::user()->id;      // Id del Usuario logeado      
+            $emp_type =  Auth::user()->idtype;  // Tipo de Usuario
+            $titulo = "Inicio";         
+            $today = Carbon::today();   
 
-        $querytopalerts = audit::query(); 
-        $query_emp = audit::query(); 
-        $query = audit::query(); 
-     
-        $ltspon = sponsor::where('is_act',1)->get();
-        $ltcount = $ltspon->count();    
+            $querytopalerts = audit::query(); 
+            $query_emp = audit::query(); 
+            $query = audit::query(); 
+        
+            $ltspon = sponsor::where('is_act',1)->get();
+            $ltcount = $ltspon->count();    
          // Vertifico los Sponsor activos y verifico si hay auditorias 
             foreach($ltspon as $key => $value){             
             
@@ -96,11 +96,6 @@ class HomeController extends Controller
                     ->groupby('sponsors.name','canal','cia')
                     ->get();
 
-                    // $date = Carbon::createFromFormat('d/m/Y H:i:s T', $row['date']);
-
-                    
-
-                    // dd($ltop);
                     $ltopcount = $ltop->count();
 
                     $dashsponsor = $query->select('sponame','canal',\DB::raw('count(*) as cant'),
@@ -150,8 +145,7 @@ class HomeController extends Controller
                         \DB::raw('COUNT(CASE WHEN Estado ="CUMPLE" THEN Estado END) as cumple'))
                         ->where('deleted_at', null)
                         ->groupBy('fecha')
-                        ->get();
-                        // dd($calend);
+                        ->get();          
                         
                         $lporcumple = round(($lscumple/$lcounta)*100);           
                         $lporalerta = round(($lsalertas/$lcounta)*100); 

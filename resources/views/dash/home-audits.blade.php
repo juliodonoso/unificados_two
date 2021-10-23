@@ -423,12 +423,16 @@
 
 
 
- .tit, {
+.tit {
     width: 4%;
+    border: 1px solid blue;
 }
 
- .titd {
+.titd {
     width: 10%;
+    width: 100px;
+    word-wrap: break-word;
+    border: 1px solid blue;
 }
 
     .card .card-header-warning .card-icon,

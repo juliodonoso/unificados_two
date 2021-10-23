@@ -7,6 +7,7 @@ namespace App\Http\Controllers;
 use App\Models\Audit;
 use App\Models\user;
 use App\Models\sponsor;
+use App\Models\Operator;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
@@ -38,26 +39,19 @@ class Auditcontroller extends Controller
         $ltcount = $ltspon->count();   
      
          // Vertifico los Sponsor activos y verifico si hay auditorias 
-        foreach($ltspon as $key => $value){           
-            
-            if($key == 0 ) {       
-                
+        foreach($ltspon as $key => $value){                
+            if($key == 0 ) {                    
                 $query_emp->where("emp_id","=",$userid)
                 ->where("sponsor",$value->id)
                 ->where("audits.mes",$value->mes); 
-
                 $query = $query->where("sponsor",$value->id)
-                ->where("audits.mes",$value->mes);  
-              
-            } else {           
-
+                ->where("audits.mes",$value->mes);                
+            } else {    
                 $query_emp->orwhere("emp_id","=",$userid)
                 ->where("sponsor",$value->id)
                 ->where("audits.mes",$value->mes);
-
                 $query = $query->orwhere("sponsor",$value->id)
-                ->where("audits.mes",$value->mes);  
-                  
+                ->where("audits.mes",$value->mes);                    
             } 
         }
        
@@ -67,26 +61,19 @@ class Auditcontroller extends Controller
                 ->join('sponsors','sponsors.id', '=', 'audits.sponsor') 
                 ->join('teleoperadores','teleoperadores.id', '=', 'audits.idoper')               
                 ->orderby('id','DESC')
-                ->get();  
-
-                // dd($auditadas);
+                ->get();    
             } else {
                 $auditadas = $query->select('audits.*','sponsors.name as sname','users.name as name','teleoperadores.name as nombre')             
                 ->leftjoin('sponsors','sponsors.id', '=', 'audits.sponsor')
                 ->leftjoin('users','users.id', '=', 'audits.emp_id')
                 ->join('teleoperadores','teleoperadores.id', '=', 'audits.idoper')
                 ->orderby('id','DESC')
-                ->get();  
-                
-                
+                ->get();                 
             }
-        }       
-    
+        }           
         $auditCount = $auditadas->count();
-        // dd($auditCount);
         $cumple =  $auditadas->where('Estado',"CUMPLE")->count();
         $alerta =  $auditadas->where('Estado',"ALERTA")->count();
-
 
         return view('Auditorias.Audit')
         ->with('auditadas',$auditadas)
@@ -96,9 +83,7 @@ class Auditcontroller extends Controller
         ->with('emp_type',$emp_type);
 
         
-    }
-
-    
+    }    
 
     public function combos() {       // Operadores      
         $lsid = $_POST['id'];
@@ -845,17 +830,12 @@ class Auditcontroller extends Controller
         return Excel::download(new EjecutExport($ejecutivos), $lname);
 
        
-    }
-
-  
+    }  
 
     public function repCindex() {
-         $sponsor = sponsor::get();
-
-        $canal =  \DB::table('canal')
-        ->get();
-        $cia =  \DB::table('campanias')
-        ->get();
+        $sponsor = sponsor::get();
+        $canal =  \DB::table('canal')->get();
+        $cia =  \DB::table('campanias')->get();
         $usuarios = user::all();
         $teleop =  \DB::table('teleoperadores')
         ->get();
@@ -867,7 +847,6 @@ class Auditcontroller extends Controller
         ->with('cia',$cia)
         ->with('teleop',$teleop)
         ->with('usuarios',$usuarios);
-
     }
 
     public function resultcpt() {       
@@ -957,6 +936,59 @@ class Auditcontroller extends Controller
 
     public function reportday() {
 
+    }
+
+    public function teleop() {
+        $operad = operator::select('sponsors.name as nombre','teleoperadores.*','canal.name as canal')
+        ->join('sponsors','sponsors.id', '=', 'teleoperadores.sponsorid')
+        ->join('canal','canal.id', '=', 'teleoperadores.canalid')->get();
+        $titulo = "Listado de Operadores";
+        return view('Auditorias.operadores')
+        ->with('titulo',$titulo)
+        ->with('operad',$operad);
+        
+    }
+
+    public function newop() {
+        $titulo = "Ingreso de Operadores";
+        $sponsor = sponsor::get();
+        $canal =  \DB::table('canal')->get();
+        $cia =  \DB::table('campanias')->get();
+        return view('auditorias.NewOperator')
+        ->with('titulo',$titulo)
+        ->with('sponsor',$sponsor)
+        ->with('canal',$canal)
+        ->with('cia',$cia)
+        ;
+    }
+
+    public function Grabaroper() {
+     
+       $audit = new operator;
+       $audit->sponsorid = $_POST['sponsor'];  
+       $audit->canalid= $_POST['canal'];          
+       $audit->name =  strtoupper($_POST['name']);
+       $audit->save();
+       return redirect()->route('teleop');
+    }
+
+    public function editop() {      
+        $lid = $_POST['bt01'];
+        $titulo= "Edicion de Operadores";
+        $operador = operator::where('id',$lid)->get();      
+        return view('auditorias.editoperator')
+        ->with('titulo',$titulo)
+        ->with('operador',$operador);
+    }
+
+    public function Grabeditop() { 
+        $lid = $_POST['idop'];
+        $upoperator = operator::find($lid);
+        $upoperator->name = $_POST['name'];
+        $upoperator->sponsorid = $_POST['sponsor'];
+        $upoperator->canalid = $_POST['canal'];        
+        $upoperator->save();
+        return redirect()->route('teleop');
     }
 
 

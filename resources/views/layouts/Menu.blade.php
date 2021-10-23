@@ -135,7 +135,7 @@
                          
                         </li>  
                     @endif                  
-                    @if(Auth::user()->idtype  == 1) 
+                    @if(Auth::user()->idtype  == 1 or Auth::user()->idtype  == 7) 
                         <li class="nav-item">
                             <a class="nav-link" data-toggle="collapse" href="#tablesExamples">
                                 <i class="nc-icon nc-settings-tool-66"></i>
@@ -151,22 +151,23 @@
                                             <span class="sidebar-normal"> <i class="nc-icon nc-single-02"></i> Usuarios</span>
                                         </a>
                                     </li>                             
-                                </ul>
+                                </ul>                               
                                 <ul class="nav">
                                     <li class="nav-item ">
-                                        <a class="nav-link" href="{{ route('pruebas') }}">                                       
-                                            <span class="sidebar-normal"> <i class="nc-icon nc-single-02"></i> pruebas</span>
+                                        <a class="nav-link" href="{{ route('teleop') }}">                                       
+                                            <span class="sidebar-normal"> <i class="nc-icon nc-badge"></i>Teleoperadores</span>
                                         </a>
                                     </li>                             
                                 </ul>
-                                <ul class="nav">
-                                <li class="nav-item ">
-                                        <a class="nav-link" href="{{ route('pdfindex') }}">                                        
-                                            <span class="sidebar-normal"><i class="nc-icon nc-key-25"></i>Importar pdf</span>
-                                        </a>
-                                    </li> 
-                                </ul>  
-                                    
+                                @if(Auth::user()->idtype  == 1) 
+                                    <ul class="nav">
+                                        <li class="nav-item ">
+                                            <a class="nav-link" href="{{ route('pdfindex') }}">                                        
+                                                <span class="sidebar-normal"><i class="nc-icon nc-key-25"></i>Importar pdf</span>
+                                            </a>
+                                        </li> 
+                                    </ul>  
+                                @endif  
                             </div>
                             
                         </li>

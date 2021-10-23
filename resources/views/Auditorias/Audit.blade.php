@@ -272,24 +272,25 @@
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
 <!-- BUSQUEDA  -->
-    <script>
-        $(document).ready(function(){
-            $("#search").keyup(function(){
-                _this = this;
-                $.each($("#tb01 tbody tr"), function() {
-                    if($(this).text().toLowerCase().indexOf($(_this).val().toLowerCase()) === -1)
-                        $(this).hide();
-                    else
-                        $(this).show();
-                });
+<script>
+    $(document).ready(function(){
+        $("#search").keyup(function(){
+            _this = this;
+            $.each($("#tb01 tbody tr"), function() {
+                if($(this).text().toLowerCase().indexOf($(_this).val().toLowerCase()) === -1)
+                    $(this).hide();
+                else
+                    $(this).show();
             });
         });
-    </script>
+    });
+</script>
 
+<!-- ELIMINAR AUDITORIAS  -->
 
 <script>
 
-function eliminarArticulo(id) {  
+    function eliminarArticulo(id) {  
         swal({
             title: "Estas Seguro de Borrar el registro?",
             text: "Evaluacion de Ventas",
@@ -319,45 +320,7 @@ function eliminarArticulo(id) {
             }
         });
     }
-
-
 </script>
-
-
-
-
-
-<script>
-
-    function eliminarArticuloXXXXX(id) {
-        var params = {"_token": "{{ csrf_token() }}",
-        "id" : id};      
-        $.ajax({    
-            url: "{{route('delereg')}}", 
-            type: 'post',
-            data: params,
-            dataType: 'json',  
-            success: function(reg) {               
-                // top.location.href = 'https://localhost/ddavimo_v12/public/Audit'
-                window.location.href = "{{URL::to('Audit')}}"
-            }
-        });
-    }
-</script>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 <style>
     #del {
@@ -387,6 +350,6 @@ function eliminarArticulo(id) {
     #bqrut {
         display:flex; 
         margin-right: 5px;
-	float: right;
+	    float: right;
     }
 </style>
