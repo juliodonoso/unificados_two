@@ -18,7 +18,7 @@ class Alertmail extends Mailable
      *
      * @return void
      */
-    public function __construct($leje,$lcamp,$lfecha,$lidgrab,$lobserv,$lasunto)
+    public function __construct($leje,$lcamp,$lfecha,$lidgrab,$lobserv,$lasunto,$lcanal)
     {
         //
         $this->eje = $leje;
@@ -27,6 +27,7 @@ class Alertmail extends Mailable
         $this->grab = $lidgrab;
         $this->observ = $lobserv;
         $this->lasunto = $lasunto;
+        $this->lcanal = $lcanal;
   
     }
 
@@ -45,7 +46,8 @@ class Alertmail extends Mailable
             'venta' => $this->venta,
             'grab' => $this->grab,
             'observ' => $this->observ,
-            'lasunto' => $this->lasunto
+            'lasunto' => $this->lasunto,
+            'lcanal' =>$this->lcanal
         ]);
     }
 }
