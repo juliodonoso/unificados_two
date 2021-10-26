@@ -133,7 +133,7 @@
                                         <label>
                                             Id Grabacion                                           
                                         </label>
-                                        <input id="rutcar" name ="idgrab" class="form-control" required  style="text-transform:uppercase" />                                                            
+                                        <input id="idgrab" name ="idgrab" class="form-control" required  style="text-transform:uppercase" />                                                            
                                     </div>
                                 </div>                                                                                                                                                                      
                             </div>
@@ -901,7 +901,24 @@
         var $camp=$('#cia');
         var $cana=$('#canal');
         var $oper=$('#telop');
+        var $fgrab=$('#datetimepicker');
+        var $fasig=$('#datepicker');
+        var grabid=$('#idgrab');
         var cant = 0;
+        if(grabid.val()==""){
+            swal("Dato Requerido", "Ingrese ID de Grabacion",'warning');
+            cant = cant+1;
+        }
+        if($fgrab.val()==""){
+            swal("Dato Requerido", "Ingrese Fecha de Venta",'warning');
+            cant = cant+1;
+        }
+        if($fasig.val()==""){
+            swal("Dato Requerido", "Ingrese Fecha de Asignacion",'warning');
+            cant = cant+1;
+        }
+
+
         if($spon.val()==0 ||
             $spon.val()==""){   
             swal("Dato Requerido", "Seleccione un Sponsor",'warning');

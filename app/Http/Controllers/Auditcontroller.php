@@ -134,7 +134,7 @@ class Auditcontroller extends Controller
        
     }
 
-    public function grabaudi () {     
+    public function grabaudi () {          
 
         if(isset($_POST['chkasig']) ){
             if($_POST['chkasig'] == 1 ) {
