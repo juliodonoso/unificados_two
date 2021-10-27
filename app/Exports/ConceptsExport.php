@@ -34,7 +34,7 @@ class ConceptsExport implements FromCollection, WithHeadings, WithStyles,ShouldA
 
     {
         return [ 
-            'Nro','Sponsor','Canal','Campaña','Rut','Fvta','teloperador','Grab','ejec','faudit',
+            'Nro','Campaña','Rut cliente','Fecha vta','teloperador',' Id Grab','ejec','fecha audit',
             'Present (A)','A1','A2','A3','A4','A5',
             'Cob y Cargos (B)','B1','B2','B3','B4',
             'Previo (C)','C1','C2','C3','C4','C5','C6',             

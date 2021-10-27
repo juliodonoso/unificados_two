@@ -12,8 +12,13 @@ class Mailcontroller extends Controller
     //
     
     public function sendmail($idx) {
-        $destinatario = [ 'dvillalobos@unificados.cl'];
-        // $destinatario = [ 'dvillalobos@unificados.cl','imadueno@grupounificados.cl','ccid@unificados.cl'];
+        //  Pruebas 
+        $destinatario = ['imadueno@grupounificados.cl','ccid@unificados.cl'];
+        $cc = ['dvillalobos@unificados.cl'];
+        // Produccion 
+        // $destinatario = ['veronica.tapia@metlife.cl '];
+        // $cc = ['bverdejo@unificados.cl', 'ccid@unificados.cl', 'imadueno@grupounificados.cl', 'rfernandez@unificados.cl', 'fdonosol@metlife.cl' ];
+        
         $lcorreo = audit::select('audits.*','sponsors.name as nsponsor')
         ->where('audits.id',$idx)
         ->leftjoin('sponsors','sponsors.id', '=', 'audits.sponsor')->first(); 
@@ -24,11 +29,12 @@ class Mailcontroller extends Controller
         $lidgrab = $lcorreo->idGrab;
         $lobserv = $lcorreo->observ;
         $lcanal = $lcorreo->canal;
-        $lasunto = 'ALERTA: '.$lsponsor.' '.$lcamp;
+        $lasunto = 'PRUEBAS DE ALERTA: '.$lsponsor.' '.$lcamp;
         $correo = new Alertmail($leje,$lcamp,$lfecha,$lidgrab,$lobserv,$lasunto,$lcanal);
         $correo->subject = $lasunto;
         $correo->eje = $leje;
-        mail::to($destinatario)->send($correo);  
+        mail::to($destinatario)
+        ->cc($cc)->send($correo);  
         return redirect()->route('ingresoAudit');
     }
 

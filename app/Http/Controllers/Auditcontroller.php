@@ -902,8 +902,7 @@ class Auditcontroller extends Controller
 
         $titulo = 'Generador de Reportes (Excel)';
 
-        $conceptos = $query->select('audits.id','sponsors.name as sname','audits.canal as canal',
-        'audits.campania','audits.rutcli','audits.fvta','teleoperadores.name as nombre','audits.idGrab','users.name',
+        $conceptos = $query->select('audits.id','audits.campania','audits.rutcli','audits.fvta','teleoperadores.name as nombre','audits.idGrab','users.name',
         'audits.Fgrab',
         'audits.PrgA','audits.PrgA1','audits.PrgA2','audits.PrgA3','audits.PrgA4','audits.PrgA5',
         'audits.PrgB','audits.PrgB1','audits.PrgB2','audits.PrgB3','audits.PrgB4',

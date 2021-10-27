@@ -133,7 +133,7 @@
                                         <label>
                                             Id Grabacion                                           
                                         </label>
-                                        <input id="idgrab" name ="idgrab" class="form-control" required  style="text-transform:uppercase" />                                                            
+                                        <input id="idgr" name ="idgrab" class="form-control" required  style="text-transform:uppercase" value=""/>                                                            
                                     </div>
                                 </div>                                                                                                                                                                      
                             </div>
@@ -525,18 +525,18 @@
                 $('#pA').val(tA);   
             // B 
                 if(lid == "chkB1"){      
-                    lchkB1 = 5; 
+                    lchkB1 = 6; 
                     lcount = lcount+1;      
                 } 
                 if(lid == "chkB2"){       
-                    lchkB2 = 5;      
+                    lchkB2 = 6;      
                 } 
                 if(lid == "chkB3"){      
-                    lchkB3 = 5; 
+                    lchkB3 = 2; 
                     lcount = lcount+1;      
                 } 
                 if(lid == "chkB4"){       
-                    lchkB4 = 5;     
+                    lchkB4 = 6;     
                     lcount = lcount+1; 
                 }   
                 tB = lchkB1 + lchkB2 + lchkB3 + lchkB4;
@@ -903,9 +903,9 @@
         var $oper=$('#telop');
         var $fgrab=$('#datetimepicker');
         var $fasig=$('#datepicker');
-        var grabid=$('#idgrab');
+        var $grabid=$('#idgr');
         var cant = 0;
-        if(grabid.val()==""){
+        if($grabid.val() == ""){
             swal("Dato Requerido", "Ingrese ID de Grabacion",'warning');
             cant = cant+1;
         }
