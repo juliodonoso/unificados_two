@@ -1,14 +1,14 @@
 @extends('layouts.menu')
 @auth
     @section('content')
-        <div class="col-md-6">
+
+    <div class="col-md-12">
         <form name="f04" id="f04" action="{{ route('upusers',$luserid) }}" method="POST"> 
         {{ csrf_field() }}
                 <div class="card stacked-form">
                     <div class="card-header ">
                         <h4 class="card-title">Edicion de Usuarios</h4>
-                    </div>
-                
+                    </div>                
                     <div class="card-body ">                    
                             @foreach($ledit as $resp)                        
                                 <div class="form-group">
@@ -27,11 +27,13 @@
                                 <div class="col-md-6">
                                     <select name="opt01" id="opt01" class="form-control" >
                                         <option selected>Seleccione opcion ...</option>
-                                        <option value="1">ADMINISTRADOR</option>
-                                        <option value="2">SUPERVISOR CALIDAD</option>
-                                        <option value="3">AGENTE CALIDAD</option>
-                                        <option value="4">SUPERVISOR LLAMADAS</option>
-                                        <option value="5">AGENTE LLAMADAS</option>
+                                        @if(Auth::user()->idtype  == 1)
+                                            <option value="1">ADMINISTRADOR</option>
+                                            <option value="2">SUPERVISOR CALIDAD</option>
+                                            <option value="3">AGENTE CALIDAD</option>
+                                            <option value="4">SUPERVISOR LLAMADAS</option>
+                                            <option value="5">AGENTE LLAMADAS</option>
+                                        @endif
                                         <option value="6">AUDITOR</option> 
                                         <option value="7">SUPERVISOR DE AUDITORIA</option>                                       
                                     </select> 
@@ -44,7 +46,8 @@
                     <button name ="bt01" type="submit" class="btn btn-fill btn-info">Actualizar</button>
                 </div>
             </div>
-        </div>
+    </div>
+    
         <script src="https://code.jquery.com/jquery-1.12.4.js"integrity="sha256-Qw82+bXyGq6MydymqBxNPYTaUXXq7c8v3CwiYwLLNXU="crossorigin="anonymous"></script>
         <script>   
             $(document).ready(function() {  

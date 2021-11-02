@@ -47,22 +47,12 @@ class ProposalController extends Controller
         proposal::raw('count(proposals.llave) as count'))        
         ->join('imports','imports.id', '=', 'proposals.import_id')
         ->leftjoin('users','users.id', '=','imports.emp_id')
-        ->where('rel','AS')
-        // ->where('is_del',false)
+        ->where('rel','AS')      
         ->where('borrado','0')
         ->groupby('imports.id','imports.fileimp','imports.noreg','imports.created_at','eje')
         ->orderby('id','DESC')
         ->limit(15)
         ->get();
-        
-
-
-        // $cargas = import::select('imports.*','users.name as eje')
-        // ->join('users','users.id', '=', 'imports.emp_id')
-        // ->leftjoin('proposals','imports.id', '=', 'proposals.import_id')
-        // ->orderby('id','DESC')
-        // ->limit(10)
-        // ->get();
 
         $perid2 = Period::where('is_act',true)->first();         
         if(!empty($perid2)) {
@@ -86,23 +76,19 @@ class ProposalController extends Controller
      */
   
     public function create()     // importacion de las propuestas
-    {     
-        
-        $agree = period::where('is_act','=',true)
-        ->first();
+    {             
+        $agree = period::where('is_act','=',true)->first();
         $lox = $agree->mes; 
-        $loa = $agree->anio;      
-        session(['anio' => $loa]);
-        session(['mes' => $lox]);
+        $loa = $agree->anio;       
         $nxfile  = $_FILES['file']['name'];          
         $ruser = Auth::user()->id;                     
         $rcarga = new import();        
         $rcarga->fileimp = $nxfile;        
         $rcarga->emp_id = $ruser;         
         $rid = import::latest('id')->first();
-        $idimp = $rid->id;    
-        session(['nroexp' => $rid->id+1]);         
-        $import = new proposalimport;
+        $idimp = $rid->id;          
+        $nroexp = $rid->id+1;      
+        $import = new proposalimport($lox,$loa,$nroexp);
         Excel::import($import,request()->file('file'));
         $nroreg = $import->getrowCount();
         $rcarga->noreg = $nroreg; 
@@ -142,7 +128,6 @@ class ProposalController extends Controller
 
     public function showb()  // Resultado de las Busquedas
     {
-        
         $ult = Period::where('is_act',true)->first();  // Periodo         
         $periodx = Period::all();
         $last = $periodx->last();       
@@ -159,63 +144,59 @@ class ProposalController extends Controller
         }      
         $lopcion  = $_POST['sel01b'];
         $lbuscar  = trim($_POST['objb']); 
-        if($lopcion == 'rut') {                 
-            // $propuestas = proposal::select('proposals.*','gestion.gestion as gt','bancos.name as bank')
-            // ->leftjoin('gestion','gestion.id', '=', 'proposals.gestion')
-            // ->leftjoin('Bancos','bancos.codban','=','proposals.banco')
-            // ->where('is_del',false)         
-            // ->where('rutcar',$lbuscar)         
-            // ->orWhere('rutter',$lbuscar)          
-            // ->get();    
-            // $propuestas = proposal::select('proposals.*')  
-            $propuestas = proposal::select('proposals.*','gt1.gestion as gt','tp1.ntipif as tipif', 'gt2.gestion as gtcall','tp2.ntipif as tpcall', 'bancos.name as bank')
-            ->leftjoin('gestion as gt1','gt1.id', '=', 'proposals.gestion')
-            ->leftjoin('gestion as gt2','gt2.id', '=', 'proposals.gtcall')
-            ->leftjoin('tipificacion as tp1','tp1.id', '=', 'proposals.tipificacion')
-            ->leftjoin('tipificacion as tp2','tp2.id', '=', 'proposals.tpcall')
-            ->leftjoin('Bancos','bancos.codban','=','proposals.banco')            
-            ->Where(trim('rutcar'),$lbuscar)           
-            // ->Where('is_del',false) 
-            ->where('borrado','0')          
-            ->get();
-         
+        $query = proposal::query(); 
+        $queryadic = proposal::query(); 
+        if($lopcion == 'rut') {   
+            $query->Where(trim('rutcar'),$lbuscar)->where('borrado','0') ->where('rel','AS')
+            ->orwhere(trim('rutter'),$lbuscar)->where('borrado','0') ->where('rel','AS');
+            $queryadic->where('ruttit',$lbuscar);
         } else {
-            //  $propuestas = proposal::select('proposals.*','gestion.gestion as gt','bancos.name as bank')
-            // ->leftjoin('gestion','gestion.id', '=', 'proposals.gestion')
-            // ->leftjoin('Bancos','bancos.codban','=','proposals.banco')
-            // ->where($lopcion,$lbuscar)
-            // // ->where('is_del',false)
-            // ->where('borrado','0')
-            // ->get(); 
-
-
-            $propuestas = proposal::select('proposals.*','gt1.gestion as gt', 'gt2.gestion as gtcall','bancos.name as bank')
-            ->leftjoin('gestion as gt1','gt1.id', '=', 'proposals.gestion')
-            ->leftjoin('gestion as gt2','gt2.id', '=', 'proposals.gtcall')
-            ->leftjoin('tipificacion as tp2','tp2.id', '=', 'proposals.tpcall')
-            ->leftjoin('Bancos','bancos.codban','=','proposals.banco')
-            ->where($lopcion,$lbuscar)
-            ->where('borrado','0')
-            ->get(); 
+            $query->where($lopcion,$lbuscar);
+        }
+        $propuestas = $query->select('proposals.*','gt1.gestion as gt','tp1.ntipif as tipif', 
+        'gt2.gestion as gtcall','tp2.ntipif as tpcall', 'bancos.name as bank')
+        ->leftjoin('gestion as gt1','gt1.id', '=', 'proposals.gestion')
+        ->leftjoin('gestion as gt2','gt2.id', '=', 'proposals.gtcall')
+        ->leftjoin('tipificacion as tp1','tp1.id', '=', 'proposals.tipificacion')
+        ->leftjoin('tipificacion as tp2','tp2.id', '=', 'proposals.tpcall')
+        ->leftjoin('Bancos','bancos.codban','=','proposals.banco')                 
+        ->get(); 
+        $PropCount = $propuestas->count();   
            
-
-
-
-        }      
-        $PropCount = $propuestas->count();  
-        
+        // if($lopcion == 'rut') {    
+        //     $propuestas = proposal::select('proposals.*','gt1.gestion as gt','tp1.ntipif as tipif', 'gt2.gestion as gtcall','tp2.ntipif as tpcall', 'bancos.name as bank')
+        //     ->leftjoin('gestion as gt1','gt1.id', '=', 'proposals.gestion')
+        //     ->leftjoin('gestion as gt2','gt2.id', '=', 'proposals.gtcall')
+        //     ->leftjoin('tipificacion as tp1','tp1.id', '=', 'proposals.tipificacion')
+        //     ->leftjoin('tipificacion as tp2','tp2.id', '=', 'proposals.tpcall')
+        //     ->leftjoin('Bancos','bancos.codban','=','proposals.banco')            
+        //     ->Where(trim('rutcar'),$lbuscar)            
+        //     ->where('borrado','0')          
+        //     ->get();         
+        // } else {
+        //     $propuestas = proposal::select('proposals.*','gt1.gestion as gt', 'gt2.gestion as gtcall','bancos.name as bank')
+        //     ->leftjoin('gestion as gt1','gt1.id', '=', 'proposals.gestion')
+        //     ->leftjoin('gestion as gt2','gt2.id', '=', 'proposals.gtcall')
+        //     ->leftjoin('tipificacion as tp2','tp2.id', '=', 'proposals.tpcall')
+        //     ->leftjoin('Bancos','bancos.codban','=','proposals.banco')
+        //     ->where($lopcion,$lbuscar)
+        //     ->where('borrado','0')
+        //     ->get(); 
+        // }      
+             
         $adicionales = proposal::select('proposals.rutcar','proposals.nom','proposals.pat',
         'proposals.mat','proposals.propuesta','proposals.mes','proposals.anio')
-        ->where('ruttit',$lbuscar)
-        // ->where('is_del',false)            
+        ->where('ruttit',$lbuscar)                 
         ->wherein('rel',['CO','HI','OT']) 
         ->where('borrado','0')
         ->groupby('proposals.rutcar','proposals.nom','proposals.pat',
         'proposals.mat','proposals.propuesta','proposals.mes','proposals.anio')
         ->get();    
-        $Nrocar = count($adicionales);      
+
+        $Nrocar = $adicionales->count();      
         $titulo = "Consulta de Propuestas";        
-        return view('Calidad.result')
+        return view('Calidad.Nuevos.bqind')
+        // return view('Calidad.result')
         ->with('titulo',$titulo)
         ->with('propuestas',$propuestas)
         ->with('lbuscar' ,$lbuscar )
@@ -1057,7 +1038,9 @@ class ProposalController extends Controller
             $period = $lmes.$lanio;
             $patst = 0;
         }
-        $lkrut = $_POST['rutbq'];      
+        $lkrut = $_POST['rutbq']; 
+        
+        // dd($_POST);
         $coin = proposal::select('proposals.clinica','proposals.llave','proposals.numgru','proposals.rutcar','proposals.mes','proposals.anio'
         ,'proposals.pat','proposals.mat','proposals.nom','proposals.ejecutiva','proposals.supervisor','proposals.rel','proposals.fechavta',
         'proposals.rutter','gestion.gestion as gt')

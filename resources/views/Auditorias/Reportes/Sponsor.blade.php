@@ -1,12 +1,12 @@
 @extends('layouts.menu')
 @auth
 @section('content')
-@if($total > 0)
+@if($spocount > 0)
 <div class="col-md-12">
     <div class="card "> 
         <div class="card-header"> 
             <div id="botn">                    
-                    <a href="{{ route('excelsponsor') }}" class="btn btn-success" ><i class="fa fa-file-excel-o" aria-hidden="true"></i>Excel</a>  
+                    <a href="{{ route('excelsponsor',array('a' => $a,'b' => $b, 'c' => $c)) }}" class="btn btn-success" ><i class="fa fa-file-excel-o" aria-hidden="true"></i>Excel</a>                
                     <div id="bqrut">        
                     <input type="text" class="form-control" name="inputUno" id="search" placeholder="Buscar">              
                 </div> 

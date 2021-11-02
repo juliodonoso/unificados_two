@@ -43,7 +43,16 @@ class ConfirmPasswordController extends Controller
 
     public function usersindex() // Index de los usuarios
     {
+
+       if( Auth::user()->idtype  == 1) {
         $lusers = Auth::user()->get(); 
+       }
+       if( Auth::user()->idtype  == 7) {
+        $lusers = Auth::user()
+        ->where('idtype',6)->get(); 
+       }
+
+        // $lusers = Auth::user()->get(); 
         $titulo = 'Listado de usuarios';      
         return view('auth.listusers')
         ->with('titulo',$titulo)

@@ -20,14 +20,17 @@ class proposalImport implements ToModel, WithHeadingRow
     */protected $dates = [];
     private $rows = 0;
 
-    
+    public function __construct($lox,$loa,$nroexp) {
+        $this->lox = $lox;
+        $this->loa = $loa;
+        $this->nroexp = $nroexp;
+    }
     public function model(array $row)   
-    
 
     {
-        $Nro = session('nroexp');
-        $Nmes = session('mes');
-        $Nanio = session('anio');
+        $Nro =  $this->nroexp;
+        $Nmes = $this->lox;
+        $Nanio = $this->loa;
         ++$this->rows;        
         return new proposal([                      
             'mov'=>$row['mov'] ?? null,  
