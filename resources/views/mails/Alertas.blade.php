@@ -10,8 +10,8 @@
   <body style="font-family: 'calibri', Garamond, 'Comic Sans'; font-size: 16px">
     <div class="container-fluid" style="width: 70%" >  
       <div class="container" id="container" style=" width:70%;">       
-        <div class="row" style="background-color: #e5f9f6" >
-          <div class="col-sm-6" style="text-align: center;">ALERTA</div>     
+        <div class="row" style="background-color: #f4f9f8" >
+          <div class="col-sm-6" style="text-align: center; color:red;">ALERTA</div>     
         </div>    
         <br>    
         <div class="container">
@@ -35,12 +35,12 @@
           </div>
           <br>
           <div class="row">
-            <div class="col-sm-6" style="background-color: #e5f9f6;">OBSERVACIONES</div>     
-          </div>   
+            <div class="col-sm-6" style="background-color: #f4f9f8;">OBSERVACIONES : {{$observ}} </div>     
+          </div>           
           <br>
-          <div class="row">           
-            <div class="col-observ" >{{$observ}}</div>     
-          </div>        
+          <div class="row" style="background-color:  #f4f9f8 "> 
+            <div class="col-sm-6" style="text-align: left;">AUDITADO POR : {{$lname}} </div>                           
+          </div>   
         </div>
       </div>   
     </div>    

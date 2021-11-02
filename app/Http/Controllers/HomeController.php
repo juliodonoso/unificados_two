@@ -94,6 +94,8 @@ class HomeController extends Controller
                     ->join('sponsors','sponsors.id','=','audits.sponsor')
                     ->join('campanias','campanias.id','=','audits.idcia')
                     ->groupby('sponsors.name','canal','cia')
+                    ->orderby('alerta','DESC')
+                    ->limit(5)
                     ->get();
 
                     $ltopcount = $ltop->count();
@@ -182,8 +184,7 @@ class HomeController extends Controller
             $ultP = $ul->last();  // Ultimo Periodo Abierto   
             $mes = 0;
             $anio = 0;   
-            $ldate = date('Y-m-d');       
-
+            $ldate = date('Y-m-d'); 
             if($emp_type >= 1  and  $emp_type <= 4) {
                 if ($ult !=null) {
                     $mes = $ult->mes;
@@ -205,8 +206,7 @@ class HomeController extends Controller
                         $PropbvCount  = $Propmes->where('gtcall',5)->count();
                         $Propotrg   = $Propmes->wherenotin('gestion',[1,2])->count();
                         $Proponull  = $Propmes->wherenull('gtcall')->count();
-                        $PropNC  = $Propmes->wherein('gtcall',[4,7])->count();
-                        $tareasCount = $Propmes->where('is_mail',1)->count();
+                        $PropNC  = $Propmes->wherein('gtcall',[4,7])->count();                      
                         $lporbv = round(($PropbvCount/$PropCount)*100);           
                         $lpordv = round(($PropdevCount/$PropCount)*100);
                         $lporot = round(($Propotrg/$PropCount)*100);
@@ -242,8 +242,7 @@ class HomeController extends Controller
                 ->with('PropCount',$PropCount)
                 ->with('Propgt',$Propgt)
                 ->with('PropdevCount',$PropdevCount)
-                ->with('PropbvCount',$PropbvCount)      
-                ->with('tareasCount',$tareasCount)
+                ->with('PropbvCount',$PropbvCount)                
                 ->with('info',$info)
                 ->with('cumpl',$cumpl)
                 ->with('ldash',$ldash); 

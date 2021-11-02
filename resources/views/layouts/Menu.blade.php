@@ -17,7 +17,7 @@
     <!-- CSS Just for demo purpose, don't include it in your project -->
     <link href="{{ asset('assets/css/demo.css')}}" rel="stylesheet" />   
 </head>
-<body>
+<body class="sidebar-mini">
     <div class="wrapper">
         <div class="sidebar" data-color="orange" data-image="{{ asset('assets/img/sidebar-5.jpg')}}">
             <div class="sidebar-wrapper">

@@ -420,82 +420,79 @@
 </style>
 
 <style>
-
-
-
-.tit {
-    width: 4%;
-    border: 1px solid blue;
-}
-
-.titd {
-    width: 10%;
-    width: 100px;
-    word-wrap: break-word;
-    border: 1px solid blue;
-}
-
-    .card .card-header-warning .card-icon,
-    .card .card-header-warning .card-text,
-    .card .card-header-warning:not(.card-header-icon):not(.card-header-text),
-    .card.bg-warning,
-    .card.card-rotate.bg-warning .front,
-    .card.card-rotate.bg-warning .back {
-    background: linear-gradient(60deg, #ffa726, #fb8c00);
+    .tit {
+        width: 4%;
+        /* border: 1px solid blue; */
     }
 
- 
-
-
-    .card .card-header-warning .card-icon,
-    .card .card-header-warning:not(.card-header-icon):not(.card-header-text),
-    .card .card-header-warning .card-text {
-    box-shadow: 0 4px 20px 0px rgba(0, 0, 0, 0.14), 0 7px 10px -5px rgba(255, 152, 0, 0.4);
+    .titd {
+        width: 10%;
+        width: 100px;
+        /* word-wrap: break-word; */
+        /* border: 1px solid blue; */
     }
 
-    .card .card-header.card-header-icon .card-title,
-    .card .card-header.card-header-text .card-title {
-    margin-top: 0px;
-    color: #3C4858;
-    }
+        .card .card-header-warning .card-icon,
+        .card .card-header-warning .card-text,
+        .card .card-header-warning:not(.card-header-icon):not(.card-header-text),
+        .card.bg-warning,
+        .card.card-rotate.bg-warning .front,
+        .card.card-rotate.bg-warning .back {
+        background: linear-gradient(60deg, #ffa726, #fb8c00);
+        }
 
-    .card-stats .card-header.card-header-icon,
-    .card-stats .card-header.card-header-text {
-    text-align: right;
-    }
-
-    .card-stats .card-header.card-header-icon i {
-    font-size: 56px;
-    line-height: 56px;
-    width: 56px;
-    height: 56px;
-    text-align: center;
-    }
-
-    .card [class*="card-header-"] .card-icon,
-    .card [class*="card-header-"] .card-text {
-    border-radius: 3px;
-    background-color: #999999;
-    padding: 15px;
-    margin-top: -20px;
-    margin-right: 15px;
-    float: left;
-    }
-
-    .card-stats .card-header .card-icon+.card-title,
-    .card-stats .card-header .card-icon+.card-category {
-    padding-top: 10px;
-    }
+    
 
 
+        .card .card-header-warning .card-icon,
+        .card .card-header-warning:not(.card-header-icon):not(.card-header-text),
+        .card .card-header-warning .card-text {
+        box-shadow: 0 4px 20px 0px rgba(0, 0, 0, 0.14), 0 7px 10px -5px rgba(255, 152, 0, 0.4);
+        }
 
-    .card .card-footer .stats .material-icons {
-    position: relative;
-    top: -10px;
-    margin-right: 3px;
-    margin-left: 3px;
-    font-size: 18px;
-    }
+        .card .card-header.card-header-icon .card-title,
+        .card .card-header.card-header-text .card-title {
+        margin-top: 0px;
+        color: #3C4858;
+        }
+
+        .card-stats .card-header.card-header-icon,
+        .card-stats .card-header.card-header-text {
+        text-align: right;
+        }
+
+        .card-stats .card-header.card-header-icon i {
+        font-size: 56px;
+        line-height: 56px;
+        width: 56px;
+        height: 56px;
+        text-align: center;
+        }
+
+        .card [class*="card-header-"] .card-icon,
+        .card [class*="card-header-"] .card-text {
+        border-radius: 3px;
+        background-color: #999999;
+        padding: 15px;
+        margin-top: -20px;
+        margin-right: 15px;
+        float: left;
+        }
+
+        .card-stats .card-header .card-icon+.card-title,
+        .card-stats .card-header .card-icon+.card-category {
+        padding-top: 10px;
+        }
+
+
+
+        .card .card-footer .stats .material-icons {
+        position: relative;
+        top: -10px;
+        margin-right: 3px;
+        margin-left: 3px;
+        font-size: 18px;
+        }
 
 </style>
 

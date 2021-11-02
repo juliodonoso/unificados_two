@@ -113,6 +113,7 @@
                             <th data-field="name" data-sortable="true">Del</th>
                             @endif                                    
                             <th data-field="name" data-sortable="true">Det</th> 
+                            <th data-field="name" data-sortable="true">Alt</th> 
                         </thead>
                         <tbody>
                             @foreach($auditadas as $resp)                                                                                                                
@@ -144,7 +145,12 @@
                                     @endif
                                     <td class="text-right">
                                         <a href="#PlaceModal-{{$resp->id}}" data-toggle="modal"><i class="fa fa-search"></i></a>
-                                    </td>                                                                                                                  
+                                    </td>
+                                    @if($resp->alert == 1)  
+                                     <td  class="text-right" style="color:4BB543;"><i class="fa fa-envelope" id="altmail" aria-hidden="true"></i></td>
+                                    @else
+                                    <td></td>
+                                    @endif                                                                                                                
                                 </tr>                                        
                             @endforeach
                         </tbody>
@@ -228,7 +234,7 @@
                         <hr>                                    
                     </div>
                     <div class="modal-footer">
-                    <a href="{{ route('alertmail',array('idx' =>$resp->id)) }}" class="btn btn-warning" ><i class="fa fa-envelope" aria-hidden="true"></i>e-mail</a>  
+                    <a href="{{ route('alertmail',array('idx' =>$resp->id)) }}" class="btn btn-warning" ><i class="fa fa-envelope" aria-hidden="true"></i>Alerta</a>  
                         <button type="button" class="btn btn-info" data-dismiss="modal">Cerrar</button>             
                     </div>
                 </div>
