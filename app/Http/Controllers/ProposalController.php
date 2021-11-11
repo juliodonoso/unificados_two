@@ -657,14 +657,14 @@ class ProposalController extends Controller
         ->get();  
       
         $ruttitb = $propedit[0]->rutcar;
+      
         $lsprop =  $propedit[0]->propuesta;
         $lscargas = proposal::where('ruttit',$ruttitb)
         ->where('propuesta',$lsprop)
-        ->wherein('rel',['HI','OT','CO'])
-        ->where('borrado',"0") 
-        ->where('mes',$mes) 
-        ->where('anio',$anio)   
-        ->get();  
+        ->wherenotin('rel',['AS'])
+        ->where('borrado',"0")        
+        ->get(); 
+        // dd($lscargas); 
         $Nrocar = count($lscargas); 
         $lscoutn = 0;
         return view('Calidad.editp')
@@ -691,7 +691,7 @@ class ProposalController extends Controller
         $array = explode(",", $lkborrar);     
         if($lkborrar == "") {           
         } else {          
-            Proposal::wherein('id', $array)        
+            $delecargas = Proposal::wherein('id', $array)        
             ->update([
                 'borrado' => "1",
              ]);  
@@ -708,9 +708,7 @@ class ProposalController extends Controller
                 }
             }    
             $lsasrcyc = count($lsexist);
-            // dd($lsasrcyc);
-
-         
+            // dd($lsasrcyc);         
         
             for( $z = 0;$z <= $lsasrcyc-1; $z++){  
                 $lvalor = $lsexist[$z];
@@ -722,64 +720,123 @@ class ProposalController extends Controller
                 $ltsex = $_POST['asexa'.$lvalor];
                 $ltrel = $_POST['arela'.$lvalor];
                 $ltfn = $_POST['afnaca'.$lvalor];
-                proposal::insert([  
-                    'mov' =>'1',
-                    'poliza' =>$_POST['poliza'],
-                    'numgru' =>$_POST['splan'],
-                    'ruttit' => $_POST['rutcar'], 
-                    'dvtit' =>$_POST['dvcar'],          
-                    'rutcar' => $ltrut,
-                    'dvcar' => $ltdv,
-                    'pat' => $ltpat,
-                    'mat' =>$ltmat,
-                    'nom' => $ltnom,
-                    'rel' =>$ltrel,
-                    'sex' => $ltsex,
-                    'isa' =>$_POST['sisapre'],
-                    'tper' =>'C',
-                    'tben' =>'D',
-                    'pct' =>'100',
-                    'monrta' =>'$',
-                    'renta' =>'0',
-                    'dir' =>$_POST['dirt'],
-                    'comunas' =>$_POST['comuna'],
-                    'ciudad' =>$_POST['ciudad'],
-                    'email' =>$_POST['email'],
-                    'telf' =>$_POST['telf'],
-                    'uf' =>$_POST['uf'],
-                    'clinica' =>$_POST['clinica'],
-                    'llave' =>$_POST['llave'],
-                    'propuesta' =>$_POST['propuesta'],
-                    'banco' =>$_POST['sbanco'],
-                    'nrocta' =>$_POST['nrocta'],
-                    'rutter' =>$_POST['rutter'],
-                    'dvter' =>$_POST['dvter'],                 
-                    'nombreter' => $_POST['nomter'] ?? null,
-                    'dirter' =>'XX',
-                    'ciudadter' =>'XX',
-                    'comunater' =>'XX',
-                    'telter' =>'XX',
-                    'ppago' =>'0',
-                    'pprepa' =>'1',
-                    'totaldep' => $_POST['montodep'] ?? null,
-                    'fechadep' => $_POST['fechadep']?? null,
-                    'fechavta' => $_POST['fechavta'],
-                    // 'rutsup' => $_POST['25989367'],
-                    'ejecutiva' => $_POST['ejec'] ?? null,
-                    'peso' => $_POST['peso'] ?? null,
-                    'estat' => $_POST['estat'] ?? null,
-                    'imc' => $_POST['imc'] ?? null,
-                    'supervisor' => $_POST['super'] ?? null,        
-                    'clinica' => $_POST['clinica'] ?? null,     
-                    'gestion' => $_POST['gestion'] ?? null,
-                    'tipificacion' => $_POST['tipif']?? null,
-                    'subtipif' => $_POST['subtipif']?? null,
-                    'gtcall' => $_POST['callgestion'] ?? null, 
-                    'tpcall' => $_POST['calltipif']?? null,
-                    'borrado' => "0",
 
-                    // 'fnac' =>$lfn1
-                ]);
+                $carga = new Proposal();
+                $carga->mov =  '1';
+                $carga->poliza =  $_POST['poliza'];
+                $carga->numgru =  $_POST['splan'];
+                $carga->rutcar =  $ltrut;
+                $carga->dvcar  =  $ltdv;
+                $carga->ruttit =  $_POST['rutcar'];
+                $carga->dvtit  =  $_POST['dvcar'];
+                $carga->pat    =  $ltpat;
+                $carga->mat    =  $ltmat;
+                $carga->nom    =  $ltnom;
+                $carga->rel    =  $ltrel;
+                $carga->sex    =  $ltsex;
+                $carga->fnac = $ltfn;
+                $carga->isa    =  $_POST['sisapre'] ?? null;
+                $carga->tper   =  'C';
+                $carga->tben   =  'D';
+                $carga->pct    =  '100';
+                $carga->monrta =  '$';
+                $carga->renta  =  '0';
+                $carga->dir    =  $_POST['dirt'];
+                $carga->comunas = $_POST['comuna'];
+                $carga->ciudad  = $_POST['ciudad'];
+                $carga->email   = $_POST['email'];
+                $carga->telf    = $_POST['telf'];
+                $carga->uf      = $_POST['uf'];
+                $carga->clinica = $_POST['clinica'];
+                $carga->llave   = $_POST['llave'];
+                $carga->propuesta = $_POST['propuesta'];
+                $carga->banco     = $_POST['sbanco'];
+                $carga->nrocta    = $_POST['nrocta'];
+                $carga->rutter    = $_POST['rutter'];
+                $carga->dvter     = $_POST['dvter'];                
+                $carga->nombreter = $_POST['nomter'] ?? null;
+                $carga->dirter    = 'XX';
+                $carga->ciudadter = 'XX';
+                $carga->comunater = 'XX';
+                $carga->telter    = 'XX';
+                $carga->ppago     = '0';
+                $carga->pprepa    = '1';
+                $carga->totaldep = $_POST['montodep'] ?? null;
+                $carga->fechadep = $_POST['fechadep']?? null;
+                $carga->fechavta = $_POST['fechavta'];                   
+                $carga->ejecutiva = $_POST['ejec'] ?? null;
+                $carga->peso = $_POST['peso'] ?? null;
+                $carga->estat = $_POST['estat'] ?? null;
+                $carga->imc = $_POST['imc'] ?? null;
+                $carga->supervisor = $_POST['super'] ?? null;        
+                $carga->clinica = $_POST['clinica'] ?? null;     
+                $carga->gestion = $_POST['gestion'] ?? null;
+                $carga->tipificacion = $_POST['tipif']?? null;
+                $carga->subtipif = $_POST['subtipif']?? null;
+                $carga->gtcall = $_POST['callgestion'] ?? null; 
+                $carga->tpcall = $_POST['calltipif']?? null;
+                $carga->borrado = "0";
+                
+                $carga->save();
+             
+                //    proposal::insert([  
+                //     'mov' =>'1',
+                //     'poliza' =>$_POST['poliza'],
+                //     'numgru' =>$_POST['splan'],
+                //     'ruttit' => $_POST['rutcar'], 
+                //     'dvtit' =>$_POST['dvcar'],          
+                //     'rutcar' => $ltrut,
+                //     'dvcar' => $ltdv,
+                //     'pat' => $ltpat,
+                //     'mat' =>$ltmat,
+                //     'nom' => $ltnom,
+                //     'rel' =>$ltrel,
+                //     'sex' => $ltsex,
+                //     'isa' =>$_POST['sisapre'],
+                //     'tper' =>'C',
+                //     'tben' =>'D',
+                //     'pct' =>'100',
+                //     'monrta' =>'$',
+                //     'renta' =>'0',
+                //     'dir' =>$_POST['dirt'],
+                //     'comunas' =>$_POST['comuna'],
+                //     'ciudad' =>$_POST['ciudad'],
+                //     'email' =>$_POST['email'],
+                //     'telf' =>$_POST['telf'],
+                //     'uf' =>$_POST['uf'],
+                //     'clinica' =>$_POST['clinica'],
+                //     'llave' =>$_POST['llave'],
+                //     'propuesta' =>$_POST['propuesta'],
+                //     'banco' =>$_POST['sbanco'],
+                //     'nrocta' =>$_POST['nrocta'],
+                //     'rutter' =>$_POST['rutter'],
+                //     'dvter' =>$_POST['dvter'],                 
+                //     'nombreter' => $_POST['nomter'] ?? null,
+                //     'dirter' =>'XX',
+                //     'ciudadter' =>'XX',
+                //     'comunater' =>'XX',
+                //     'telter' =>'XX',
+                //     'ppago' =>'0',
+                //     'pprepa' =>'1',
+                //     'totaldep' => $_POST['montodep'] ?? null,
+                //     'fechadep' => $_POST['fechadep']?? null,
+                //     'fechavta' => $_POST['fechavta'],
+                //     // 'rutsup' => $_POST['25989367'],
+                //     'ejecutiva' => $_POST['ejec'] ?? null,
+                //     'peso' => $_POST['peso'] ?? null,
+                //     'estat' => $_POST['estat'] ?? null,
+                //     'imc' => $_POST['imc'] ?? null,
+                //     'supervisor' => $_POST['super'] ?? null,        
+                //     'clinica' => $_POST['clinica'] ?? null,     
+                //     'gestion' => $_POST['gestion'] ?? null,
+                //     'tipificacion' => $_POST['tipif']?? null,
+                //     'subtipif' => $_POST['subtipif']?? null,
+                //     'gtcall' => $_POST['callgestion'] ?? null, 
+                //     'tpcall' => $_POST['calltipif']?? null,
+                //     'borrado' => "0",
+
+                //     // 'fnac' =>$lfn1
+                // ]);
             }
         }
     
@@ -798,10 +855,7 @@ class ProposalController extends Controller
         // dd($Nrocar);
         // Grabar en fecha de Buena Venta 
         
-        
-     
-   
-        
+      
         Proposal::where('id', $ldid)            
         ->update([   
         // movimiento

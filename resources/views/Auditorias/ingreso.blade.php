@@ -59,13 +59,13 @@
                                 <div class="col-md-4">
                                     <label class="title">fecha Venta</label>
                                     <div class="form-group">
-                                        <input type="text" id="datetimepicker" class="form-control datepicker" placeholder="Date Picker Here" name="fventa"/>
+                                        <input type='date' class="form-control datepicker" placeholder="Date Picker Here" name="fventa"/>
                                     </div>
                                 </div>
                                 <div class="col-md-4">
                                     <label class="title">fecha Asignacion</label>
                                     <div class="form-group">
-                                        <input type="text" id="datepicker" class="form-control datepicker" placeholder="Date Picker Here" name="fasig" />
+                                        <input type='date'  class="form-control datepicker" placeholder="Date Picker Here" name="fasig" />
                                     </div>
                                 </div>
                                 <div class="col-md-4">
@@ -420,7 +420,7 @@
                 <!-- Observaciones  -->
                     <div class="form-group">
                         <label for="exampleFormControlTextarea1">Observaciones</label>
-                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="4" name="observ" style="text-transform:uppercase"></textarea>
+                        <textarea class="form-control" id="tt01" rows="4" name="observ" style="text-transform:uppercase"></textarea>
                     </div>       
             </div> 
             <input type="hidden" name="estado" id="estado" value="CUMPLE">        
@@ -782,7 +782,7 @@
             closeOnCancel: false
         }, function(isConfirm) {
             if (isConfirm) {             
-              window.location.href = "{{ route('ingresoAudit')}}"; 
+              window.location.href = "{{ route('ingresoaudit')}}"; 
             } else {
                 swal("Cancelado", "Proceso Cancelado", "error");
             }
@@ -976,5 +976,17 @@
 
 @endsection
 @endauth
+
+<script>
+document.addEventListener('keyup', event => {
+  if (event.ctrlKey && event.keyCode === 81) {  
+    var observaciones = document.getElementById('tt01').value; 
+    var text = observaciones+' '+'[TO]'+' '; 
+    document.getElementById('tt01').value =  text;
+    // alert(text);
+  }
+}, false)
+
+</script>
 
 

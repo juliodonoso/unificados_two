@@ -46,3 +46,15 @@
         </div>
     </body>
 </html>
+
+<style type="text/css">
+
+
+img{max-width:100%;
+    max-height: 350px;
+    margin-top: 30px;
+ }
+
+
+</style>
+

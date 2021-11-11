@@ -191,7 +191,7 @@
                     @if($ejeccount>0)
                         <div class="card-body ">
                             <div class="table-full-width">
-                                <table class="table">
+                                <table class="table" >
                                     <thead>
                                         <th data-field="name" data-sortable="true">Ejecutivo</th>
                                         <th data-field="salary" data-sortable="true">Alertas</th>
@@ -419,7 +419,8 @@
     }   
 </style>
 
-<style>
+<style type="text/css">
+
     .tit {
         width: 4%;
         /* border: 1px solid blue; */
@@ -483,8 +484,6 @@
         .card-stats .card-header .card-icon+.card-category {
         padding-top: 10px;
         }
-
-
 
         .card .card-footer .stats .material-icons {
         position: relative;

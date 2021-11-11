@@ -4,16 +4,19 @@ namespace App\Exports;
 
 use App\audit;
 use Maatwebsite\Excel\Concerns\FromCollection;
+use Maatwebsite\Excel\Concerns\WithStrictNullComparison;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithStyles;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Events\AfterSheet;
+use Maatwebsite\Excel\Concerns\WithCustomValueBinder;
 
 
 
-class AuditExport implements FromCollection, WithHeadings, WithStyles,ShouldAutoSize,WithEvents
+
+class AuditExport implements FromCollection,WithStrictNullComparison,  WithHeadings, WithStyles,ShouldAutoSize,WithEvents
 {
     /**
     * @return \Illuminate\Support\Collection
@@ -72,6 +75,8 @@ class AuditExport implements FromCollection, WithHeadings, WithStyles,ShouldAuto
         ];
     }
 
+    
+
 
     public function registerEvents(): array
 
@@ -85,7 +90,9 @@ class AuditExport implements FromCollection, WithHeadings, WithStyles,ShouldAuto
                     ->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
                     ->getStartColor()
                     ->setARGB('f2f6f7');
-                },
+              
+             
+            },
         ];
 
     }

@@ -13,11 +13,11 @@ class Mailcontroller extends Controller
     
     public function sendmail($idx) {
         //  Pruebas 
-        $destinatario = ['dvillalobos@unificados.cl'];
-        $cc = ['dvillalobos@unificados.cl'];
+        // $destinatario = ['dvillalobos@unificados.cl'];
+        // $cc = ['dvillalobos@unificados.cl'];
         // Produccion 
-        // $destinatario = ['veronica.tapia@metlife.cl '];
-        // $cc = ['bverdejo@unificados.cl', 'ccid@unificados.cl', 'imadueno@grupounificados.cl', 'rfernandez@unificados.cl', 'fdonosol@metlife.cl' ];
+        $destinatario = ['veronica.tapia@metlife.cl '];
+        $cc = ['bverdejo@unificados.cl', 'ccid@unificados.cl', 'imadueno@grupounificados.cl', 'rfernandez@unificados.cl', 'fdonosol@metlife.cl' ];
         $markalert = audit::find($idx);
         $markalert->alert = 1;
         $markalert->save();

@@ -8,6 +8,7 @@ use App\Models\Audit;
 use App\Models\user;
 use App\Models\sponsor;
 use App\Models\Operator;
+use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
@@ -15,7 +16,8 @@ use App\Exports\AuditExport;
 use App\Exports\SponsorExport;
 use App\Exports\EjecutExport;
 use App\Exports\ConceptsExport;
-use Request;
+
+// use Request;
 
 
 class Auditcontroller extends Controller
@@ -27,17 +29,27 @@ class Auditcontroller extends Controller
         $this->middleware('auth');
     }
 
-    public function index()
-    {       
+    public function index(Request $request)
+    {              
+        $tipo = "";
+        $buscar= "";
+        
         $usuarios = Auth::user();
         $userid = $usuarios->id;;
         $emp_type =   $usuarios->idtype; 
  
         $query = audit::query();
         $query_emp = audit::query();
+        $query_cumple = audit::query();
         $ltspon = sponsor::where('is_act',1)->get();
-        $ltcount = $ltspon->count();   
-     
+        $ltcount = $ltspon->count(); 
+        
+        if ($request->get("tipo") && $request->get("buscarpor") ) {
+            $tipo = $request->get("tipo");
+            $buscar = $request->get("buscarpor"); 
+            $query->where($tipo,'like',"%$buscar%"); 
+            $query_emp->where($tipo,'like',"%$buscar%");          
+        }     
          // Vertifico los Sponsor activos y verifico si hay auditorias 
         foreach($ltspon as $key => $value){                
             if($key == 0 ) {                    
@@ -51,39 +63,110 @@ class Auditcontroller extends Controller
                 ->where("sponsor",$value->id)
                 ->where("audits.mes",$value->mes);
                 $query = $query->orwhere("sponsor",$value->id)
-                ->where("audits.mes",$value->mes);                    
+                ->where("audits.mes",$value->mes);                                 
             } 
-        }
-       
+        }       
         if($emp_type == 6  OR  $emp_type == 7) {
             if($emp_type == 6){
+                $auditadasf =  $query_emp->get();  
                 $auditadas = $query_emp->select('audits.*','sponsors.name as sname','teleoperadores.name as nombre')          
                 ->join('sponsors','sponsors.id', '=', 'audits.sponsor') 
                 ->join('teleoperadores','teleoperadores.id', '=', 'audits.idoper')               
                 ->orderby('id','DESC')
-                ->get();    
+                ->paginate(5);   
             } else {
+                $auditadasf =  $query->get();  
                 $auditadas = $query->select('audits.*','sponsors.name as sname','users.name as name','teleoperadores.name as nombre')             
                 ->leftjoin('sponsors','sponsors.id', '=', 'audits.sponsor')
                 ->leftjoin('users','users.id', '=', 'audits.emp_id')
                 ->join('teleoperadores','teleoperadores.id', '=', 'audits.idoper')
                 ->orderby('id','DESC')
-                ->get();                 
-            }
-        }           
-        $auditCount = $auditadas->count();
-        $cumple =  $auditadas->where('Estado',"CUMPLE")->count();
-        $alerta =  $auditadas->where('Estado',"ALERTA")->count();
+                ->paginate(5);                          
+            }           
+        }            
+        $auditCount = $auditadas->total();      
+        $cumple =  $auditadasf->where('Estado',"CUMPLE")->count();
+        $alerta =  $auditadasf->where('Estado',"ALERTA")->count();
 
         return view('Auditorias.Audit')
         ->with('auditadas',$auditadas)
         ->with('auditCount',$auditCount)
         ->with('cumple',$cumple)
         ->with('alerta',$alerta)
-        ->with('emp_type',$emp_type);
-
-        
+        ->with('emp_type',$emp_type)
+        ->with('tipo',$tipo)
+        ->with('buscar',$buscar);        
     }    
+
+    // public function indexfil(Request $request)
+    // {
+
+    //     $buscar = $request->get('buscarpor');
+
+    //     $tipo = $request->get('tipo');
+      
+
+    //     $usuarios = Auth::user();
+    //     $userid = $usuarios->id;;
+    //     $emp_type =   $usuarios->idtype; 
+ 
+    //     $query = audit::query();
+    //     $query_emp = audit::query();
+    //     $ltspon = sponsor::where('is_act',1)->get();
+    //     $ltcount = $ltspon->count();   
+     
+    //      // Vertifico los Sponsor activos y verifico si hay auditorias 
+    //     foreach($ltspon as $key => $value){                
+    //         if($key == 0 ) {                    
+    //             $query_emp->where("emp_id","=",$userid)
+    //             ->where("sponsor",$value->id)
+    //             ->where("audits.mes",$value->mes)
+    //             ->where($tipo,'like',"%$buscar%"); 
+    //             $query = $query->where("sponsor",$value->id)
+    //             ->where("audits.mes",$value->mes)
+    //             ->where($tipo,'like',"%$buscar%");                
+    //         } else {    
+    //             $query_emp->orwhere("emp_id","=",$userid)
+    //             ->where("sponsor",$value->id)
+    //             ->where("audits.mes",$value->mes)
+    //             ->where($tipo,'like',"%$buscar%"); ;
+    //             $query = $query->orwhere("sponsor",$value->id)
+    //             ->where("audits.mes",$value->mes)
+    //             ->where($tipo,'like',"%$buscar%");                    
+    //         } 
+    //     }       
+    //     if($emp_type == 6  OR  $emp_type == 7) {
+    //         if($emp_type == 6){
+    //             $auditadas = $query_emp->select('audits.*','sponsors.name as sname','teleoperadores.name as nombre')          
+    //             ->join('sponsors','sponsors.id', '=', 'audits.sponsor') 
+    //             ->join('teleoperadores','teleoperadores.id', '=', 'audits.idoper')               
+    //             ->orderby('id','DESC')
+    //             ->paginate(15);    
+    //         } else {
+    //             $auditadas = $query->select('audits.*','sponsors.name as sname','users.name as name','teleoperadores.name as nombre')             
+    //             ->leftjoin('sponsors','sponsors.id', '=', 'audits.sponsor')
+    //             ->leftjoin('users','users.id', '=', 'audits.emp_id')
+    //             ->join('teleoperadores','teleoperadores.id', '=', 'audits.idoper')
+    //             ->orderby('id','DESC')
+    //             ->paginate(15);                 
+    //         }
+    //     }           
+    //     // $Auditadas = Audit::buscarpor($tipo, $buscar)->paginate(5);    
+    //     $auditCount = $auditadas->total();
+    //     // $prueba = $auditadas->total();
+    //     // dd($prueba);
+    //     $cumple =  $auditadas->where('Estado',"CUMPLE")->count();
+    //     $alerta =  $auditadas->where('Estado',"ALERTA")->count();
+    //     return view('Auditorias.Audit')
+    //     ->with('auditadas',$auditadas)
+    //     ->with('auditCount',$auditCount)
+    //     ->with('cumple',$cumple)
+    //     ->with('alerta',$alerta)
+    //     ->with('emp_type',$emp_type)
+    //     ->with('tipo',$tipo)
+    //     ->with('buscar',$buscar);
+    // }
+
 
     public function combos() {       // Operadores      
         $lsid = $_POST['id'];
@@ -134,7 +217,8 @@ class Auditcontroller extends Controller
        
     }
 
-    public function grabaudi () {          
+    public function grabaudi () {  
+        // dd($_POST);        
 
         if(isset($_POST['chkasig']) ){
             if($_POST['chkasig'] == 1 ) {
@@ -149,10 +233,13 @@ class Auditcontroller extends Controller
         if($ldsd > 0) {          
             $mes = $ldsp->mes; 
             $anio = $ldsp->anio;            
-            $datevta = $_POST['fventa'];          
+            $datevta = $_POST['fventa']; 
+            
+            // dd($datevta);
             $dateasi = $_POST['fasig'];                 
-            $lfventa = Carbon::createFromFormat('m/d/Y', $datevta)->format('Y/m/d H:i:s');
-            $lfasig = Carbon::createFromFormat('m/d/Y', $dateasi)->format('Y/m/d H:i:s'); 
+            // $lfventa = Carbon::createFromFormat('m/d/Y', $datevta)->format('Y/m/d H:i:s');
+            // $lfasig = Carbon::createFromFormat('m/d/Y', $dateasi)->format('Y/m/d H:i:s'); 
+            $lfventa = $_POST['fventa'];
         }
         // Preguntas    
         // (A) - 5
@@ -388,8 +475,8 @@ class Auditcontroller extends Controller
             $audit->idgrab =  strtoupper($_POST['idgrab']);
             $audit->rutcli =  $_POST['rutcar'];
             $audit->dvcli =  $_POST['dvcar'];
-            $audit->fvta =  $lfventa;
-            $audit->fgrab =  $lfasig;          
+            $audit->fvta =  $datevta;
+            $audit->fgrab =  $dateasi;          
             $audit->rutcli =  $_POST['rutcar'];
             $audit->dvcli =  $_POST['dvcar'];      
             // A 
@@ -458,7 +545,7 @@ class Auditcontroller extends Controller
             $audit->observ = strtoupper($_POST['observ']);
             $audit->save();
 
-        return redirect()->route('ingresoAudit');
+        return redirect()->route('ingresoaudit');
     }
 
 
@@ -513,7 +600,7 @@ class Auditcontroller extends Controller
         if($emp_type == 6  OR  $emp_type == 7) {
             if($emp_type == 6){
                 $auditadas = $query_emp->select('audits.id','sponsors.name as sname','audits.canal as canal',
-                'audits.campania','audits.rutcli','audits.fvta','teleoperadores.name as nombre','audits.idGrab','users.name',
+                'audits.campania',\DB::raw("CONCAT(rutcli, '-', dvcli) AS rut"),'audits.fvta','teleoperadores.name as nombre','audits.idGrab','users.name',
                 'audits.Fgrab',
                 'audits.PrgA','audits.PrgA1','audits.PrgA2','audits.PrgA3','audits.PrgA4','audits.PrgA5',
                 'audits.PrgB','audits.PrgB1','audits.PrgB2','audits.PrgB3','audits.PrgB4',
@@ -532,7 +619,7 @@ class Auditcontroller extends Controller
                 ->get();
             } else {
                 $auditadas = $query->select('audits.id','sponsors.name as sname','audits.canal as canal',
-                'audits.campania','audits.rutcli','audits.fvta','teleoperadores.name as nombre','audits.idGrab','users.name',
+                'audits.campania',\DB::raw("CONCAT(rutcli, '-', dvcli) AS rut"),'audits.fvta','teleoperadores.name as nombre','audits.idGrab','users.name',
                 'audits.Fgrab',
                 'audits.PrgA','audits.PrgA1','audits.PrgA2','audits.PrgA3','audits.PrgA4','audits.PrgA5',
                 'audits.PrgB','audits.PrgB1','audits.PrgB2','audits.PrgB3','audits.PrgB4',
@@ -902,18 +989,18 @@ class Auditcontroller extends Controller
 
         $titulo = 'Generador de Reportes (Excel)';
 
-        $conceptos = $query->select('audits.id','audits.campania','audits.rutcli','audits.fvta','teleoperadores.name as nombre','audits.idGrab','users.name',
+        $conceptos = $query->select('audits.id','audits.campania',\DB::raw("CONCAT(rutcli, '-', dvcli) AS rut"),'audits.fvta','teleoperadores.name as nombre','audits.idGrab','users.name',
         'audits.Fgrab',
-        'audits.PrgA','audits.PrgA1','audits.PrgA2','audits.PrgA3','audits.PrgA4','audits.PrgA5',
-        'audits.PrgB','audits.PrgB1','audits.PrgB2','audits.PrgB3','audits.PrgB4',
-        'audits.PrgC','audits.PrgC1','audits.PrgC2','audits.PrgC3','audits.PrgC4','audits.PrgC5','audits.PrgC6',
-        'audits.PrgD','audits.PrgD1','audits.PrgD2','audits.PrgD3','audits.PrgD4','audits.PrgD5','audits.PrgD6','audits.PrgD7','audits.PrgD8',
-        'audits.PrgE','audits.PrgE1','audits.PrgE2','audits.PrgE3','audits.PrgE4',
-        'audits.PrgF','audits.PrgF1','audits.PrgF2','audits.PrgF3',
-        'audits.PrgG','audits.PrgG1','audits.PrgG2','audits.PrgG3','audits.PrgG4','audits.PrgG5',
-        'audits.npartial',
+        \DB::raw("CONCAT(audits.PrgA,'%') AS PrA"),'audits.PrgA1','audits.PrgA2','audits.PrgA3','audits.PrgA4','audits.PrgA5',
+        \DB::raw("CONCAT(audits.PrgB,'%') AS PrB"),'audits.PrgB1','audits.PrgB2','audits.PrgB3','audits.PrgB4',
+        \DB::raw("CONCAT(audits.PrgC,'%') AS PrC"),'audits.PrgC1','audits.PrgC2','audits.PrgC3','audits.PrgC4','audits.PrgC5','audits.PrgC6',
+        \DB::raw("CONCAT(audits.PrgD,'%') AS PrD"),'audits.PrgD1','audits.PrgD2','audits.PrgD3','audits.PrgD4','audits.PrgD5','audits.PrgD6','audits.PrgD7','audits.PrgD8',
+        \DB::raw("CONCAT(audits.PrgE,'%') AS PrE"),'audits.PrgE1','audits.PrgE2','audits.PrgE3','audits.PrgE4',
+        \DB::raw("CONCAT(audits.PrgF,'%') AS PrF"),'audits.PrgF1','audits.PrgF2','audits.PrgF3',
+        \DB::raw("CONCAT(audits.PrgG,'%') AS PrG"),'audits.PrgG1','audits.PrgG2','audits.PrgG3','audits.PrgG4','audits.PrgG5',
+        \DB::raw("CONCAT(audits.npartial,'%') AS partial"),
         'audits.PrgH1','audits.PrgH2','audits.PrgH3','audits.PrgH4','audits.PrgH5','audits.PrgH6','audits.PrgH7',
-        'audits.nfinal','audits.Estado','audits.observ','audits.mes','audits.anio')              
+        \DB::raw("CONCAT(audits.nfinal,'%') AS final"),'audits.Estado','audits.observ','audits.mes','audits.anio','audits.sponame','audits.canal')              
         ->leftjoin('sponsors','sponsors.id', '=', 'audits.sponsor') 
         ->leftjoin('users','users.id', '=', 'audits.emp_id')  
         ->join('teleoperadores','teleoperadores.id', '=', 'audits.idoper')  
