@@ -35,7 +35,8 @@
                                             <option value="5">AGENTE LLAMADAS</option>
                                         @endif
                                         <option value="6">AUDITOR</option> 
-                                        <option value="7">SUPERVISOR DE AUDITORIA</option>                                       
+                                        <option value="7">SUPERVISOR DE AUDITORIA</option>
+                                        <option value="8">CLIENTES</option>                                       
                                     </select> 
                                 </div> 
                             @endforeach                       

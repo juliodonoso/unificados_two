@@ -32,12 +32,12 @@ class Auditcontroller extends Controller
     public function index(Request $request)
     {              
         $tipo = "";
-        $buscar= "";
-        
+        $buscar= "";        
         $usuarios = Auth::user();
         $userid = $usuarios->id;;
-        $emp_type =   $usuarios->idtype; 
- 
+        $emp_type =   $usuarios->idtype;  
+    
+           
         $query = audit::query();
         $query_emp = audit::query();
         $query_cumple = audit::query();
@@ -97,76 +97,6 @@ class Auditcontroller extends Controller
         ->with('tipo',$tipo)
         ->with('buscar',$buscar);        
     }    
-
-    // public function indexfil(Request $request)
-    // {
-
-    //     $buscar = $request->get('buscarpor');
-
-    //     $tipo = $request->get('tipo');
-      
-
-    //     $usuarios = Auth::user();
-    //     $userid = $usuarios->id;;
-    //     $emp_type =   $usuarios->idtype; 
- 
-    //     $query = audit::query();
-    //     $query_emp = audit::query();
-    //     $ltspon = sponsor::where('is_act',1)->get();
-    //     $ltcount = $ltspon->count();   
-     
-    //      // Vertifico los Sponsor activos y verifico si hay auditorias 
-    //     foreach($ltspon as $key => $value){                
-    //         if($key == 0 ) {                    
-    //             $query_emp->where("emp_id","=",$userid)
-    //             ->where("sponsor",$value->id)
-    //             ->where("audits.mes",$value->mes)
-    //             ->where($tipo,'like',"%$buscar%"); 
-    //             $query = $query->where("sponsor",$value->id)
-    //             ->where("audits.mes",$value->mes)
-    //             ->where($tipo,'like',"%$buscar%");                
-    //         } else {    
-    //             $query_emp->orwhere("emp_id","=",$userid)
-    //             ->where("sponsor",$value->id)
-    //             ->where("audits.mes",$value->mes)
-    //             ->where($tipo,'like',"%$buscar%"); ;
-    //             $query = $query->orwhere("sponsor",$value->id)
-    //             ->where("audits.mes",$value->mes)
-    //             ->where($tipo,'like',"%$buscar%");                    
-    //         } 
-    //     }       
-    //     if($emp_type == 6  OR  $emp_type == 7) {
-    //         if($emp_type == 6){
-    //             $auditadas = $query_emp->select('audits.*','sponsors.name as sname','teleoperadores.name as nombre')          
-    //             ->join('sponsors','sponsors.id', '=', 'audits.sponsor') 
-    //             ->join('teleoperadores','teleoperadores.id', '=', 'audits.idoper')               
-    //             ->orderby('id','DESC')
-    //             ->paginate(15);    
-    //         } else {
-    //             $auditadas = $query->select('audits.*','sponsors.name as sname','users.name as name','teleoperadores.name as nombre')             
-    //             ->leftjoin('sponsors','sponsors.id', '=', 'audits.sponsor')
-    //             ->leftjoin('users','users.id', '=', 'audits.emp_id')
-    //             ->join('teleoperadores','teleoperadores.id', '=', 'audits.idoper')
-    //             ->orderby('id','DESC')
-    //             ->paginate(15);                 
-    //         }
-    //     }           
-    //     // $Auditadas = Audit::buscarpor($tipo, $buscar)->paginate(5);    
-    //     $auditCount = $auditadas->total();
-    //     // $prueba = $auditadas->total();
-    //     // dd($prueba);
-    //     $cumple =  $auditadas->where('Estado',"CUMPLE")->count();
-    //     $alerta =  $auditadas->where('Estado',"ALERTA")->count();
-    //     return view('Auditorias.Audit')
-    //     ->with('auditadas',$auditadas)
-    //     ->with('auditCount',$auditCount)
-    //     ->with('cumple',$cumple)
-    //     ->with('alerta',$alerta)
-    //     ->with('emp_type',$emp_type)
-    //     ->with('tipo',$tipo)
-    //     ->with('buscar',$buscar);
-    // }
-
 
     public function combos() {       // Operadores      
         $lsid = $_POST['id'];
@@ -920,10 +850,24 @@ class Auditcontroller extends Controller
     }  
 
     public function repCindex() {
-        $sponsor = sponsor::get();
+
+        $emp_idu =  Auth::user()->id;      // Id del Usuario logeado      
+        $emp_type =  Auth::user()->idtype;  // Tipo de Usuario
+        $cli_acc =  Auth::user()->sponsoracc;  // Acceso en sponsor
+        $array = explode ( ',', $cli_acc );   
+
+
+       
         $canal =  \DB::table('canal')->get();
         $cia =  \DB::table('campanias')->get();
-        $usuarios = user::all();
+        if( $emp_type == 8) {
+            $usuarios = user::where('idtype',6)->get();
+            $sponsor = sponsor::wherein('id',$array)->get();
+        } else {
+            $usuarios = user::all();
+            $sponsor = sponsor::all();
+        }
+
         $teleop =  \DB::table('teleoperadores')
         ->get();
         $titulo = "Reporte por Conceptos";
@@ -938,8 +882,18 @@ class Auditcontroller extends Controller
 
     public function resultcpt() {       
 
-        // dd($_POST['fdesde']);    
+        // dd($_POST['fdesde']);  
+        
+        $emp_idu =  Auth::user()->id;      // Id del Usuario logeado      
+        $emp_type =  Auth::user()->idtype;  // Tipo de Usuario
+        $cli_acc =  Auth::user()->sponsoracc;  // Acceso en sponsor
+        $array = explode ( ',', $cli_acc );               
+        
         $query = audit::query(); 
+
+        if( $emp_type == 8) { 
+            $query->wherein('sponsor',$array);          
+        }
 
         if(isset( $_POST['anio'])) {
             $lanio = $_POST['anio'];
@@ -951,8 +905,7 @@ class Auditcontroller extends Controller
         }
         if($_POST['fdesde'] !== '') {
             $lfdesde = $_POST['fdesde'];
-            $fechad = date('Y-m-d', strtotime($lfdesde));
-            // dd($fecha);
+            $fechad = date('Y-m-d', strtotime($lfdesde));            
             $query->wheredate("audits.created_at",">=",$fechad);
         }
         if($_POST['fhasta'] !== '') {
@@ -985,7 +938,7 @@ class Auditcontroller extends Controller
             $query->where("estado",$lestado);
         }
 
-    
+        // dd($query);
 
         $titulo = 'Generador de Reportes (Excel)';
 

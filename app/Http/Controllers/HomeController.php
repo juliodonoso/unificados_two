@@ -33,18 +33,22 @@ class HomeController extends Controller
         // variables Generales del home 
             $emp_idu =  Auth::user()->id;      // Id del Usuario logeado      
             $emp_type =  Auth::user()->idtype;  // Tipo de Usuario
+            $cli_acc =  Auth::user()->sponsoracc;  // Acceso en sponsor
+            $array = explode ( ',', $cli_acc );       
             $titulo = "Inicio";         
             $today = Carbon::today();   
 
             $querytopalerts = audit::query(); 
             $query_emp = audit::query(); 
             $query = audit::query(); 
+            $queryclient = audit::query(); 
+            $queryalert = audit::query();
         
             $ltspon = sponsor::where('is_act',1)->get();
+      
             $ltcount = $ltspon->count();    
          // Vertifico los Sponsor activos y verifico si hay auditorias 
-            foreach($ltspon as $key => $value){             
-            
+            foreach($ltspon as $key => $value){              
                 if($key == 0 ) {
                     $querytopalerts =  $querytopalerts->where('Estado',"ALERTA")
                     ->where("sponsor",$value->id)
@@ -55,7 +59,8 @@ class HomeController extends Controller
                     ->where("audits.mes",$value->mes);  
 
                     $query = $query->where("sponsor",$value->id)
-                    ->where("audits.mes",$value->mes);   
+                    ->where("audits.mes",$value->mes);         
+
                 } else {
                     $querytopalerts =  $querytopalerts->orwhere('Estado',"ALERTA")
                     ->where("sponsor",$value->id)
@@ -65,10 +70,34 @@ class HomeController extends Controller
                     ->where("sponsor",$value->id)
                     ->where("audits.mes",$value->mes);
 
-                    $query = $query->orwhere("sponsor",$value->id)
-                    ->where("audits.mes",$value->mes);      
+                    $query->orwhere("sponsor",$value->id)
+                    ->where("audits.mes",$value->mes);   
+                    
+                 
                 }       
-            }  
+            } 
+           // Filtro por el acceso y mes de los usuarios y sponsos 
+            foreach($array as $key => $value){    
+                $lts = sponsor::where('id',$value)->get();              
+                $lkmes = $lts[0]->mes; 
+                $lksp = $lts[0]->id;       
+                if($key == 0 ) { 
+                    $queryalert->where('sponsor',$lksp)
+                    ->where("audits.mes",$lkmes)
+                    ->where('Estado','ALERTA');   
+
+                    $queryclient->where('sponsor',$lksp)
+                    ->where("audits.mes",$lkmes);
+
+                } else {
+                    $queryalert->orwhere('sponsor',$lksp)
+                    ->where("audits.mes",$lkmes)
+                    ->where('Estado','ALERTA');  
+                    
+                    $queryclient->orwhere('sponsor',$lksp)
+                    ->where("audits.mes",$lkmes);
+                }       
+            } 
         // AUDITORIAS
             // variables de Auditoria    
             $lcounta = 0;
@@ -83,6 +112,8 @@ class HomeController extends Controller
             $ltopcount  = 0; 
             $ejeccount = 0;
             $calend = 0;
+            $auditCount = 0;
+            $auditalert = 0;
             if($emp_type == 6 OR  $emp_type == 7) {
                 if($emp_type == 6){
                     $auditorias = $query_emp->get();
@@ -107,6 +138,7 @@ class HomeController extends Controller
                     ->get();
                     $dashcount = $dashsponsor->count();
                 }
+                // dd($auditorias);
                     $lcounta = $auditorias->count();
                     $pctpartial = $auditorias->avg('npartial');
                     $pctfinal = $auditorias->avg('nfinal');
@@ -153,8 +185,11 @@ class HomeController extends Controller
                         $lporalerta = round(($lsalertas/$lcounta)*100); 
                         array_push($infograb2,$pctfinal,$lporcumple);
                         $infograb = [$lsalertas];                           
-                        array_push($infograb,$lscumple,$lcounta);          
-                    }                
+                        array_push($infograb,$lscumple,$lcounta);                
+                 
+
+                    }      
+                  
                     return view('home2')
                     ->with('lcounta',$lcounta)
                     ->with('titulo',$titulo)
@@ -174,6 +209,7 @@ class HomeController extends Controller
                     ->with('today',$today)
                     ->with('ejeccount',$ejeccount)
                     ->with('calend',$calend);
+                   
                
             }
           
@@ -250,6 +286,40 @@ class HomeController extends Controller
         // LLAMADAS 
             if($emp_type == 5) {
 
+            }
+        // CLIENTES ------ DEPENDE DEL ACCESO EN LA TABLA USERS ( Sponsoracc ) 
+            if( $emp_type == 8) {     
+
+                $auditcli = $queryclient->get();
+                $Countcli = $auditcli->count();
+                $lsalertas = $auditcli->where('Estado','ALERTA')->count();
+                $lscumple = $auditcli->where('Estado','CUMPLE')->count();
+
+                $auditalert = $queryalert->select('audits.*','sponsors.name as sname','teleoperadores.name as nombre','users.name as eje')          
+                ->join('sponsors','sponsors.id', '=', 'audits.sponsor')                         
+                ->join('teleoperadores','teleoperadores.id', '=', 'audits.idoper') 
+                ->join('users','users.id', '=', 'audits.emp_id')               
+                ->orderby('audits.id','DESC')
+                ->paginate(10); 
+                
+                $dashs = $queryclient->select('audits.sponame as name','audits.canal as canal',
+                \DB::raw('count(*) as cant'),
+                \DB::raw('COUNT(CASE WHEN Estado ="ALERTA" THEN Estado END) as alerta'),
+                \DB::raw('COUNT(CASE WHEN Estado ="CUMPLE" THEN Estado END) as cumple'))           
+                ->groupby('audits.sponame','audits.canal')              
+                ->get();            
+
+                $auditCount = $auditalert->total();                
+                return view('home2')
+                ->with('auditCount',$auditCount)
+                ->with('auditalert',$auditalert)
+                
+                ->with('lcounta',$lcounta)
+                ->with('titulo',$titulo)
+                ->with('lsalertas', $lsalertas)
+                ->with('lscumple',$lscumple)
+                ->with('Countcli',$Countcli)
+                ->with('dashs',$dashs);
             }
 
           
