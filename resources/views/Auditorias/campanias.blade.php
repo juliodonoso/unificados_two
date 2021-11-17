@@ -7,7 +7,8 @@
           <form name="f03" id="f03" action="{{ route('ciaedit') }}" method="POST"> 
             {{ csrf_field() }} 
               <div class="card-head ">               
-                  <p class="card-category">Campañas Registradas en el sistema </p>	             
+                  <p class="card-category"><b> <i class="nc-icon nc-bell-55 text-success"></i>  Atencion: </b> Modificar la Campaña, modificara el nombre de las auditorias historicas registradas </p>	 
+                            
                 <hr>
                 <div id="botn">                     
                     <a href="{{ route('newcia') }}" class="btn btn-warning" ><i class="fa fa-user" aria-hidden="true"></i> Nuevo</a>                
