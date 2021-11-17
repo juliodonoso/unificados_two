@@ -216,10 +216,11 @@
                                     </ul>
                                 </div>                          
                             </li>   -->
-                        @endif  
-                        @if(Auth::user()->idtype  == 5 or Auth::user()->idtype  == 1) 
+                    @endif  
+                    <!-- Campañas  -->
+                    @if(Auth::user()->idtype  == 5 or Auth::user()->idtype  == 1) 
                         <!-- <li class="nav-item">
-                        <p class="logo"></p>
+                            <p class="logo"></p>
                                 <a class="nav-link" data-toggle="collapse" href="#Camp">
                                 <i class="nc-icon nc-grid-45"></i> 
                                     <p>
@@ -247,10 +248,11 @@
                                     </ul>
                                 </div>                          
                             </li>   -->
-                        @endif  
-                        @if(Auth::user()->idtype  == 1 or Auth::user()->idtype  == 7) 
+                    @endif  
+                    <!-- Mantenimiento  -->
+                    @if(Auth::user()->idtype  == 1 or Auth::user()->idtype  == 7) 
                         <li class="nav-item">
-                        <p class="logo"></p>
+                            <p class="logo"></p>
                             <a class="nav-link" data-toggle="collapse" href="#tablesExamples">
                                 <i class="nc-icon nc-settings-tool-66"></i>
                                 <p>
@@ -273,6 +275,13 @@
                                         </a>
                                     </li>                             
                                 </ul>
+                                <ul class="nav">
+                                    <li class="nav-item ">
+                                        <a class="nav-link" href="{{ route('companias') }}">                                       
+                                            <span class="sidebar-normal"> <i class="nc-icon nc-bag"></i>Campañas</span>
+                                        </a>
+                                    </li>                             
+                                </ul>
                                 @if(Auth::user()->idtype  == 1) 
                                     <ul class="nav">
                                         <li class="nav-item ">
@@ -282,10 +291,9 @@
                                         </li> 
                                     </ul>  
                                 @endif  
-                            </div>
-                            
+                            </div>                                
                         </li>
-                        @endif             
+                    @endif             
                 </ul>
             </div>
         </div>

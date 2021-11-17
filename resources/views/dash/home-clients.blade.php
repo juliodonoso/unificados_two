@@ -16,7 +16,7 @@
                                 </div>
                                 <div class="col-7">
                                     <div class="numbers">
-                                        <p class="card-category">Cumple</p>
+                                        <p class="card-category">CUMPLE</p>
                                         <h4 class="card-title" style="font-size;24px;">{{$lscumple}}</h4>
                                     </div>
                                 </div>
@@ -41,7 +41,7 @@
                                 </div>
                                 <div class="col-7">
                                     <div class="numbers">
-                                        <p class="card-category">Alertas</p>
+                                        <p class="card-category">ALERTAS</p>
                                         <h4 class="card-title" >{{$lsalertas}}</h4>
                                     </div>
                                 </div>
@@ -66,7 +66,7 @@
                                 </div>
                                 <div class="col-7">
                                     <div class="numbers">
-                                        <p class="card-category">Total Auditorias</p>
+                                        <p class="card-category">TOTAL AUDITORIAS</p>
                                         <h4 class="card-title" >{{$Countcli}}</h4>
                                     </div>
                                 </div>

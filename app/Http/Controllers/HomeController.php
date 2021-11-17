@@ -71,11 +71,10 @@ class HomeController extends Controller
                     ->where("audits.mes",$value->mes);
 
                     $query->orwhere("sponsor",$value->id)
-                    ->where("audits.mes",$value->mes);   
-                    
-                 
+                    ->where("audits.mes",$value->mes);                   
                 }       
             } 
+            if( $emp_type == 8) {     
            // Filtro por el acceso y mes de los usuarios y sponsos 
             foreach($array as $key => $value){    
                 $lts = sponsor::where('id',$value)->get();              
@@ -98,6 +97,7 @@ class HomeController extends Controller
                     ->where("audits.mes",$lkmes);
                 }       
             } 
+        }
         // AUDITORIAS
             // variables de Auditoria    
             $lcounta = 0;

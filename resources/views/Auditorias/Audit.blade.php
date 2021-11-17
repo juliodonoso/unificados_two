@@ -17,7 +17,7 @@
                                 </div>
                                 <div class="col-7">
                                     <div class="numbers">
-                                        <p class="card-category">Cumple</p>
+                                        <p class="card-category">CUMPLE</p>
                                         <h4 class="card-title">{{$cumple}}</h4>
                                     </div>
                                 </div>
@@ -26,7 +26,7 @@
                         <div class="card-footer ">
                             <hr>
                             <div class="stats">
-                                <i class="fa fa-check" aria-hidden="true"></i> Auditorias satisfactorias
+                                <i class="fa fa-check" aria-hidden="true"></i>AUDITORIAS SATISFACTORIAS
                             </div>
                         </div>
                     </div>
@@ -42,7 +42,7 @@
                                 </div>
                                 <div class="col-7">
                                     <div class="numbers">
-                                        <p class="card-category">Alertas</p>
+                                        <p class="card-category">ALERTAS</p>
                                         <h4 class="card-title">{{$alerta}}</h4>
                                     </div>
                                 </div>
@@ -51,7 +51,7 @@
                         <div class="card-footer ">
                             <hr>
                             <div class="stats">
-                                <i class="fa fa-check"></i> Auditorias en Alerta
+                                <i class="fa fa-check"></i> AUDITORIAS EN ALERTA
                             </div>
                         </div>
                     </div>
@@ -62,12 +62,12 @@
                             <div class="row">
                                 <div class="col-5">
                                     <div class="icon-big text-center icon-warning">
-                                        <i class="nc-icon nc-paper-2 text-info"></i>
+                                    <i class="nc-icon nc-single-copy-04 text-info"></i>
                                     </div>
                                 </div>
                                 <div class="col-7">
                                     <div class="numbers">
-                                        <p class="card-category">Total Auditorias</p>
+                                        <p class="card-category">TOTAL AUDITORIAS</p>
                                         <h4 class="card-title">{{$auditCount}}</h4>
                                     </div>
                                 </div>
@@ -76,7 +76,7 @@
                         <div class="card-footer ">
                             <hr>
                             <div class="stats">
-                                <i class="fa fa-check"></i> Total
+                                <i class="fa fa-check"></i> TOTAL
                             </div>
                         </div>
                     </div>

@@ -8,6 +8,7 @@ use App\Models\Audit;
 use App\Models\user;
 use App\Models\sponsor;
 use App\Models\Operator;
+use App\Models\cia;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
@@ -1030,6 +1031,51 @@ class Auditcontroller extends Controller
         return redirect()->route('teleop');
     }
 
+    public function cias() {
+        $cias = cia::select('sponsors.name as nombre','campanias.*')
+        ->join('sponsors','sponsors.id', '=', 'campanias.sponsorid')->get();        
+        $titulo = "Listado de Campañas";
+        return view('Auditorias.campanias')
+        ->with('titulo',$titulo)
+        ->with('operad',$cias);
+    }
+
+    public function newcia(){
+        $titulo = "Ingreso de Campañas";
+        $sponsor = sponsor::get();        
+        $cia =  cia::get();
+        return view('Auditorias.Newcia')
+        ->with('titulo',$titulo)
+        ->with('sponsor',$sponsor)       
+        ->with('cia',$cia);
+    }
+
+    public function upcia() {
+        $audit = new cia;
+        $audit->sponsorid = $_POST['sponsor'];               
+        $audit->name =  strtoupper($_POST['name']);
+        $audit->save();
+        return redirect()->route('companias');
+    }
+
+    public function editcia() {
+        $lid = $_POST['bt01'];
+        $titulo= "Edicion de Campañas";
+        $operador = cia::where('id',$lid)->get();      
+        return view('auditorias.editcia')
+        ->with('titulo',$titulo)
+        ->with('operador',$operador);
+
+    }
+
+    public function Grabeditcia() { 
+        $lid = $_POST['idop'];
+        $upoperator = cia::find($lid);
+        $upoperator->name = $_POST['name'];
+        $upoperator->sponsorid = $_POST['sponsor'];         
+        $upoperator->save();
+        return redirect()->route('companias');
+    }
 
 }
 

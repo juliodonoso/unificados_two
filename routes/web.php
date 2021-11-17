@@ -176,4 +176,13 @@ Route::get('/teleoperadores', [App\Http\Controllers\Auditcontroller::class, 'tel
 Route::get('/newoper', [App\Http\Controllers\Auditcontroller::class, 'newop'])->name('newoper');
 Route::POST('/grabarOper', [App\Http\Controllers\Auditcontroller::class, 'grabaroper'])->name('upoper');
 Route::POST('/editopers', [App\Http\Controllers\Auditcontroller::class, 'editop'])->name('opersedit');
-Route::POST('/g rabeditopers', [App\Http\Controllers\Auditcontroller::class, 'grabeditop'])->name('grabeditop');
+Route::POST('/grabeditopers', [App\Http\Controllers\Auditcontroller::class, 'Grabeditop'])->name('Grabeditop');
+
+// Campañas
+
+Route::get('/campañas', [App\Http\Controllers\Auditcontroller::class, 'cias'])->name('companias');
+Route::get('/newcia', [App\Http\Controllers\Auditcontroller::class, 'newcia'])->name('newcia');
+Route::POST('/grabarcia', [App\Http\Controllers\Auditcontroller::class, 'upcia'])->name('upcia');
+Route::POST('/editcia', [App\Http\Controllers\Auditcontroller::class, 'editcia'])->name('ciaedit');
+Route::POST('/grabeditcias', [App\Http\Controllers\Auditcontroller::class, 'Grabeditcia'])->name('Grabeditcia');
+
