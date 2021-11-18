@@ -84,33 +84,27 @@
                     @foreach($dashsponsor as $valor =>$spk)                       
                         <div class="col-lg-3 col-sm-6">
                             <div class="card card-stats">
-                                <div class="card-body ">
-                                    <div class="row">
-                                        <div class="col-5">
-                                            @if($valor%2 == 0)                                             
-                                                <div class="icon-big text-center icon-warning">
-                                                    <i class="nc-icon nc-headphones-2 text-warning"></i>                                             
-                                                </div>
-                                            @else 
-                                                <div class="icon-big text-center icon-warning">
-                                                <i class="nc-icon nc-headphones-2 text-success"></i>                                             
-                                                </div>
-                                            @endif                                           
+                            <div class="card-header card-header-warning card-header-icon" >                         
+                                    @if($valor%2 == 0)    
+                                        <div class="card-icon">                                         
+                                            <i class="nc-icon nc-headphones-2" style="color:white;"></i>  
                                         </div>
-                                        <div class="col-7">
-                                            <div class="numbers">
-                                            <p class="card-category">TOTAL: {{$spk->cant}}  </p>
-                                                    <h3 class="card-title">  <small>Cumple:</small> {{$spk->cumple}} <br> <small>Alertas:</small> {{$spk->alerta}}                     
-                                            </div>
-                                        </div>
-                                    </div>
+                                    @else
+                                        <div class="card-icon"  id="divcolor" >           
+                                            <i class="nc-icon nc-headphones-2"></i> 
+                                        </div> 
+                                    @endif                                     
+                                    <p class="card-category">TOTAL: {{$spk->cant}}  </p>
+                                    <h3 class="card-title">  <small>Cumple:</small> {{$spk->cumple}} <br> <small>Alertas:</small> {{$spk->alerta}}                                
+                                    </h3>
                                 </div>
-                                <div class="card-footer ">
+                                <div class="card-footer "  style="color:red;">
                                     <hr>
-                                    <div class="stats">                               
-                                        <p style="color:grey"> {{$spk->sponame}} / <span style="color:   #a8dcd7  "> {{$spk->canal}} </span></p>
+                                    <div class="stats" style="color: #12b9f3;">
+                                    <p style="color:grey"> {{$spk->sponame}} / <span style="color:   #a8dcd7  "> {{$spk->canal}} </span></p>
                                     </div>
                                 </div>
+                               
                             </div>
                         </div>
                     @endforeach  

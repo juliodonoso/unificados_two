@@ -177,6 +177,8 @@ Route::get('/newoper', [App\Http\Controllers\Auditcontroller::class, 'newop'])->
 Route::POST('/grabarOper', [App\Http\Controllers\Auditcontroller::class, 'grabaroper'])->name('upoper');
 Route::POST('/editopers', [App\Http\Controllers\Auditcontroller::class, 'editop'])->name('opersedit');
 Route::POST('/grabeditopers', [App\Http\Controllers\Auditcontroller::class, 'Grabeditop'])->name('Grabeditop');
+Route::POST('/histope', [App\Http\Controllers\Auditcontroller::class, 'histope'])->name('histope');
+
 
 // Campañas
 

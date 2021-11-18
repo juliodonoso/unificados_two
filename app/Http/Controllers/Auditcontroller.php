@@ -101,8 +101,8 @@ class Auditcontroller extends Controller
 
     public function combos() {       // Operadores      
         $lsid = $_POST['id'];
-        $query =  \DB::table('teleoperadores')
-        ->wherein('canalid',[$lsid,99])       
+        $query =  operator::wherein('canalid',[$lsid,99])
+        ->wherenull('stat')       
         ->get();
         $data = [];
         foreach($query as $query) {
@@ -117,12 +117,9 @@ class Auditcontroller extends Controller
     public function create()
     {
         $sponsor = sponsor::where('is_act',1)->get();
-        $ltcount = $sponsor->count(); 
-        
-        $campanias =  \DB::table('campanias')
-        ->get();
-        $teleop =  \DB::table('teleoperadores')
-        ->orderby('name','ASC')
+        $ltcount = $sponsor->count();         
+        $campanias =  cia::wherenull('stat')->get();       
+        $teleop =  operator::orderby('name','ASC')
         ->get();
         $ejecutivos = auth::user()->get();
 
@@ -1006,30 +1003,49 @@ class Auditcontroller extends Controller
      
        $audit = new operator;
        $audit->sponsorid = $_POST['sponsor'];  
-       $audit->canalid= $_POST['canal'];          
+       $audit->canalid= $_POST['canal'];   
+       $audit->stat= $_POST['check01'];          
        $audit->name =  strtoupper($_POST['name']);
        $audit->save();
        return redirect()->route('teleop');
     }
 
-    public function editop() {      
-        $lid = $_POST['bt01'];
+    public function editop() {    
+        $lsnoedit = 0;  
+        $lid = $_POST['bt01'];   
+        $lsedit = audit::where('idoper',$lid)->get();
+        $lseditcount = $lsedit->count();        
+        if($lseditcount > 0) {
+            $lsnoedit = 1;
+        }
         $titulo= "Edicion de Operadores";
-        $operador = operator::where('id',$lid)->get();      
+        $operador = operator::select('teleoperadores.*','canal.name as namec','sponsors.name as namesp')
+        ->where('teleoperadores.id',$lid)
+        ->join('sponsors','sponsors.id', '=', 'teleoperadores.sponsorid')
+        ->join('canal','canal.id', '=', 'teleoperadores.canalid')
+         ->get();      
         return view('auditorias.editoperator')
         ->with('titulo',$titulo)
-        ->with('operador',$operador);
+        ->with('operador',$operador)
+        ->with('lsnoedit',$lsnoedit);
     }
 
-    public function Grabeditop() { 
+    public function Grabeditop() {        
         $lid = $_POST['idop'];
         $upoperator = operator::find($lid);
         $upoperator->name = $_POST['name'];
         $upoperator->sponsorid = $_POST['sponsor'];
+        if(isset($_POST['check01'])) {
+            $upoperator->stat= 1; 
+        } else {
+            $upoperator->stat= null; 
+        }         
         $upoperator->canalid = $_POST['canal'];        
         $upoperator->save();
         return redirect()->route('teleop');
     }
+
+   
 
     public function cias() {
         $cias = cia::select('sponsors.name as nombre','campanias.*')
@@ -1060,20 +1076,38 @@ class Auditcontroller extends Controller
 
     public function editcia() {
         $lid = $_POST['bt01'];
+        $lsnoedit = 0;
+        $lsedit = audit::where('idcia',$lid)->get();
+        $lseditcount = $lsedit->count();        
+        if($lseditcount > 0) {
+            $lsnoedit = 1;
+        }
+
         $titulo= "Edicion de Campañas";
-        $operador = cia::where('id',$lid)->get();      
+        $compa = cia::select('campanias.*','sponsors.name as namesp')
+        ->where('campanias.id',$lid)
+        ->join('sponsors','sponsors.id', '=', 'campanias.sponsorid')
+        ->get();           
+        
         return view('auditorias.editcia')
         ->with('titulo',$titulo)
-        ->with('operador',$operador);
+        ->with('compa',$compa)
+        ->with('lsnoedit',$lsnoedit);
 
     }
 
-    public function Grabeditcia() { 
+    public function Grabeditcia() {         
+             
         $lid = $_POST['idop'];
-        $upoperator = cia::find($lid);
-        $upoperator->name = $_POST['name'];
-        $upoperator->sponsorid = $_POST['sponsor'];         
-        $upoperator->save();
+        $upcia = cia::find($lid);
+        if(isset($_POST['check01'])) {
+            $upcia->stat= 1; 
+        } else {
+            $upcia->stat= null; 
+        } 
+        $upcia->name = $_POST['name'];
+        $upcia->sponsorid = $_POST['sponsor'];         
+        $upcia->save();
         return redirect()->route('companias');
     }
 
