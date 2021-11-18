@@ -6,17 +6,17 @@
         <div class="card-header"> 
             <div class="row">
                 <div class="col-lg-4 col-sm-6">
-                    <div class="card card-stats" style="background-color: rgba(54, 162, 235, 0.2)">
+                    <div class="card card-stats">
                         <div class="card-body ">
                             <div class="row">
                                 <div class="col-5">
                                     <div class="icon-big text-center icon-warning" style="color:blue;">                                   
-                                        <i class="nc-icon nc-satisfied "></i>
+                                        <i class="nc-icon nc-satisfied text-success"></i>
                                     </div>
                                 </div>
                                 <div class="col-7">
                                     <div class="numbers">
-                                        <p class="card-category">Cumple</p>
+                                        <p class="card-category">CUMPLE</p>
                                         <h4 class="card-title" style="font-size;24px;">{{$lscumple}}</h4>
                                     </div>
                                 </div>
@@ -25,13 +25,13 @@
                         <div class="card-footer ">
                             <hr>
                             <div class="stats"> 
-                                </i>AUDITORIAS SATISFACTORIAS
+                                AUDITORIAS SATISFACTORIAS
                             </div>
                         </div>
                     </div>
                 </div>               
                 <div class="col-lg-4 col-sm-6">
-                    <div class="card card-stats" style="background-color:rgba(255, 206, 86, 0.2)">
+                    <div class="card card-stats">
                         <div class="card-body ">
                             <div class="row">
                                 <div class="col-5">
@@ -41,7 +41,7 @@
                                 </div>
                                 <div class="col-7">
                                     <div class="numbers">
-                                        <p class="card-category">Alertas</p>
+                                        <p class="card-category">ALERTAS</p>
                                         <h4 class="card-title" >{{$lsalertas}}</h4>
                                     </div>
                                 </div>
@@ -56,17 +56,17 @@
                     </div>
                 </div>
                 <div class="col-lg-4 col-sm-6">
-                    <div class="card card-stats" style="background-color:rgba(153, 102, 255, 0.2);">
+                    <div class="card card-stats">
                         <div class="card-body ">
                             <div class="row">
                                 <div class="col-5">
                                     <div class="icon-big text-center icon-warning" style="color:#7d3c98;">
-                                        <i class="nc-icon nc-paper-2"></i>
+                                        <i class="nc-icon nc-single-copy-04 text-info"></i>
                                     </div>
                                 </div>
                                 <div class="col-7">
                                     <div class="numbers">
-                                        <p class="card-category">Total Auditorias</p>
+                                        <p class="card-category">TOTAL AUDITORIAS</p>
                                         <h4 class="card-title" >{{$lcounta}}</h4>
                                     </div>
                                 </div>
@@ -81,30 +81,32 @@
                     </div>
                 </div>
                 @if($emp_type == 7 or $emp_type == 8)
-                    @foreach($dashsponsor as $valor =>$prueba)
-                        <div class="col-lg-3 col-md-6 col-sm-6">
-                            <div class="card card-stats">                            
-                                <div class="card-header card-header-warning card-header-icon" >                         
+                    @foreach($dashsponsor as $valor =>$spk)                       
+                        <div class="col-lg-3 col-sm-6">
+                            <div class="card card-stats">
+                            <div class="card-header card-header-warning card-header-icon" >                         
                                     @if($valor%2 == 0)    
-                                        <div class="card-icon">                                  
-                                            <i class="material-icons">headset</i>
-                                        @else
+                                        <div class="card-icon">                                         
+                                            <i class="nc-icon nc-headphones-2" style="color:white;"></i>  
+                                        </div>
+                                    @else
                                         <div class="card-icon"  id="divcolor" >           
-                                            <i class="material-icons">phone_in_talk</i>
-                                        @endif  
-                                    </div>
-                                    <p class="card-category">TOTAL: {{$prueba->cant}}  </p>
-                                    <h3 class="card-title">  <small>Cumple:</small> {{$prueba->cumple}} <br> <small>Alertas:</small> {{$prueba->alerta}}                                
+                                            <i class="nc-icon nc-headphones-2"></i> 
+                                        </div> 
+                                    @endif                                     
+                                    <p class="card-category">TOTAL: {{$spk->cant}}  </p>
+                                    <h3 class="card-title">  <small>Cumple:</small> {{$spk->cumple}} <br> <small>Alertas:</small> {{$spk->alerta}}                                
                                     </h3>
                                 </div>
                                 <div class="card-footer "  style="color:red;">
                                     <hr>
                                     <div class="stats" style="color: #12b9f3;">
-                                        {{$prueba->sponame}} - {{$prueba->canal}} 
+                                    <p style="color:grey"> {{$spk->sponame}} / <span style="color:   #a8dcd7  "> {{$spk->canal}} </span></p>
                                     </div>
                                 </div>
+                               
                             </div>
-                        </div> 
+                        </div>
                     @endforeach  
                 @endif            
             </div>                    
@@ -153,7 +155,7 @@
                     @if($ltopcount > 0)
                         <div class="card-body ">
                             <div class="table-full-width">
-                                <table class="table">
+                                <table class="table" id="tablealert">
                                     <thead>
                                         <th data-field="name" data-sortable="true">Sponsor</th>
                                         <th data-field="name" data-sortable="true">Canal</th>
@@ -191,7 +193,7 @@
                     @if($ejeccount>0)
                         <div class="card-body ">
                             <div class="table-full-width">
-                                <table class="table">
+                                <table class="table" id="tableeje">
                                     <thead>
                                         <th data-field="name" data-sortable="true">Ejecutivo</th>
                                         <th data-field="salary" data-sortable="true">Alertas</th>
@@ -240,7 +242,7 @@
                         <p class="card-category">Detalle x dia</p>
                     </div>
                     <div class="card-body table-full-width table-responsive">
-                        <table class="table table-hover">
+                        <table class="table table-hover" ID="tabledia">
                             <thead>
                                 <th>Dias</th>
                                 @foreach($calend as $dias)                                                                     
@@ -419,7 +421,8 @@
     }   
 </style>
 
-<style>
+<style type="text/css">
+
     .tit {
         width: 4%;
         /* border: 1px solid blue; */
@@ -438,7 +441,7 @@
         .card.bg-warning,
         .card.card-rotate.bg-warning .front,
         .card.card-rotate.bg-warning .back {
-        background: linear-gradient(60deg, #ffa726, #fb8c00);
+        background: linear-gradient(90deg, #ffa726, #fb8c00);
         }
 
     
@@ -462,7 +465,7 @@
         }
 
         .card-stats .card-header.card-header-icon i {
-        font-size: 56px;
+        font-size: 46px;
         line-height: 56px;
         width: 56px;
         height: 56px;
@@ -484,17 +487,21 @@
         padding-top: 10px;
         }
 
-
-
         .card .card-footer .stats .material-icons {
-        position: relative;
-        top: -10px;
-        margin-right: 3px;
-        margin-left: 3px;
-        font-size: 18px;
+            position: relative;
+            top: -10px;
+            margin-right: 3px;
+            margin-left: 3px;
+            font-size: 18px;
         }
 
+        #tablealert td, #tabledia td, #tableeje td {
+            font-size: 10px;    
+        }   
+
 </style>
+
+
 
 @endsection
  

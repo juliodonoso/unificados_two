@@ -14,3 +14,9 @@
  @if(Auth::user()->idtype  == 5)
     @include('dash.home-call')
 @endif
+
+<!-- Clientes  -->
+
+@if(Auth::user()->idtype  == 8)  
+    @include('dash.home-clients')
+@endif

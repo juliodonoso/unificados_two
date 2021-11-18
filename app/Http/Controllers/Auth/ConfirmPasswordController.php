@@ -67,7 +67,7 @@ class ConfirmPasswordController extends Controller
         ->where('id',$luserid)
         ->get();      
         $titulo = 'Listado de usuarios'; 
-        return view('Auth.edituser')
+        return view('auth.edituser')
         ->with('titulo',$titulo)
         ->with('ledit',$ledit)
         ->with('luserid',$luserid);

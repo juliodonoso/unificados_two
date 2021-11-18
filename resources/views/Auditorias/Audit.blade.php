@@ -17,7 +17,7 @@
                                 </div>
                                 <div class="col-7">
                                     <div class="numbers">
-                                        <p class="card-category">Cumple</p>
+                                        <p class="card-category">CUMPLE</p>
                                         <h4 class="card-title">{{$cumple}}</h4>
                                     </div>
                                 </div>
@@ -26,7 +26,7 @@
                         <div class="card-footer ">
                             <hr>
                             <div class="stats">
-                                <i class="fa fa-check" aria-hidden="true"></i> Auditorias satisfactorias
+                                <i class="fa fa-check" aria-hidden="true"></i>AUDITORIAS SATISFACTORIAS
                             </div>
                         </div>
                     </div>
@@ -42,7 +42,7 @@
                                 </div>
                                 <div class="col-7">
                                     <div class="numbers">
-                                        <p class="card-category">Alertas</p>
+                                        <p class="card-category">ALERTAS</p>
                                         <h4 class="card-title">{{$alerta}}</h4>
                                     </div>
                                 </div>
@@ -51,7 +51,7 @@
                         <div class="card-footer ">
                             <hr>
                             <div class="stats">
-                                <i class="fa fa-check"></i> Auditorias en Alerta
+                                <i class="fa fa-check"></i> AUDITORIAS EN ALERTA
                             </div>
                         </div>
                     </div>
@@ -62,12 +62,12 @@
                             <div class="row">
                                 <div class="col-5">
                                     <div class="icon-big text-center icon-warning">
-                                        <i class="nc-icon nc-paper-2 text-info"></i>
+                                    <i class="nc-icon nc-single-copy-04 text-info"></i>
                                     </div>
                                 </div>
                                 <div class="col-7">
                                     <div class="numbers">
-                                        <p class="card-category">Total Auditorias</p>
+                                        <p class="card-category">TOTAL AUDITORIAS</p>
                                         <h4 class="card-title">{{$auditCount}}</h4>
                                     </div>
                                 </div>
@@ -76,18 +76,32 @@
                         <div class="card-footer ">
                             <hr>
                             <div class="stats">
-                                <i class="fa fa-check"></i> Total
+                                <i class="fa fa-check"></i> TOTAL
                             </div>
                         </div>
                     </div>
                 </div>          
             </div>  
-            <div id="botn">                     
-                    <a href="{{ route('NewAudit') }}" class="btn btn-warning" ><i class="fa fa-file-excel-o" aria-hidden="true"></i>Nuevo</a>                    
+                <div id="botn">                     
+                    <a href="{{ route('NewAudit') }}" class="btn btn-warning" ><i class="fa fa-plus" aria-hidden="true"></i>Nuevo</a>                    
                     <a href="{{ route('excelaud') }}" class="btn btn-success" ><i class="fa fa-file-excel-o" aria-hidden="true"></i>Excel</a>  
-                    <div id="bqrut">        
-                    <input type="text" class="form-control" name="inputUno" id="search" placeholder="Buscar">              
-                </div> 
+                    <div id="bqrut"> 
+                        <form class="form-inline" method="GET" action="{{ route('ingresoaudit') }}">       
+                            <input type="text" class="form-control mr-sm-2" name="inputUno" id="search" placeholder="Busqueda Rapida">              
+                            <select name="tipo" class="form-control mr-sm-2" id="exampleFormControlSelect1" required>
+                                <option selected disable>Seleccione...</option>
+                                <option value="sponame">Sponsor</option>
+                                <option value="campania">Campaña</option>
+                                <option value="canal">Canal</option>
+                                <option value="opereva">Operador</option>
+                                <option value="emp_id">Ejecutivo</option> 
+                                <option value="Estado">Estado</option>                        
+                            </select>
+                            <input name="buscarpor" class="form-control mr-sm-2" type="search" placeholder="Buscar" aria-label="Search" style="text-transform:uppercase"  required>    
+                            <button class="btn btn-outline-success my-2 my-sm-2" type="submit">Buscar</button>                                            
+                        </form>
+                    </div> 
+                    <a href="{{ route('ingresoaudit') }}" class="btn btn-info" ><i class="fa fa-eraser" aria-hidden="true"></i>Limpiar</a>
             </div>                       
         </div>   
         <div class="card-body ">  
@@ -131,10 +145,10 @@
                                     <td>{!! $resp->rutcli !!}-{!! $resp->dvcli !!}</td>   
                                     <td>{!! date('d-m-Y', strtotime($resp->created_at)) !!}</td>
                                     @if($resp->Estado == "ALERTA")                 
-                                        <td style="color:red;"> 
+                                    <td class="text-center" style="color:red;"><i class="fa fa-times" aria-hidden="true"></i>ALERTA</td>
                                     @else
-                                        <td> 
-                                    @endif{!! $resp->Estado !!}</td> 
+                                        <td class="text-center" style="color:green;"><i class="fa fa-check" aria-hidden="true"></i>CUMPLE</td>
+                                    @endif 
                                     <td class="text-right">{!! $resp->npartial !!} %</td> 
                                     <td class="text-right">{!! $resp->nfinal !!} %</td>
                                     @if($emp_type == 7) 
@@ -147,14 +161,17 @@
                                         <a href="#PlaceModal-{{$resp->id}}" data-toggle="modal"><i class="fa fa-search"></i></a>
                                     </td>
                                     @if($resp->alert == 1)  
-                                     <td  class="text-right" style="color:4BB543;"><i class="fa fa-envelope" id="altmail" aria-hidden="true"></i></td>
+                                     <td  class="text-right" style="color:#dddedd;"><i class="fa fa-envelope" id="altmail" aria-hidden="true"></i></td>
                                     @else
                                     <td></td>
                                     @endif                                                                                                                
                                 </tr>                                        
-                            @endforeach
-                        </tbody>
-                    </table>                       
+                            @endforeach 
+                        </tbody>                   
+                    </table>  
+                    <div class="d-flex">
+                        {{ $auditadas->appends($_GET)->links('pagination::bootstrap-4') }} 
+                    </div>                                        
                 @else
                     <div class="alert alert-danger alert-with-icon" data-notify="container" id="cumple">                    
                         <span data-notify="icon" class="nc-icon nc-bell-55"></span>
@@ -193,7 +210,7 @@
                             <div class="col-sm-8" >Operador Evaluado: {{$resp->opereva}}</div>                           
                         </div> 
                         <div class="row" id="det01">  
-                            <div class="col-sm-12" >Fecha Venta : {{date('d-m-Y', strtotime($resp->fvta))}}   / Fecha Asig: {{date('d-m-Y', strtotime($resp->fgrab))}}  / Fecha Audit: {{date('d-m-Y', strtotime($resp->created_at))}}  </div> 
+                            <div class="col-sm-12" >Fecha Venta : {{date('d-m-Y', strtotime($resp->Fvta))}}</td>   / Fecha Asig: {{date('d-m-Y', strtotime($resp->Fgrab))}}  / Fecha Audit: {{date('d-m-Y', strtotime($resp->created_at))}}  </div> 
                         </div>
                         <div class="row" id="det01">  
                             <div class="col-sm-12" >Id Grab :  {{$resp->idGrab}}  </div> 
@@ -229,7 +246,7 @@
                         </table>  
                         <hr>
                         <div class="row" id="det01">
-                            <div class="col-sm-8" >Observaciones : {{$resp->observ}} </div>                           
+                            <div class="col-sm-12" id="obs01">Observaciones : {{$resp->observ}} </div>                           
                         </div>
                         <hr>                                    
                     </div>
@@ -295,7 +312,6 @@
 <!-- ELIMINAR AUDITORIAS  -->
 
 <script>
-
     function eliminarArticulo(id) {  
         swal({
             title: "Estas Seguro de Borrar el registro?",
@@ -326,6 +342,7 @@
             }
         });
     }
+    
 </script>
 
 <style>
@@ -358,4 +375,10 @@
         margin-right: 5px;
 	    float: right;
     }
+
+    #obs01, #det01 {
+        font-size:10px;
+    }
+
 </style>
+

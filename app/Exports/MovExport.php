@@ -5,8 +5,9 @@ namespace App\Exports;
 use App\proposal;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
+use Maatwebsite\Excel\Concerns\WithStrictNullComparison;
 
-class MovExport implements FromCollection,  WithHeadings
+class MovExport implements FromCollection,  WithHeadings,WithStrictNullComparison
 {
     /**
     * @return \Illuminate\Support\Collection

@@ -6,8 +6,9 @@ use App\Models\proposal;
 
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
+use Maatwebsite\Excel\Concerns\WithStrictNullComparison;
 
-class ProposalExport implements FromCollection,  WithHeadings
+class ProposalExport implements FromCollection,  WithHeadings,WithStrictNullComparison
 {
     /**
     * @return \Illuminate\Support\Collection

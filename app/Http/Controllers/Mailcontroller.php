@@ -40,7 +40,7 @@ class Mailcontroller extends Controller
         $correo->eje = $leje;
         mail::to($destinatario)
         ->cc($cc)->send($correo);  
-        return redirect()->route('ingresoAudit');
+        return redirect()->route('ingresoaudit');
     }
 
 }

@@ -9,8 +9,9 @@ use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Events\AfterSheet;
+use Maatwebsite\Excel\Concerns\WithStrictNullComparison;
 
-class SponsorExport implements FromCollection, WithHeadings, WithStyles,ShouldAutoSize,WithEvents
+class SponsorExport implements FromCollection, WithHeadings, WithStyles,ShouldAutoSize,WithEvents,WithStrictNullComparison
 {
     /**
     * @return \Illuminate\Support\Collection

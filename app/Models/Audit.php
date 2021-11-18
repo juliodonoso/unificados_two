@@ -11,4 +11,10 @@ class Audit extends Model
     use HasFactory;
   
     use SoftDeletes;
+
+    public function scopeBuscarpor($query, $tipo, $buscar) {
+    	if ( ($tipo) && ($buscar) ) {
+    		return $query->where($tipo,'like',"%$buscar%");
+    	}
+    }
 }

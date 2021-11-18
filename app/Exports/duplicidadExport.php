@@ -5,9 +5,10 @@ namespace App\Exports;
 use App\proposal;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
+use Maatwebsite\Excel\Concerns\WithStrictNullComparison;
 
 
-class duplicidadExport implements FromCollection,  WithHeadings
+class duplicidadExport implements FromCollection,  WithHeadings,WithStrictNullComparison, WithStrictNullComparison
 {
     /**
     * @return \Illuminate\Support\Collection

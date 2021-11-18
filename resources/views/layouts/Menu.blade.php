@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8" />
     <link rel="apple-touch-icon" sizes="76x76" href="{{ asset('assets/img/apple-icon.png')}}">    
-    <link rel="icon" type="image/png" href="{!! asset('img/logovc.png') !!}"/>
+    <link rel="icon" type="image/png" href="{!! asset('img/LOGOVC.png') !!}"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <title>Unificados</title>
     <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
@@ -17,6 +17,7 @@
     <!-- CSS Just for demo purpose, don't include it in your project -->
     <link href="{{ asset('assets/css/demo.css')}}" rel="stylesheet" />   
 </head>
+
 <body class="sidebar-mini">
     <div class="wrapper">
         <div class="sidebar" data-color="orange" data-image="{{ asset('assets/img/sidebar-5.jpg')}}">
@@ -26,15 +27,18 @@
                         <img src="{!! asset('img/logo_unificados.webp') !!}" alt="Unifif" width=180 height=70>                       
                     </a>
                 </div>
-                <ul class="nav">
-                    <li class="nav-item ">
-                        <a class="nav-link" href="{{ url('/home') }}">
-                            <i class="nc-icon nc-layers-3"></i>
-                            <p>Inicio</p>
-                        </a>
-                    </li>
-                    @if(Auth::user()->idtype  == 1 or Auth::user()->idtype  == 2 or Auth::user()->idtype  == 3) 
+                <ul class="nav"> 
+                    <!-- Inicio              -->
+                        <li class="nav-item ">
+                            <a class="nav-link" href="{{ url('/home') }}">
+                                <i class="nc-icon nc-layers-3"></i>
+                                <p>Inicio</p>
+                            </a>
+                        </li>
+                    <!-- Calidad  -->
+                    @if(Auth::user()->idtype  == 1 or Auth::user()->idtype  == 2 or Auth::user()->idtype  == 3)                  
                         <li class="nav-item">
+                            <p class="logo"></p>                 
                             <a class="nav-link" data-toggle="collapse" href="#componentsExamples">
                                 <i class="nc-icon nc-paper-2"></i>
                                 <p>
@@ -55,30 +59,20 @@
                                         </a>
                                     </li>
                                     @if(Auth::user()->idtype  == 1 or Auth::user()->idtype  == 2) 
-                                    <li class="nav-item ">
-                                        <a class="nav-link" href="{{ route('upgestion') }}">                                      
-                                            <span class="sidebar-normal"><i class="nc-icon nc-refresh-02"></i>Actualizar Gestion</span>
-                                        </a>
-                                    </li>
+                                        <li class="nav-item ">
+                                            <a class="nav-link" href="{{ route('upgestion') }}">                                      
+                                                <span class="sidebar-normal"><i class="nc-icon nc-refresh-02"></i>Actualizar Gestion</span>
+                                            </a>
+                                        </li>
                                     @endif
                                     @if(Auth::user()->idtype  == 1 or Auth::user()->idtype  == 2 or Auth::user()->idtype  == 3) 
-                                    <li class="nav-item ">
-                                        <a class="nav-link" href="{{ route('Importreg') }}">                                      
-                                            <span class="sidebar-normal"><i class="nc-icon nc-cloud-upload-94"></i>Importar</span>
-                                        </a>
-                                    </li>                                   
+                                        <li class="nav-item ">
+                                            <a class="nav-link" href="{{ route('importreg') }}">                                      
+                                                <span class="sidebar-normal"><i class="nc-icon nc-cloud-upload-94"></i>Importar</span>
+                                            </a>
+                                        </li>                                   
                                     @endif
-                                    @if(Auth::user()->idtype  == 1 or Auth::user()->idtype  == 2) 
-                                        <!-- <li class="nav-item ">
-                                            <a class="nav-link" href="">                                       
-                                                <span class="sidebar-normal"><i class="nc-icon nc-mobile"></i>Procesar para Llamadas</span>
-                                            </a>
-                                        </li>                                 -->
-                                        <!-- <li class="nav-item ">
-                                            <a class="nav-link" href="">                                        
-                                                <span class="sidebar-normal"><i class="nc-icon nc-single-copy-04"></i>Reportes</span>
-                                            </a>
-                                        </li>  -->
+                                    @if(Auth::user()->idtype  == 1 or Auth::user()->idtype  == 2)                                      
                                         <li class="nav-item ">
                                             <a class="nav-link" href="{{ route('periodo') }}">                                        
                                                 <span class="sidebar-normal"><i class="nc-icon nc-key-25"></i>Cierre Periodo</span>
@@ -86,9 +80,10 @@
                                         </li>                                   
                                     @endif                              
                                 </ul>
-                            </div>
-                        </li>
+                            </div>                      
+                        </li>                      
                     @endif
+                    <!-- Reportes de Calidad  -->
                     @if(Auth::user()->idtype  == 1 or Auth::user()->idtype  == 4 or Auth::user()->idtype  == 5 or Auth::user()->idtype  == 2)                      
                         <li class="nav-item">
                             <a class="nav-link" data-toggle="collapse" href="#formsExamples">
@@ -101,7 +96,7 @@
                             <div class="collapse " id="formsExamples">
                                 <ul class="nav">                                   
                                     <li class="nav-item ">
-                                        <a class="nav-link" href="{{ route('repGestion') }}">                                       
+                                        <a class="nav-link" href="{{ route('repgestion') }}">                                       
                                             <span class="sidebar-normal"><i class="nc-icon nc-chart-pie-36"></i>Gestion</span>
                                         </a>
                                     </li> 
@@ -131,12 +126,134 @@
                                         </a>
                                     </li>                                                                   
                                 </ul>
-                            </div>
-                         
+                            </div>                         
                         </li>  
-                    @endif                  
+                    @endif 
+                    <!-- Auditoria  -->                       
+                    @if(Auth::user()->idtype  == 6 or Auth::user()->idtype  == 7 or Auth::user()->idtype  == 1 or Auth::user()->idtype  == 1 ) 
+                        <li class="nav-item">                        
+                            <p class="logo"></p>
+                            <a class="nav-link" data-toggle="collapse" href="#tablesaudir">
+                                <i class="nc-icon nc-headphones-2"></i>
+                                <p>
+                                    Auditoria
+                                    <b class="caret"></b>
+                                </p>
+                            </a>
+                            <div class="collapse " id="tablesaudir">                                
+                                
+                                <ul class="nav">
+                                    <li class="nav-item ">
+                                        <a class="nav-link" href="{{ route('ingresoaudit') }}">                                       
+                                            <span class="sidebar-normal"> <i class="nc-icon nc-zoom-split"></i>Auditar</span>
+                                        </a>
+                                    </li>                             
+                                </ul>
+                            </div>
+                        </li>
+                    @endif   
+                    <!-- Reportes de Auditoria                         -->
+                    @if(Auth::user()->idtype  == 7 or Auth::user()->idtype  == 1 or Auth::user()->idtype  == 8)
+                        <li class="nav-item">    
+                            <a class="nav-link" data-toggle="collapse" href="#Reportesaudit">
+                                <i class="nc-icon nc-single-copy-04"></i>
+                                <p>
+                                    Reportes
+                                    <b class="caret"></b>
+                                </p>
+                            </a>
+                            <div class="collapse " id="Reportesaudit">
+                                @if(Auth::user()->idtype  == 7 or Auth::user()->idtype  == 1)     
+                                    <ul class="nav">
+                                        <li class="nav-item ">
+                                            <a class="nav-link" href="{{ route('indexsponsor') }}">                                       
+                                                <span class="sidebar-normal"> <i class="nc-icon nc-money-coins"></i>Sponsor</span>
+                                            </a>
+                                        </li>                             
+                                    </ul>
+                                    <ul class="nav">
+                                        <li class="nav-item ">
+                                            <a class="nav-link" href="{{ route('indexejecut') }}">                                       
+                                                <span class="sidebar-normal"> <i class="nc-icon nc-single-02"></i>Ejecutivos</span>
+                                            </a>
+                                        </li>                             
+                                    </ul>
+                                @endif
+                                @if(Auth::user()->idtype  == 7 or Auth::user()->idtype  == 1 or Auth::user()->idtype  == 8)  
+                                    <ul class="nav">
+                                        <li class="nav-item ">
+                                            <a class="nav-link" href="{{ route('conceptos') }}">                                       
+                                                <span class="sidebar-normal"> <i class="nc-icon nc-settings-gear-64"></i>Conceptos</span>
+                                            </a>
+                                        </li>                             
+                                    </ul>
+                                @endif
+                            </div>
+                        </li>
+                    @endif                     
+                    <!-- LLamadas  -->                       
+                    @if(Auth::user()->idtype  == 5 or Auth::user()->idtype  == 1) 
+                        <!-- <li class="nav-item">
+                        <p class="logo"></p>
+                                <a class="nav-link" data-toggle="collapse" href="#Call">
+                                    <i class="fa fa-phone"></i>
+                                    <p>
+                                        LLamadas
+                                        <b class="caret"></b>
+                                    </p>
+                                </a>
+                                <div class="collapse " id="Call">
+                                    <ul class="nav">
+                                        <li class="nav-item ">
+                                            <a class="nav-link" href="{{ route('call') }}">                                       
+                                                <span class="sidebar-normal"> <i class="nc-icon nc-money-coins"></i> Gestion</span>
+                                            </a>
+                                        </li> 
+                                        <li class="nav-item ">
+                                            <a class="nav-link" href="{{ route('callsacs') }}">                                       
+                                                <span class="sidebar-normal"> <i class="nc-icon nc-money-coins"></i>SACS</span>
+                                            </a>
+                                        </li>                                 
+                                    </ul>
+                                </div>                          
+                            </li>   -->
+                    @endif  
+                    <!-- Campañas  -->
+                    @if(Auth::user()->idtype  == 5 or Auth::user()->idtype  == 1) 
+                        <!-- <li class="nav-item">
+                            <p class="logo"></p>
+                                <a class="nav-link" data-toggle="collapse" href="#Camp">
+                                <i class="nc-icon nc-grid-45"></i> 
+                                    <p>
+                                        Campañas
+                                        <b class="caret"></b>
+                                    </p>
+                                </a>
+                                <div class="collapse " id="Camp">
+                                    <ul class="nav">
+                                        <li class="nav-item ">
+                                            <a class="nav-link" href="{{ route('call') }}">                                       
+                                                <span class="sidebar-normal"> <i class="nc-icon nc-money-coins"></i>Expansion</span>
+                                            </a>
+                                        </li> 
+                                        <li class="nav-item ">
+                                            <a class="nav-link" href="{{ route('callsacs') }}">                                       
+                                                <span class="sidebar-normal"><i class="nc-icon nc-money-coins"></i>Auto</span>
+                                            </a>
+                                        </li>
+                                        <li class="nav-item ">
+                                            <a class="nav-link" href="{{ route('callsacs') }}">                                       
+                                                <span class="sidebar-normal"><i class="nc-icon nc-money-coins"></i>Siniestros</span>
+                                            </a>
+                                        </li>                                 
+                                    </ul>
+                                </div>                          
+                            </li>   -->
+                    @endif  
+                    <!-- Mantenimiento  -->
                     @if(Auth::user()->idtype  == 1 or Auth::user()->idtype  == 7) 
                         <li class="nav-item">
+                            <p class="logo"></p>
                             <a class="nav-link" data-toggle="collapse" href="#tablesExamples">
                                 <i class="nc-icon nc-settings-tool-66"></i>
                                 <p>
@@ -159,6 +276,13 @@
                                         </a>
                                     </li>                             
                                 </ul>
+                                <ul class="nav">
+                                    <li class="nav-item ">
+                                        <a class="nav-link" href="{{ route('companias') }}">                                       
+                                            <span class="sidebar-normal"> <i class="nc-icon nc-bag"></i>Campañas</span>
+                                        </a>
+                                    </li>                             
+                                </ul>
                                 @if(Auth::user()->idtype  == 1) 
                                     <ul class="nav">
                                         <li class="nav-item ">
@@ -168,90 +292,9 @@
                                         </li> 
                                     </ul>  
                                 @endif  
-                            </div>
-                            
+                            </div>                                
                         </li>
-                        @endif
-                        @if(Auth::user()->idtype  == 6 or Auth::user()->idtype  == 7) 
-                        <li class="nav-item">
-                            <a class="nav-link" data-toggle="collapse" href="#tablesaudir">
-                                <i class="nc-icon nc-headphones-2"></i>
-                                <p>
-                                    Auditoria
-                                    <b class="caret"></b>
-                                </p>
-                            </a>
-                            <div class="collapse " id="tablesaudir">                                
-                                
-                                <ul class="nav">
-                                    <li class="nav-item ">
-                                        <a class="nav-link" href="{{ route('ingresoAudit') }}">                                       
-                                            <span class="sidebar-normal"> <i class="nc-icon nc-zoom-split"></i>Auditar</span>
-                                        </a>
-                                    </li>                             
-                                </ul>
-                            </div>  
-                            @if(Auth::user()->idtype  == 7)                               
-
-                            <a class="nav-link" data-toggle="collapse" href="#Reportesaudit">
-                                <i class="nc-icon nc-single-copy-04"></i>
-                                <p>
-                                    Reportes
-                                    <b class="caret"></b>
-                                </p>
-                            </a>
-                            <div class="collapse " id="Reportesaudit">
-                                <ul class="nav">
-                                    <li class="nav-item ">
-                                        <a class="nav-link" href="{{ route('indexSponsor') }}">                                       
-                                            <span class="sidebar-normal"> <i class="nc-icon nc-money-coins"></i>Sponsor</span>
-                                        </a>
-                                    </li>                             
-                                </ul>
-                                <ul class="nav">
-                                    <li class="nav-item ">
-                                        <a class="nav-link" href="{{ route('indexejecut') }}">                                       
-                                            <span class="sidebar-normal"> <i class="nc-icon nc-single-02"></i>Ejecutivos</span>
-                                        </a>
-                                    </li>                             
-                                </ul>
-                                <ul class="nav">
-                                    <li class="nav-item ">
-                                        <a class="nav-link" href="{{ route('conceptos') }}">                                       
-                                            <span class="sidebar-normal"> <i class="nc-icon nc-settings-gear-64"></i>Conceptos</span>
-                                        </a>
-                                    </li>                             
-                                </ul>
-                            </div>
-                            @endif                                    
-                                                        
-                        </li>
-                        @endif
-                        @if(Auth::user()->idtype  == 5 or Auth::user()->idtype  == 1) 
-                        <li class="nav-item">
-                                <a class="nav-link" data-toggle="collapse" href="#Call">
-                                    <i class="fa fa-phone"></i>
-                                    <p>
-                                        LLamadas
-                                        <b class="caret"></b>
-                                    </p>
-                                </a>
-                                <div class="collapse " id="Call">
-                                    <ul class="nav">
-                                        <li class="nav-item ">
-                                            <a class="nav-link" href="{{ route('call') }}">                                       
-                                                <span class="sidebar-normal"> <i class="fa fa-headphones"></i> Gestion</span>
-                                            </a>
-                                        </li> 
-                                        <li class="nav-item ">
-                                            <a class="nav-link" href="{{ route('callsacs') }}">                                       
-                                                <span class="sidebar-normal"> <i class="fa fa-mobile"></i>SACS</span>
-                                            </a>
-                                        </li>                                 
-                                    </ul>
-                                </div>                          
-                            </li>  
-                        @endif               
+                    @endif             
                 </ul>
             </div>
         </div>
@@ -267,9 +310,9 @@
                             </button>
                         </div>
                         @isset($titulo)
-                        <a class="navbar-brand" href="#pablo"> {{$titulo}} </a>
+                            <a class="navbar-brand" href="#pablo"> {{$titulo}} </a>
                         @else
-                        <a class="navbar-brand" href="#pablo"></a>
+                            <a class="navbar-brand" href="#pablo"></a>
                         @endif
                     </div>
                     <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
@@ -281,7 +324,7 @@
                         <ul class="navbar-nav">                            
                             <li class="dropdown nav-item"> <i class="fa fa-user-circle-o text-warning" aria-hidden="true">:</i>                              
                                 <a id="navbarDropdown" class="dropdown-toggle nav-link" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                {{ Auth::user()->name }}  
+                                    {{ Auth::user()->name }}  
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                                     <a class="dropdown-item" href="{{ route('logout') }}"
@@ -305,7 +348,8 @@
             <br>   
         </div> 
     </div>
-</body>      
+</body>
+     
 <footer class="footer">            
     <div class="container" id="ctfoot">
         <nav>
@@ -368,16 +412,7 @@
         demo.initVectorMap();
     });
 </script>
- <style>
-
-    
-    .logo {
-        text-align:center;
-    }
-    
-  
-
- </style>
+ 
 
 </html>
 @endauth
@@ -406,6 +441,15 @@
 </script>
 
 <style>
+
+
+
+.logo {
+        text-align:center;
+    }
+
+
+
 .footer {
     bottom: 0;
     clear: both;
@@ -418,5 +462,8 @@
  
 }
 
+#hraudit {
+    color:#fefefe ;
+}
 
 </style>
