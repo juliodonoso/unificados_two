@@ -32,7 +32,7 @@ Route::get('/periodo/abrir', [App\Http\Controllers\PeriodController::class, 'abr
 
 // Importacion
 
-Route::get('/importar', [App\Http\Controllers\ProposalController::class, 'index'])->name('importreg');
+Route::get('/importarr', [App\Http\Controllers\ProposalController::class, 'index'])->name('importreg');
 Route::post('/carga', [App\Http\Controllers\ProposalController::class, 'create'])->name('Cargaprop');
 Route::post('/mntobd', [App\Http\Controllers\ProposalController::class, 'destroy'])->name('Mnto'); // Borrar archivos cargados ---- los coloca en 
 
