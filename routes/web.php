@@ -128,7 +128,7 @@ Route::POST('/savesacs/{Nrocar}/{ldid}', [App\Http\Controllers\CallController::c
 
 // Auditorias 
 
-Route::get('/audit', [App\Http\Controllers\Auditcontroller::class, 'index'])->name('ingresoaudit');
+Route::get('/Audit', [App\Http\Controllers\Auditcontroller::class, 'index'])->name('ingresoaudit');
 
 // Route::get('/audito', [App\Http\Controllers\Auditcontroller::class, 'indexfil'])->name('filtrarindex');
 
