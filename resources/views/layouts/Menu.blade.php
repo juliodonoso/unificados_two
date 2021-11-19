@@ -166,7 +166,7 @@
                                 @if(Auth::user()->idtype  == 7 or Auth::user()->idtype  == 1)     
                                     <ul class="nav">
                                         <li class="nav-item ">
-                                            <a class="nav-link" href="{{ route('indexsponsor') }}">                                       
+                                            <a class="nav-link" href="{{ route('indexSponsor') }}">                                       
                                                 <span class="sidebar-normal"> <i class="nc-icon nc-money-coins"></i>Sponsor</span>
                                             </a>
                                         </li>                             
