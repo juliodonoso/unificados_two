@@ -24,7 +24,7 @@
             <div class="sidebar-wrapper">
                 <div class="logo">                   
                     <a href="{{ url('/home') }}" class="simple-text logo-normal">                      
-                        <img src="{{ asset('img/Logo_Unificados.webp') }}" alt="Unifif" width=180 height=70>                       
+                        <img src="{{ asset('img/Logo_Unificados.webp') }}" alt="Unificados" width=180 height=70>                       
                     </a>
                 </div>
                 <ul class="nav"> 
