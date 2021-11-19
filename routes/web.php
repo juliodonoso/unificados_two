@@ -152,7 +152,7 @@ Route::get('/export', [App\Http\Controllers\Auditcontroller::class, 'export'])->
 // reportes de auditoria
 
 Route::get('/sponsor/index', [App\Http\Controllers\Auditcontroller::class, 'repSindex'])->name('indexSponsor');
-Route::POST('/reportes/sponsor', [App\Http\Controllers\Auditcontroller::class, 'repsponsor'])->name('sponsor');
+Route::POST('/reportes/sponsor', [App\Http\Controllers\Auditcontroller::class, 'repsponsor'])->name('Sponsor');
 Route::get('/exportsponsor', [App\Http\Controllers\Auditcontroller::class, 'exportsponsor'])->name('excelsponsor');
 
 
