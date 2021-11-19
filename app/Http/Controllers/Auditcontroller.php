@@ -74,7 +74,7 @@ class Auditcontroller extends Controller
                 ->join('sponsors','sponsors.id', '=', 'audits.sponsor') 
                 ->join('teleoperadores','teleoperadores.id', '=', 'audits.idoper')               
                 ->orderby('id','DESC')
-                ->paginate(5);   
+                ->paginate(300);   
             } else {
                 $auditadasf =  $query->get();  
                 $auditadas = $query->select('audits.*','sponsors.name as sname','users.name as name','teleoperadores.name as nombre')             
@@ -82,7 +82,7 @@ class Auditcontroller extends Controller
                 ->leftjoin('users','users.id', '=', 'audits.emp_id')
                 ->join('teleoperadores','teleoperadores.id', '=', 'audits.idoper')
                 ->orderby('id','DESC')
-                ->paginate(5);                          
+                ->paginate(300);                          
             }           
         }            
         $auditCount = $auditadas->total();      
@@ -128,7 +128,6 @@ class Auditcontroller extends Controller
         $usuarios = Auth::user();
         $userid = $usuarios->id;;
         $emp_type =   $usuarios->idtype;
-
        
         $carbon = new \Carbon\Carbon();
         $date = $carbon->now();  
@@ -160,14 +159,24 @@ class Auditcontroller extends Controller
         $ldsd =  Sponsor::where('id',$lsponsor)->count(); ;
         if($ldsd > 0) {          
             $mes = $ldsp->mes; 
-            $anio = $ldsp->anio;            
-            $datevta = $_POST['fventa']; 
-            
-            // dd($datevta);
-            $dateasi = $_POST['fasig'];                 
-            // $lfventa = Carbon::createFromFormat('m/d/Y', $datevta)->format('Y/m/d H:i:s');
-            // $lfasig = Carbon::createFromFormat('m/d/Y', $dateasi)->format('Y/m/d H:i:s'); 
-            $lfventa = $_POST['fventa'];
+            $anio = $ldsp->anio;   
+            $lgrabafecha = 0;
+            if($_POST['fventa'] == '')   {
+
+            } else      {
+                $datevta = $_POST['fventa']; 
+                $lgrabafecha = 1;
+                // dd($datevta);
+                // $dateasi = $_POST['fasig'];                 
+                // $lfventa = Carbon::createFromFormat('m/d/Y', $datevta)->format('Y/m/d H:i:s');
+                // $lfasig = Carbon::createFromFormat('m/d/Y', $dateasi)->format('Y/m/d H:i:s'); 
+                $lfventa = $_POST['fventa'];
+            } 
+                
+                $dateasi = $_POST['fasig']; 
+           
+
+               
         }
         // Preguntas    
         // (A) - 5
@@ -403,7 +412,9 @@ class Auditcontroller extends Controller
             $audit->idgrab =  strtoupper($_POST['idgrab']);
             $audit->rutcli =  $_POST['rutcar'];
             $audit->dvcli =  $_POST['dvcar'];
-            $audit->fvta =  $datevta;
+            if($lgrabafecha == 1) {
+                $audit->fvta =  $datevta;
+            }
             $audit->fgrab =  $dateasi;          
             $audit->rutcli =  $_POST['rutcar'];
             $audit->dvcli =  $_POST['dvcar'];      
@@ -578,7 +589,7 @@ class Auditcontroller extends Controller
         $cia =  \DB::table('campanias')
         ->get();
         $titulo = "Reporte x Sponsor";
-        return view('Auditorias.reportes.indexSponsor')
+        return view('Auditorias.Reportes.indexSponsor')
         ->with('titulo',$titulo)
         ->with('sponsor',$sponsor)
         ->with('canal',$canal)
@@ -633,7 +644,7 @@ class Auditcontroller extends Controller
             $sumpartial = 0;
         }      
         $titulo = "Reporte x Sponsor"; 
-         return view('Auditorias.reportes.Sponsor')
+         return view('Auditorias.Reportes.Sponsor')
          ->with('sponsor',$sponsor)
          ->with('alertas',$alertas)
          ->with('cumple',$cumple)
@@ -693,7 +704,7 @@ class Auditcontroller extends Controller
         $teleop =  \DB::table('teleoperadores')
         ->get();
         $titulo = "Reporte x Ejecutivos";
-        return view('Auditorias.reportes.indexejec')
+        return view('Auditorias.Reportes.indexejec')
         ->with('titulo',$titulo)
         ->with('sponsor',$sponsor)
         ->with('canal',$canal)
@@ -774,7 +785,7 @@ class Auditcontroller extends Controller
             $sumfinal = 0;
             $cumpli = 0;
         }
-        return view('Auditorias.reportes.ejecutivos')
+        return view('Auditorias.Reportes.ejecutivos')
         ->with('ejecutivos',$ejecutivos)
         ->with('alertas',$alertas)
         ->with('cumple',$cumple)
@@ -991,7 +1002,7 @@ class Auditcontroller extends Controller
         $sponsor = sponsor::get();
         $canal =  \DB::table('canal')->get();
         $cia =  \DB::table('campanias')->get();
-        return view('auditorias.NewOperator')
+        return view('Auditorias.NewOperator')
         ->with('titulo',$titulo)
         ->with('sponsor',$sponsor)
         ->with('canal',$canal)
@@ -1024,7 +1035,7 @@ class Auditcontroller extends Controller
         ->join('sponsors','sponsors.id', '=', 'teleoperadores.sponsorid')
         ->join('canal','canal.id', '=', 'teleoperadores.canalid')
          ->get();      
-        return view('auditorias.editoperator')
+        return view('Auditorias.Editoperator')
         ->with('titulo',$titulo)
         ->with('operador',$operador)
         ->with('lsnoedit',$lsnoedit);
@@ -1089,7 +1100,7 @@ class Auditcontroller extends Controller
         ->join('sponsors','sponsors.id', '=', 'campanias.sponsorid')
         ->get();           
         
-        return view('auditorias.editcia')
+        return view('Auditorias.editcia')
         ->with('titulo',$titulo)
         ->with('compa',$compa)
         ->with('lsnoedit',$lsnoedit);

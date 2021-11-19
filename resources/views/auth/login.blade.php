@@ -26,7 +26,7 @@
                 <div class="navbar-wrapper">
                     <a href="" class="simple-text logo-normal">  
                     <br>  <br>  <br>                
-                        <img src="{!! asset('img/logo_unificados.webp') !!}" alt="Unifif" width=280 height=110>
+                        <img src="{!! asset('img/logo_Unificados.webp') !!}" alt="Unifif" width=280 height=110>
                     </a>
                     <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-bar burger-lines"></span>

@@ -12,7 +12,7 @@
                             <div class="row">
                                 <div class="col-sm-6">
                                     @if($lsnoedit == 1)                                      
-                                        <input id="name" type="text" class="form-control" name="name" value=" {{$eje->name}}" required autocomplete="name" autofocus readonly="readonly">
+                                        <input id="name" type="text" class="form-control" name="name" value=" {{$eje->name}}"readonly="readonly">
                                     @else 
                                         <input placeholder="Ingrese Nombre de la Campaña" id="name" type="text" class="form-control" name="name" value=" {{$eje->name}}" required autocomplete="name" autofocus>
                                     @endif
