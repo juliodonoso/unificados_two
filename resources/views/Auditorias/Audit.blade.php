@@ -210,7 +210,7 @@
                             <div class="col-sm-8" >Operador Evaluado: {{$resp->opereva}}</div>                           
                         </div> 
                         <div class="row" id="det01">  
-                            <div class="col-sm-12" >Fecha Venta : {{date('d-m-Y', strtotime($resp->Fvta))}}</td>   / Fecha Asig: {{date('d-m-Y', strtotime($resp->Fgrab))}}  / Fecha Audit: {{date('d-m-Y', strtotime($resp->created_at))}}  </div> 
+                            <div class="col-sm-12" >Fecha Venta : @if(is_null($resp->Fvta)) XXX @else {{date('d-m-Y', strtotime($resp->Fvta))}} @endif    / Fecha Asig: {{date('d-m-Y', strtotime($resp->Fgrab))}}  / Fecha Audit: {{date('d-m-Y', strtotime($resp->created_at))}}  </div> 
                         </div>
                         <div class="row" id="det01">  
                             <div class="col-sm-12" >Id Grab :  {{$resp->idGrab}}  </div> 

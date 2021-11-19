@@ -86,7 +86,7 @@
                                         <label>
                                             Rut Cliente                                            
                                         </label>
-                                        <input id="rutcar" name ="rutcar" class="form-control" required />                                                            
+                                        <input id="rutcar" name ="rutcar" class="form-control"/>                                                            
                                     </div>
                                 </div>   
                                 <div class="col-sm-1">
@@ -94,7 +94,7 @@
                                         <label>
                                             Dv-Rut                                             
                                         </label>
-                                        <input id="dvcar" name ="dvcar" class="form-control" required/>                                                            
+                                        <input id="dvcar" name ="dvcar" class="form-control"/>                                                            
                                     </div>
                                 </div> 
                             </div>
@@ -909,14 +909,14 @@
             swal("Dato Requerido", "Ingrese ID de Grabacion",'warning');
             cant = cant+1;
         }
-        if($fgrab.val()==""){
-            swal("Dato Requerido", "Ingrese Fecha de Venta",'warning');
-            cant = cant+1;
-        }
-        if($fasig.val()==""){
-            swal("Dato Requerido", "Ingrese Fecha de Asignacion",'warning');
-            cant = cant+1;
-        }
+        // if($fgrab.val()==""){
+        //     swal("Dato Requerido", "Ingrese Fecha de Venta",'warning');
+        //     cant = cant+1;
+        // }
+        // if($fasig.val()==""){
+        //     swal("Dato Requerido", "Ingrese Fecha de Asignacion",'warning');
+        //     cant = cant+1;
+        // }
 
 
         if($spon.val()==0 ||

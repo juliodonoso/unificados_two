@@ -414,7 +414,7 @@
         display:flex;
     }
     .table td {
-        font-size:12px;
+        font-size:10px;
     }
     #tab {
         display: flex;
@@ -429,7 +429,7 @@
     }
 
     .titd {
-        width: 10%;
+        width: 15%;
         width: 100px;
         /* word-wrap: break-word; */
         /* border: 1px solid blue; */
