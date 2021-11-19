@@ -307,7 +307,8 @@ class HomeController extends Controller
                 \DB::raw('COUNT(CASE WHEN Estado ="ALERTA" THEN Estado END) as alerta'),
                 \DB::raw('COUNT(CASE WHEN Estado ="CUMPLE" THEN Estado END) as cumple'))           
                 ->groupby('audits.sponame','audits.canal')              
-                ->get();            
+                ->get();          
+                $lsdash =   $dashs->count();
 
                 $auditCount = $auditalert->total();                
                 return view('home2')
@@ -319,7 +320,8 @@ class HomeController extends Controller
                 ->with('lsalertas', $lsalertas)
                 ->with('lscumple',$lscumple)
                 ->with('Countcli',$Countcli)
-                ->with('dashs',$dashs);
+                ->with('dashs',$dashs)
+                ->with('lsdash',$lsdash);
             }
 
           
