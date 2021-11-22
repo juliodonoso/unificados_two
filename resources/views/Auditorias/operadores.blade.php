@@ -26,7 +26,8 @@
                     <th>ID</th>
                     <th>Usuario</th> 
                     <th>Sponsor</th>
-                    <th>Canal</th>                   
+                    <th>Canal</th> 
+                    <th>Status</th>                   
                     <th>Editar</th>             
                   </thead>                 
                     @csrf
@@ -36,10 +37,12 @@
                             <td>{!! $resp->id !!}</td>
                             <td>{!! $resp->name !!}</td> 
                             <td>{!! $resp->nombre !!}</td>
-                            <td>{!! $resp->canal !!}</td>                              
-                            <!-- <td><button name ="bt01" value ="{{$resp->id}}"><i class="fa fa-edit"></i></button></td>    -->
-                            <!-- <td><button name ="bt01" class="btn btn btn-info" value ="{{$resp->id}}" ><i class="fa fa-edit"></i></button></td>                           -->
-                            <!-- <td style="padding: 0"><button  name ="bt01" value ="{{$resp->id}}" id="bt01" class="btn btn-social btn-link btn-twitter"><i style="margin: 0;padding: 0"class="fa fa-edit"></i></button></td>   -->
+                            <td>{!! $resp->canal !!}</td> 
+                            @if($resp->stat == null)
+                            <td>ACTIVO</td>    
+                            @else 
+                            <td>INACTIVO</td>
+                            @endif                      
                             <td style="padding: 0;"> <button name ="bt01" value ="{{$resp->id}}"  class="btn btn-info btn-link btn-wd"><i class="fa fa-edit"></i></button></td>
                         </tr>
                         @endforeach
