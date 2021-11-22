@@ -84,7 +84,7 @@
         </div>
     </div>   
     <div class="row">  
-        @if($lsdash > 0)     
+        @if($lsdash>0)     
         @foreach($dashs as $valor =>$spk)
             <div class="col-lg-3 col-sm-6">
                 <div class="card card-stats">

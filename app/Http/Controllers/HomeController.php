@@ -34,7 +34,10 @@ class HomeController extends Controller
             $emp_idu =  Auth::user()->id;      // Id del Usuario logeado      
             $emp_type =  Auth::user()->idtype;  // Tipo de Usuario
             $cli_acc =  Auth::user()->sponsoracc;  // Acceso en sponsor
-            $array = explode ( ',', $cli_acc );       
+            $array = explode ( ',', $cli_acc );  
+            $arrayc = count($array);
+            // dd($array);
+           
             $titulo = "Inicio";         
             $today = Carbon::today();   
 
@@ -45,6 +48,7 @@ class HomeController extends Controller
             $queryalert = audit::query();
         
             $ltspon = sponsor::where('is_act',1)->get();
+            $msje = '';
       
             $ltcount = $ltspon->count();    
          // Vertifico los Sponsor activos y verifico si hay auditorias 
@@ -77,25 +81,38 @@ class HomeController extends Controller
             if( $emp_type == 8) {     
            // Filtro por el acceso y mes de los usuarios y sponsos 
             foreach($array as $key => $value){    
-                $lts = sponsor::where('id',$value)->get();              
-                $lkmes = $lts[0]->mes; 
-                $lksp = $lts[0]->id;       
-                if($key == 0 ) { 
-                    $queryalert->where('sponsor',$lksp)
-                    ->where("audits.mes",$lkmes)
-                    ->where('Estado','ALERTA');   
+                $lts = sponsor::where('id',$value)->get(); 
+                $ltscount = $lts->count();
+             
+                if($ltscount > 0) {
+                    $lkmes = $lts[0]->mes; 
+                    $lksp = $lts[0]->id;       
+                    if($key == 0 ) { 
+                        $queryalert->where('sponsor',$lksp)
+                        ->where("audits.mes",$lkmes)
+                        ->where('Estado','ALERTA');   
 
-                    $queryclient->where('sponsor',$lksp)
-                    ->where("audits.mes",$lkmes);
+                        $queryclient->where('sponsor',$lksp)
+                        ->where("audits.mes",$lkmes);
 
-                } else {
-                    $queryalert->orwhere('sponsor',$lksp)
-                    ->where("audits.mes",$lkmes)
-                    ->where('Estado','ALERTA');  
-                    
-                    $queryclient->orwhere('sponsor',$lksp)
-                    ->where("audits.mes",$lkmes);
-                }       
+                    } else {
+                        $queryalert->orwhere('sponsor',$lksp)
+                        ->where("audits.mes",$lkmes)
+                        ->where('Estado','ALERTA');  
+                        
+                        $queryclient->orwhere('sponsor',$lksp)
+                        ->where("audits.mes",$lkmes);
+                    }  
+                }  else {
+                        $queryalert->where('sponsor','xxxxxxx')
+                        ->where("audits.mes",'xxxxxxxx')
+                        ->where('Estado','ALERTA');   
+
+                        $queryclient->where('sponsor','xxxxxxx')
+                        ->where("audits.mes",'xxxxxxx');
+                        $titulo = 'Msje: Cliente no tiene Asignados Accesos a Sponsors';
+                      
+                }   
             } 
         }
         // AUDITORIAS
@@ -208,8 +225,7 @@ class HomeController extends Controller
                     ->with('ltopcount',$ltopcount)
                     ->with('today',$today)
                     ->with('ejeccount',$ejeccount)
-                    ->with('calend',$calend);
-                   
+                    ->with('calend',$calend);                
                
             }
           
@@ -289,7 +305,7 @@ class HomeController extends Controller
             }
         // CLIENTES ------ DEPENDE DEL ACCESO EN LA TABLA USERS ( Sponsoracc ) 
             if( $emp_type == 8) {     
-
+          
                 $auditcli = $queryclient->get();
                 $Countcli = $auditcli->count();
                 $lsalertas = $auditcli->where('Estado','ALERTA')->count();
@@ -309,6 +325,7 @@ class HomeController extends Controller
                 ->groupby('audits.sponame','audits.canal')              
                 ->get();          
                 $lsdash =   $dashs->count();
+               
 
                 $auditCount = $auditalert->total();                
                 return view('home2')
@@ -321,7 +338,8 @@ class HomeController extends Controller
                 ->with('lscumple',$lscumple)
                 ->with('Countcli',$Countcli)
                 ->with('dashs',$dashs)
-                ->with('lsdash',$lsdash);
+                ->with('lsdash',$lsdash)
+                ->with('msje',$msje);
             }
 
           

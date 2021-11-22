@@ -989,7 +989,8 @@ class Auditcontroller extends Controller
     public function teleop() {
         $operad = operator::select('sponsors.name as nombre','teleoperadores.*','canal.name as canal')
         ->join('sponsors','sponsors.id', '=', 'teleoperadores.sponsorid')
-        ->join('canal','canal.id', '=', 'teleoperadores.canalid')->get();
+        ->join('canal','canal.id', '=', 'teleoperadores.canalid')
+        ->orderby('id','DESC')->get();
         $titulo = "Listado de Operadores";
         return view('Auditorias.operadores')
         ->with('titulo',$titulo)
@@ -1014,8 +1015,7 @@ class Auditcontroller extends Controller
      
        $audit = new operator;
        $audit->sponsorid = $_POST['sponsor'];  
-       $audit->canalid= $_POST['canal'];   
-       $audit->stat= $_POST['check01'];          
+       $audit->canalid= $_POST['canal'];               
        $audit->name =  strtoupper($_POST['name']);
        $audit->save();
        return redirect()->route('teleop');
