@@ -20,38 +20,30 @@ class callController extends Controller
 
     public function index()    // Index de la importacion
 
-    {        //
-       
-            $ult = Period::where('is_act',true)->first();  // Periodo 
-            $lmes = $ult->mes;
-            $lanio = $ult->anio;         
-            $user = Auth::user()->name;
-            $userid = Auth::user()->id;
-            $querycall = proposal::select('proposals.*','gt1.gestion as gt',
-            'tp1.ntipif as tp','tp3.ntipif as stpc','gt2.gestion as llamada',
-            'tp2.ntipif as tipcall','bancos.name as bk' )        
-            ->leftjoin('gestion as gt1','gt1.id', '=', 'proposals.gestion')
-            ->leftjoin('gestion as gt2','gt2.id', '=', 'proposals.gtcall')
-            ->leftjoin('tipificacion as tp1','tp1.id', '=', 'proposals.tipificacion')
-            ->leftjoin('tipificacion as tp2','tp2.id', '=', 'proposals.tpcall')
-            ->leftjoin('tipificacion as tp3','tp3.id', '=', 'proposals.subtipif')
-            ->leftjoin('bancos','bancos.id', '=', 'proposals.banco')
-            ->where('mes',$lmes)
-            ->where('anio',$lanio)
-            // ->where('is_del', false)
-            ->where('borrado',"0")
-            ->where('is_call',false)
-            ->where('rel','AS')
-            ->where('emp_id',$userid)
-            ->orderby('telf','ASC')
-            ->get();
-          
-        
-        
-
-        
-        
-      
+    {               
+        $ult = Period::where('is_act',true)->first();  // Periodo 
+        $lmes = $ult->mes;
+        $lanio = $ult->anio;         
+        $user = Auth::user()->name;
+        $userid = Auth::user()->id;
+        $querycall = proposal::select('proposals.*','gt1.gestion as gt',
+        'tp1.ntipif as tp','tp3.ntipif as stpc','gt2.gestion as llamada',
+        'tp2.ntipif as tipcall','bancos.name as bk' )        
+        ->leftjoin('gestion as gt1','gt1.id', '=', 'proposals.gestion')
+        ->leftjoin('gestion as gt2','gt2.id', '=', 'proposals.gtcall')
+        ->leftjoin('tipificacion as tp1','tp1.id', '=', 'proposals.tipificacion')
+        ->leftjoin('tipificacion as tp2','tp2.id', '=', 'proposals.tpcall')
+        ->leftjoin('tipificacion as tp3','tp3.id', '=', 'proposals.subtipif')
+        ->leftjoin('bancos','bancos.id', '=', 'proposals.banco')
+        ->where('mes',$lmes)
+        ->where('anio',$lanio)
+        // ->where('is_del', false)
+        ->where('borrado',"0")
+        ->where('is_call',false)
+        ->where('rel','AS')
+        ->where('emp_id',$userid)
+        ->orderby('telf','ASC')
+        ->paginate(5);      
         $titulo = "Gestion de Llamadas";
         return view('Call.indexcall')
         ->with('titulo',$titulo)

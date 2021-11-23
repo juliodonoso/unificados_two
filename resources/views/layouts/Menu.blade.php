@@ -17,8 +17,11 @@
     <!-- CSS Just for demo purpose, don't include it in your project -->
     <link href="{{ asset('assets/css/demo.css')}}" rel="stylesheet" />   
 </head>
-
+@if(Auth::user()->idtype  == 1)  
+<body>
+@else
 <body class="sidebar-mini">
+@endif
     <div class="wrapper">
         <div class="sidebar" data-color="orange" data-image="{{ asset('assets/img/sidebar-5.jpg')}}">
             <div class="sidebar-wrapper">
@@ -193,7 +196,7 @@
                     @endif                     
                     <!-- LLamadas  -->                       
                     @if(Auth::user()->idtype  == 5 or Auth::user()->idtype  == 1) 
-                        <!-- <li class="nav-item">
+                        <li class="nav-item">
                         <p class="logo"></p>
                                 <a class="nav-link" data-toggle="collapse" href="#Call">
                                     <i class="fa fa-phone"></i>
@@ -216,7 +219,7 @@
                                         </li>                                 
                                     </ul>
                                 </div>                          
-                            </li>   -->
+                            </li>  
                     @endif  
                     <!-- Campañas  -->
                     @if(Auth::user()->idtype  == 5 or Auth::user()->idtype  == 1) 
@@ -412,16 +415,12 @@
         demo.initVectorMap();
     });
 </script>
- 
 
 </html>
 @endauth
 
 
 <script>
-
-
-
     function f_salir() {  
         swal({
             title: "Estas Seguro de Salir?",
@@ -441,29 +440,19 @@
 </script>
 
 <style>
-
-
-
-.logo {
-        text-align:center;
+    .logo {
+            text-align:center;
+        }
+    .footer {
+        bottom: 0;
+        clear: both;
+        padding:0px;
     }
-
-
-
-.footer {
-    bottom: 0;
-    clear: both;
-    padding:0px;
-}
-
-#ctfoot {
-   height:10px;/*importante*/
- 
- 
-}
-
-#hraudit {
-    color:#fefefe ;
-}
+    #ctfoot {
+    height:10px;/*importante*/    
+    }
+    #hraudit {
+        color:#fefefe ;
+    }
 
 </style>

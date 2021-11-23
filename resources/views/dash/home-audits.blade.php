@@ -276,6 +276,117 @@
         </div>
     @endif
 
+    @if($emp_type == 7 or $emp_type == 1 ) 
+       
+                    <!-- <div class="row">
+                        <div class="col-md-12">
+                            <form id="wizardForm" method="" action="">
+                                <div class="card card-wizard">
+                                    <div class="card-header ">
+                                        <h5 class="card-title text-left">Detalle de Gestion</h5>
+                                        <p class="card-category text-left">Split a complicated flow in multiple steps</p>
+                                    </div>
+                                    <div class="card-body ">
+                                        <ul class="nav nav-tabs">
+                                            <li class="nav-item">
+                                                <a class="nav-link active" href="#tab1" data-toggle="tab" role="tab" aria-controls="tab1" aria-selected="true">Auditorias dia: {{date('d-m-Y', strtotime($today)) }}</a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link" href="#tab2" data-toggle="tab" role="tab" aria-controls="tab2" aria-selected="true">TOP ALERTAS</a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link" href="#tab3" data-toggle="tab" role="tab" aria-controls="tab3" aria-selected="true">TOP EJECUTIVOS</a>
+                                            </li>
+                                        </ul>    
+                                        <div class="tab-content">
+                                            <div class="tab-pane fade show active" id="tab1" role="tabpanel">  
+                                                @if($ejeccount>0)
+                                                    <div class="card-body ">
+                                                        <div class="table-full-width">
+                                                            <table class="table" id="tableeje">
+                                                                <thead>
+                                                                    <th data-field="name" data-sortable="true">Ejecutivo</th>
+                                                                    <th data-field="salary" data-sortable="true">Alertas</th>
+                                                                    <th data-field="salary" data-sortable="true">% Alertas</th>
+                                                                    <th data-field="salary" data-sortable="true">Cumple</th>
+                                                                    <th data-field="salary" data-sortable="true">% Cumple</th>
+                                                                    <th data-field="salary" data-sortable="true">Total</th>       
+                                                                </thead>
+                                                                <tbody>                           
+                                                                    @foreach($ejecutivos as $ejecu)
+                                                                        <tr>                       
+                                                                            <td>{{ $ejecu->ejec }}</td>
+                                                                            <td class="tdeje">{{ $ejecu->alerta }}</td>
+                                                                            <td class="tdeje">{{ round(($ejecu->alerta / $ejecu->cant)*100) }}%</td>  
+                                                                            <td class="tdeje">{{ $ejecu->cumple }}</td>
+                                                                            <td class="tdeje">{{ round(($ejecu->cumple / $ejecu->cant)*100) }}%</td>  
+                                                                            <td class="tdeje">{{ $ejecu->cant }}</td>  
+                                                                            <td></td>                      
+                                                                        </tr>
+                                                                    @endforeach
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>               
+                                                @else  
+                                                    <div class="col-md-12"><br>
+                                                        <div class="alert alert-info alert-with-icon" data-notify="container" id="cumple">                    
+                                                            <span data-notify="icon" class="nc-icon nc-bell-55"></span>
+                                                            <span><b> Info: </b> No se han Registrado Auditorias el dia {{date('d-m-Y', strtotime($today)) }}</span>
+                                                        </div> 
+                                                    </div>
+                                                @endif                                           
+                                            </div>
+                                            <div class="tab-pane fade" id="tab2" role="tabpanel">
+                                                @if($ltopcount > 0)
+                                                    <div class="card-body ">
+                                                        <div class="table-full-width">
+                                                            <table class="table" id="tablealert">
+                                                                <thead>
+                                                                    <th data-field="name" data-sortable="true">Sponsor</th>
+                                                                    <th data-field="name" data-sortable="true">Canal</th>
+                                                                    <th data-field="salary" data-sortable="true">Campaña</th>
+                                                                    <th>Cant</th>  
+                                                                </thead>
+                                                                <tbody>                           
+                                                                    @foreach($ltop as $top)
+                                                                    <tr>                       
+                                                                        <td id="sp">{{ $top->sponsor }}</td>
+                                                                        <td id="sp">{{ $top->canal }}</td>
+                                                                        <td id="sp">{{ $top->cia }}</td>                 
+                                                                        <td >{{ $top->alerta }}</td> 
+                                                                        <td></td>                       
+                                                                    </tr>
+                                                                    @endforeach
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                @else                 
+                                                    <div class="col-md-12"><br>
+                                                        <div class="alert alert-info alert-with-icon" data-notify="container" id="cumple">                    
+                                                            <span data-notify="icon" class="nc-icon nc-bell-55"></span>
+                                                            <span><b> Info: </b> No se han Registrado Alertas.</span>
+                                                        </div> 
+                                                    </div>                  
+                                                @endif                                                                    
+                                            </div>
+                                            <div class="tab-pane fade" id="tab3" role="tabpanel">       
+                                            <h1>tab3</h1>                                                           
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+            -->
+    @endif
+
+
+
+
+
 @endif
 
 
@@ -496,7 +607,9 @@
         }
 
         #tablealert td, #tabledia td, #tableeje td {
-            font-size: 10px;    
+            font-size: 10px;  
+            /* font-family: inherit;   */
+            font-family: "Open Sans", sans-serif;
         }   
 
 </style>
