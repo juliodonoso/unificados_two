@@ -79,6 +79,9 @@
                         @endforeach
                     </tbody>       
                 </table>
+                <div class="d-flex">
+                        {{ $querycall->appends($_GET)->links('pagination::bootstrap-4') }} 
+                    </div> 
                 </div>   
             </div>     
         </div>

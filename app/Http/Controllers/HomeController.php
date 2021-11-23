@@ -89,24 +89,24 @@ class HomeController extends Controller
                     $lksp = $lts[0]->id;       
                     if($key == 0 ) { 
                         $queryalert->where('sponsor',$lksp)
-                        ->where("audits.mes",$lkmes)
-                        ->where('Estado','ALERTA');   
+                        ->where("audits.mes",$lkmes)                        
+                        ->where('alert',1);   
 
                         $queryclient->where('sponsor',$lksp)
                         ->where("audits.mes",$lkmes);
 
                     } else {
                         $queryalert->orwhere('sponsor',$lksp)
-                        ->where("audits.mes",$lkmes)
-                        ->where('Estado','ALERTA');  
+                        ->where("audits.mes",$lkmes)                        
+                        ->where('alert',1);  
                         
                         $queryclient->orwhere('sponsor',$lksp)
                         ->where("audits.mes",$lkmes);
                     }  
                 }  else {
                         $queryalert->where('sponsor','xxxxxxx')
-                        ->where("audits.mes",'xxxxxxxx')
-                        ->where('Estado','ALERTA');   
+                        ->where("audits.mes",'xxxxxxxx');
+                          
 
                         $queryclient->where('sponsor','xxxxxxx')
                         ->where("audits.mes",'xxxxxxx');

@@ -18,6 +18,11 @@ class ReportController extends Controller
      * @return \Illuminate\Http\Response
      */
 
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
      // Reporte de Gestion
     public function index()
     {

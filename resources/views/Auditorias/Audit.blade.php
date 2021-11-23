@@ -1,7 +1,6 @@
 @extends('layouts.menu')
 @auth
 @section('content')
-
 <div class="col-md-12">
     <div class="card ">
         <div class="card-header"> 
@@ -82,26 +81,26 @@
                     </div>
                 </div>          
             </div>  
-                <div id="botn">                     
-                    <a href="{{ route('NewAudit') }}" class="btn btn-warning" ><i class="fa fa-plus" aria-hidden="true"></i>Nuevo</a>                    
-                    <a href="{{ route('excelaud') }}" class="btn btn-success" ><i class="fa fa-file-excel-o" aria-hidden="true"></i>Excel</a>  
-                    <div id="bqrut"> 
-                        <form class="form-inline" method="GET" action="{{ route('ingresoaudit') }}">       
-                            <input type="text" class="form-control mr-sm-2" name="inputUno" id="search" placeholder="Busqueda Rapida">              
-                            <select name="tipo" class="form-control mr-sm-2" id="exampleFormControlSelect1" required>
-                                <option selected disable>Seleccione...</option>
-                                <option value="sponame">Sponsor</option>
-                                <option value="campania">Campaña</option>
-                                <option value="canal">Canal</option>
-                                <option value="opereva">Operador</option>
-                                <option value="emp_id">Ejecutivo</option> 
-                                <option value="Estado">Estado</option>                        
-                            </select>
-                            <input name="buscarpor" class="form-control mr-sm-2" type="search" placeholder="Buscar" aria-label="Search" style="text-transform:uppercase"  required>    
-                            <button class="btn btn-outline-success my-2 my-sm-2" type="submit">Buscar</button>                                            
-                        </form>
-                    </div> 
-                    <a href="{{ route('ingresoaudit') }}" class="btn btn-info" ><i class="fa fa-eraser" aria-hidden="true"></i>Limpiar</a>
+            <div id="botn">                     
+                <a href="{{ route('NewAudit') }}" class="btn btn-warning" ><i class="fa fa-plus" aria-hidden="true"></i>Nuevo</a>                    
+                <a href="{{ route('excelaud') }}" class="btn btn-success" ><i class="fa fa-file-excel-o" aria-hidden="true"></i>Excel</a>  
+                <div id="bqrut"> 
+                    <form class="form-inline" method="GET" action="{{ route('ingresoaudit') }}">       
+                        <input type="text" class="form-control mr-sm-2" name="inputUno" id="search" placeholder="Busqueda Rapida">              
+                        <select name="tipo" class="form-control mr-sm-2" id="exampleFormControlSelect1" required>
+                            <option selected disable>Seleccione...</option>
+                            <option value="sponame">Sponsor</option>
+                            <option value="campania">Campaña</option>
+                            <option value="canal">Canal</option>
+                            <option value="opereva">Operador</option>
+                            <option value="emp_id">Ejecutivo</option> 
+                            <option value="Estado">Estado</option>                        
+                        </select>
+                        <input name="buscarpor" class="form-control mr-sm-2" type="search" placeholder="Buscar" aria-label="Search" style="text-transform:uppercase"  required>    
+                        <button class="btn btn-outline-success my-2 my-sm-2" type="submit">Buscar</button>                                            
+                    </form>
+                </div> 
+                <a href="{{ route('ingresoaudit') }}" class="btn btn-info" ><i class="fa fa-eraser" aria-hidden="true"></i>Limpiar</a>
             </div>                       
         </div>   
         <div class="card-body ">  
@@ -118,7 +117,7 @@
                             <th data-field="name" data-sortable="true">Periodo</th> 
                             <th data-field="name" data-sortable="true">Operador</th>  
                             <th data-field="name" data-sortable="true">Cliente</th> 
-                            <th data-field="name" data-sortable="true">Fecha</th> 
+                            <th data-field="name" data-sortable="true">Fecha/Hora</th> 
                             <th data-field="name" data-sortable="true">Estado</th>
                             <th data-field="name" data-sortable="true">%Pcl</th>
                             <th data-field="name" data-sortable="true">%Final</th>
@@ -143,7 +142,7 @@
                                         <td>{!! $resp->nombre !!}</td> 
                                     @endif
                                     <td>{!! $resp->rutcli !!}-{!! $resp->dvcli !!}</td>   
-                                    <td>{!! date('d-m-Y', strtotime($resp->created_at)) !!}</td>
+                                    <td>{!! date('d-m-Y H:i', strtotime($resp->created_at)) !!}</td>
                                     @if($resp->Estado == "ALERTA")                 
                                     <td class="text-center" style="color:red;"><i class="fa fa-times" aria-hidden="true"></i>ALERTA</td>
                                     @else
@@ -158,10 +157,10 @@
                                         </td>  
                                     @endif
                                     <td class="text-right">
-                                        <a href="#PlaceModal-{{$resp->id}}" data-toggle="modal"><i class="fa fa-search"></i></a>
+                                        <a href="#PlaceModal-{{$resp->id}}" data-toggle="modal"><i class="fa fa-search" aria-hidden="true"></i></a>
                                     </td>
                                     @if($resp->alert == 1)  
-                                     <td  class="text-right" style="color:#dddedd;"><i class="fa fa-envelope" id="altmail" aria-hidden="true"></i></td>
+                                     <td  class="text-right" style="color:#f3abf3;"><i class="fa fa-envelope" id="altmail" aria-hidden="true"></i></td>
                                     @else
                                     <td></td>
                                     @endif                                                                                                                
@@ -251,7 +250,9 @@
                         <hr>                                    
                     </div>
                     <div class="modal-footer">
-                    <a href="{{ route('alertmail',array('idx' =>$resp->id)) }}" class="btn btn-warning" ><i class="fa fa-envelope" aria-hidden="true"></i>Alerta</a>  
+                        @if($resp->Estado == "ALERTA")
+                            <a href="{{ route('alertmail',array('idx' =>$resp->id)) }}" class="btn btn-warning" ><i class="fa fa-envelope" aria-hidden="true"></i>Alerta</a>  
+                        @endif
                         <button type="button" class="btn btn-info" data-dismiss="modal">Cerrar</button>             
                     </div>
                 </div>
@@ -355,7 +356,7 @@
     }
 
     table td {
-        font-size:10px;
+        font-size:9px;
     }
 
     .modal-backdrop {
