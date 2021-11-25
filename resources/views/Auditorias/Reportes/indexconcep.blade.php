@@ -85,13 +85,15 @@
                             </div>                        
                         </div>
                         <div class="row"> 
-                            <div class="col-sm-6">                          
-                                <select multiple data-title="Seleccione Ejecutivo"  id="ejecut"  name="ejecut[]"  class="selectpicker" multiple data-size="6" data-style="btn-info btn-fill btn-block" data-menu-style="dropdown-blue">
-                                    @foreach($usuarios as $select5)
-                                        <option value="{{ $select5->id }}">{{ $select5->name }}</option>
-                                    @endforeach                                                                                            
-                                </select>                        
-                            </div>                  
+                            @if( $emp_type <> 8)
+                                <div class="col-sm-6">                          
+                                    <select multiple data-title="Seleccione Ejecutivo"  id="ejecut"  name="ejecut[]"  class="selectpicker" multiple data-size="6" data-style="btn-info btn-fill btn-block" data-menu-style="dropdown-blue">
+                                        @foreach($usuarios as $select5)
+                                            <option value="{{ $select5->id }}">{{ $select5->name }}</option>
+                                        @endforeach                                                                                            
+                                    </select>                        
+                                </div> 
+                            @endif                 
                             <div class="col-sm-6">                           
                                 <select multiple data-title="Seleccione Estado"  id="estado"  name="estado[]"  class="selectpicker" multiple data-size="6" data-style="btn-info btn-fill btn-block" data-menu-style="dropdown-blue">                                                
                                     <option value="ALERTA">ALERTA</option>

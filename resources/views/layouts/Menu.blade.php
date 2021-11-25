@@ -325,7 +325,7 @@
                     </button>
                     <div class="collapse navbar-collapse justify-content-end">
                         <ul class="navbar-nav">                            
-                            <li class="dropdown nav-item"> <i class="fa fa-user-circle-o text-warning" aria-hidden="true">:</i>                              
+                            <li class="dropdown nav-item"> <i class="fa fa-user-circle-o text-warning" aria-hidden="true"></i>                              
                                 <a id="navbarDropdown" class="dropdown-toggle nav-link" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                     {{ Auth::user()->name }}  
                                 </a>

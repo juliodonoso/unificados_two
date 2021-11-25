@@ -340,6 +340,7 @@ class HomeController extends Controller
                 ->with('dashs',$dashs)
                 ->with('lsdash',$lsdash)
                 ->with('msje',$msje);
+               
             }
 
           
