@@ -143,7 +143,7 @@ Route::post('/del', [App\Http\Controllers\Auditcontroller::class, 'destroy'])->n
 
 // Correos de alertas
 
-Route::get('/alertas/{idx}', [App\Http\Controllers\MailController::class, 'sendmail'])->name('alertmail');
+Route::get('/alertas/{idx}', [App\Http\Controllers\Mailcontroller::class, 'sendmail'])->name('alertmail');
 
 // Exportar Excel 
 

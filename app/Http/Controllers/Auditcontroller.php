@@ -886,7 +886,8 @@ class Auditcontroller extends Controller
         ->with('canal',$canal)
         ->with('cia',$cia)
         ->with('teleop',$teleop)
-        ->with('usuarios',$usuarios);
+        ->with('usuarios',$usuarios)
+        ->with('emp_type',$emp_type);
     }
 
     public function resultcpt() {       
