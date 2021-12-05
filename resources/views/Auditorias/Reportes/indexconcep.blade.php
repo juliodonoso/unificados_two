@@ -100,6 +100,29 @@
                                     <option value="CUMPLE">CUMPLE</option>                                                                                                        
                                 </select>                            
                             </div>                        
+                        </div>                   
+                        <div class="row">                            
+                            <div class="col-sm-4">                          
+                                <select multiple data-title="Seleccione Resolucion BECS"  id="resol"  name="resol[]"  class="selectpicker" multiple data-size="6" data-style="btn-info btn-fill btn-block" data-menu-style="dropdown-blue">
+                                    @foreach($resolbecs as $select6)
+                                        <option value="{{ $select6->id }}">{{ $select6->name }}</option>
+                                    @endforeach                                                                                            
+                                </select>                        
+                            </div>                                        
+                            <div class="col-sm-4">                           
+                                <select multiple data-title="Seleccione Accion BECS"  id="acciones"  name="acciones[]"  class="selectpicker" multiple data-size="6" data-style="btn-info btn-fill btn-block" data-menu-style="dropdown-blue">                                                
+                                    @foreach($accbecs as $select7)
+                                        <option value="{{ $select7->id }}">{{ $select7->name }}</option>
+                                    @endforeach                                                                                                      
+                                </select>                            
+                            </div> 
+                            <div class="col-sm-4">                           
+                                <select id="respcall"  name="respcall"  class="selectpicker" data-style="btn-info btn-fill btn-block" data-menu-style="dropdown-blue"> 
+                                    <option selected disabled>Seleccione opcion ...</option>                                                   
+                                    <option value=1>APELACION</option>
+                                    <option value=0>SIN APELACION</option>                                                                                                                                          
+                                </select>                            
+                            </div>                       
                         </div>
                     </div>
                     <div class="card-footer ">

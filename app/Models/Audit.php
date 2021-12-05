@@ -17,4 +17,16 @@ class Audit extends Model
     		return $query->where($tipo,'like',"%$buscar%");
     	}
     }
+
+    protected $fillable = [  
+        'id',          
+        'Apelacion',
+        'CommentsCall',
+        'AuditorCall',
+        'ResolucionBECS',
+        'AccionesBECS',
+        'CommentsCIA',
+    ];
+
+   
 }

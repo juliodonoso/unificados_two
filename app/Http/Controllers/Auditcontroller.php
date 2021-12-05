@@ -17,6 +17,7 @@ use App\Exports\AuditExport;
 use App\Exports\SponsorExport;
 use App\Exports\EjecutExport;
 use App\Exports\ConceptsExport;
+use App\Imports\CommentsImport;
 
 // use Request;
 
@@ -37,6 +38,8 @@ class Auditcontroller extends Controller
         $usuarios = Auth::user();
         $userid = $usuarios->id;;
         $emp_type =   $usuarios->idtype;  
+        $hoy = Carbon::today();
+        // dd($hoy);
     
            
         $query = audit::query();
@@ -74,7 +77,7 @@ class Auditcontroller extends Controller
                 ->join('sponsors','sponsors.id', '=', 'audits.sponsor') 
                 ->join('teleoperadores','teleoperadores.id', '=', 'audits.idoper')               
                 ->orderby('id','DESC')
-                ->paginate(150);   
+                ->paginate(15);   
             } else {
                 $auditadasf =  $query->get();  
                 $auditadas = $query->select('audits.*','sponsors.name as sname','users.name as name','teleoperadores.name as nombre')             
@@ -82,22 +85,94 @@ class Auditcontroller extends Controller
                 ->leftjoin('users','users.id', '=', 'audits.emp_id')
                 ->join('teleoperadores','teleoperadores.id', '=', 'audits.idoper')
                 ->orderby('id','DESC')
-                ->paginate(150);                          
+                ->paginate(15);                          
             }           
         }            
         $auditCount = $auditadas->total();      
         $cumple =  $auditadasf->where('Estado',"CUMPLE")->count();
         $alerta =  $auditadasf->where('Estado',"ALERTA")->count();
 
-        return view('Auditorias.Audit')
-        ->with('auditadas',$auditadas)
-        ->with('auditCount',$auditCount)
-        ->with('cumple',$cumple)
-        ->with('alerta',$alerta)
-        ->with('emp_type',$emp_type)
-        ->with('tipo',$tipo)
-        ->with('buscar',$buscar);        
+        return view('Auditorias.Audit', [
+            'auditadas'=>$auditadas,
+            'auditCount'=>$auditCount,
+            'cumple'=>$cumple,
+            'alerta'=>$alerta,
+            'emp_type'=>$emp_type,
+            'tipo'=>$tipo,
+            'buscar'=>$buscar,
+            'hoy'=>$hoy
+        ]);
+        // ->with('auditadas',$auditadas)
+        // ->with('auditCount',$auditCount)
+        // ->with('cumple',$cumple)
+        // ->with('alerta',$alerta)
+        // ->with('emp_type',$emp_type)
+        // ->with('tipo',$tipo)
+        // ->with('buscar',$buscar);        
     }    
+
+    public function editarudit(Request $request) {      
+        $lid = $request->lid;
+        $titulo = 'Edicion de Auditoria # '.$lid;
+        $edicion =audit::where('id',$lid)->get();
+        $sponsor = sponsor::where('is_act',1)->get();
+        $ltcount = $sponsor->count();         
+        $campanias =  cia::wherenull('stat')->get();       
+        $teleop =  operator::orderby('name','ASC')->get();
+        $carbon = new \Carbon\Carbon();
+        $date = $carbon->now();
+       
+        $canal = \DB::table('canal')->get();   
+      
+        return view('Auditorias.editar',[
+            'titulo'=>$titulo,
+            'edicion'=>$edicion,
+            'sponsor'=>$sponsor,
+            'canal'=>$canal,
+            'campanias'=>$campanias,
+            'teleop' =>$teleop,
+            'date'=>$date,
+            'lid'=>$lid,
+        ]);
+    }
+    public function upeditaudit(Request $request, $lid) {       // Edicionde auditorias 
+
+        $lgrabaraudit = audit::find($lid);
+        if($request->hisuper !== null) {
+            $lgrabaraudit->sponsor = $request->input("sponsor");
+            $lgrabaraudit->sponame = $request->input("hisuper");
+        }
+        if($request->hisuper !== null) {
+            $lgrabaraudit->idcia = $request->input("cia");
+            $lgrabaraudit->campania = $request->input("hicia");
+        }
+        if($request->hisuper !== null) {
+            $lgrabaraudit->idcanal = $request->input("canal");
+            $lgrabaraudit->canal = $request->input("hicanal");
+        }
+        if($request->hisuper !== null) {
+            $lgrabaraudit->idoper = $request->input("telop");
+            $lgrabaraudit->opereva = $request->input("hioper");
+        }
+            $lgrabaraudit->Fvta = $request->input("fventa");
+            $lgrabaraudit->Fgrab = $request->input("fasig");
+            $lgrabaraudit->rutcli = $request->input("rutcar");
+            $lgrabaraudit->dvcli = $request->input("dvcar");
+            $lgrabaraudit->observ = $request->input("observ");
+            $lgrabaraudit->idGrab = $request->input("idgrab"); 
+
+            $lgrab = $request->file('file-0b');
+
+            if($lgrab !==null) {
+                $file = $request->file('file-0b');
+                $nombre =  $file->getClientOriginalName();//depende de como lo nombren
+                \Storage::disk('local')->put("grabaciones/$nombre",  \File::get($file));
+                $lgrabaraudit->grabacion = $nombre;
+            }
+
+            $lgrabaraudit->save();        
+            return redirect()->route('ingresoaudit'); 
+    }
 
     public function combos() {       // Operadores      
         $lsid = $_POST['id'];
@@ -144,8 +219,8 @@ class Auditcontroller extends Controller
        
     }
 
-    public function grabaudi () {  
-        // dd($_POST);        
+    public function grabaudi (Request $request) {  
+        // dd($request);        
 
         if(isset($_POST['chkasig']) ){
             if($_POST['chkasig'] == 1 ) {
@@ -171,13 +246,9 @@ class Auditcontroller extends Controller
                 // $lfventa = Carbon::createFromFormat('m/d/Y', $datevta)->format('Y/m/d H:i:s');
                 // $lfasig = Carbon::createFromFormat('m/d/Y', $dateasi)->format('Y/m/d H:i:s'); 
                 $lfventa = $_POST['fventa'];
-            } 
-                
-                $dateasi = $_POST['fasig']; 
-           
-
-               
-        }
+            }                 
+                $dateasi = $_POST['fasig'];                
+            }
         // Preguntas    
         // (A) - 5
             if(isset($_POST['chkA1'])) {
@@ -398,9 +469,19 @@ class Auditcontroller extends Controller
                 $lH7 = $_POST['chkH7'];
             } else {
                 $lH7 = 0;
-            }       
-        
+            }    
+            
+           
             $audit = new audit;
+            $lgrab = $request->file('file-0b');
+
+            if($lgrab !==null) {
+                $file = $request->file('file-0b');
+                $nombre =  $file->getClientOriginalName();//depende de como lo nombren
+                \Storage::disk('local')->put("grabaciones/$nombre",  \File::get($file));
+                $audit->grabacion = $nombre;
+            }
+            
             $audit->sponsor = $_POST['sponsor'];  
             $audit->sponame = $_POST['hisuper'];           
             $audit->idcia =  $_POST['cia'];
@@ -482,8 +563,8 @@ class Auditcontroller extends Controller
             $audit->mes = $mes;
             $audit->anio =$anio;
             $audit->observ = strtoupper($_POST['observ']);
+            $audit->Apelacion =0;
             $audit->save();
-
         return redirect()->route('ingresoaudit');
     }
 
@@ -863,12 +944,9 @@ class Auditcontroller extends Controller
         $emp_idu =  Auth::user()->id;      // Id del Usuario logeado      
         $emp_type =  Auth::user()->idtype;  // Tipo de Usuario
         $cli_acc =  Auth::user()->sponsoracc;  // Acceso en sponsor
-        $array = explode ( ',', $cli_acc );   
-
-
-       
+        $array = explode ( ',', $cli_acc );          
         $canal =  \DB::table('canal')->get();
-        $cia =  \DB::table('campanias')->get();
+        $cia =  cia::all();
         if( $emp_type == 8) {
             $usuarios = user::where('idtype',6)->get();
             $sponsor = sponsor::wherein('id',$array)->get();
@@ -877,22 +955,27 @@ class Auditcontroller extends Controller
             $sponsor = sponsor::all();
         }
 
-        $teleop =  \DB::table('teleoperadores')
-        ->get();
+        $teleop =  operator::all();
+        $resolbecs =  \DB::table('resolbecs')->get();
+        $accbecs =  \DB::table('accbecs')->get();
+       
         $titulo = "Reporte por Conceptos";
-        return view('Auditorias.Reportes.indexconcep')
-        ->with('titulo',$titulo)
-        ->with('sponsor',$sponsor)
-        ->with('canal',$canal)
-        ->with('cia',$cia)
-        ->with('teleop',$teleop)
-        ->with('usuarios',$usuarios)
-        ->with('emp_type',$emp_type);
+        return view('Auditorias.Reportes.indexconcep', [
+            'resolbecs'=>$resolbecs,
+            'accbecs'=>$accbecs,
+            'titulo'=>$titulo,
+            'sponsor'=>$sponsor,
+            'canal'=>$canal,
+            'cia'=>$cia,
+            'teleop'=>$teleop,
+            'usuarios'=>$usuarios,
+            'emp_type'=>$emp_type
+        ]);       
     }
 
     public function resultcpt() {       
 
-        // dd($_POST['fdesde']);  
+        // dd($_POST);       
         
         $emp_idu =  Auth::user()->id;      // Id del Usuario logeado      
         $emp_type =  Auth::user()->idtype;  // Tipo de Usuario
@@ -948,9 +1031,26 @@ class Auditcontroller extends Controller
             $query->where("estado",$lestado);
         }
 
+        // campos de post cierre call 
+
+        if(isset($_POST['resol'])) {
+            $lresol = $_POST['resol'];
+            $query->where("ResolucionBECS",$lresol);
+        }
+        if(isset($_POST['acciones'])) {
+            $lacc = $_POST['acciones'];
+            $query->where("AccionesBECS",$lacc);
+        }
+        if(isset($_POST['respcall'])) {             
+            $lapel = $_POST['respcall'];
+            $query->where("Apelacion",$lapel);
+        }
+
         // dd($query);
 
         $titulo = 'Generador de Reportes (Excel)';
+
+     
 
         $conceptos = $query->select('audits.id','audits.campania',\DB::raw("CONCAT(rutcli, '-', dvcli) AS rut"),'audits.fvta','teleoperadores.name as nombre','audits.idGrab','users.name',
         'audits.Fgrab',
@@ -963,10 +1063,13 @@ class Auditcontroller extends Controller
         \DB::raw("CONCAT(audits.PrgG,'%') AS PrG"),'audits.PrgG1','audits.PrgG2','audits.PrgG3','audits.PrgG4','audits.PrgG5',
         \DB::raw("CONCAT(audits.npartial,'%') AS partial"),
         'audits.PrgH1','audits.PrgH2','audits.PrgH3','audits.PrgH4','audits.PrgH5','audits.PrgH6','audits.PrgH7',
-        \DB::raw("CONCAT(audits.nfinal,'%') AS final"),'audits.Estado','audits.observ','audits.mes','audits.anio','audits.sponame','audits.canal')              
-        ->leftjoin('sponsors','sponsors.id', '=', 'audits.sponsor') 
-        ->leftjoin('users','users.id', '=', 'audits.emp_id')  
-        ->join('teleoperadores','teleoperadores.id', '=', 'audits.idoper')  
+        \DB::raw("CONCAT(audits.nfinal,'%') AS final"),'audits.Estado','audits.observ','audits.apelaname','audits.CommentsCall',
+        'audits.AuditorCall','resolbecs.name as resol','accbecs.name as acciones','audits.CommentsCIA','audits.mes','audits.anio','audits.sponame','audits.canal')     
+         ->leftjoin('accbecs','accbecs.id', '=', 'audits.accionesbecs')         
+         ->leftjoin('resolbecs','resolbecs.id', '=', 'audits.resolucionbecs')         
+        ->join('sponsors','sponsors.id', '=', 'audits.sponsor') 
+        ->join('users','users.id', '=', 'audits.emp_id') 
+        ->join('teleoperadores','teleoperadores.id', '=', 'audits.idoper')            
         ->orderby('id','DESC')    
         ->get();
 
@@ -1055,9 +1158,7 @@ class Auditcontroller extends Controller
         $upoperator->canalid = $_POST['canal'];        
         $upoperator->save();
         return redirect()->route('teleop');
-    }
-
-   
+    }   
 
     public function cias() {
         $cias = cia::select('sponsors.name as nombre','campanias.*')
@@ -1122,6 +1223,92 @@ class Auditcontroller extends Controller
         $upcia->save();
         return redirect()->route('companias');
     }
+
+    public function commentsaudit($lid) {
+        $titulo = "Comentarios de Auditoria";
+        $comentarios = audit::where('id',$lid)->get();
+        return view('Auditorias.Comentarios',[
+            'titulo'=>$titulo,
+            'comentarios'=>$comentarios,
+        ]);
+
+    }
+
+    public function upcomments(Request $request) {
+        
+        // dd($_POST);
+        $userid = Auth::user()->id;
+        $lid = $request->input("ID");
+        $lcmmtcall = $request->input("cmmtcall");
+        $lapela = $request->input("chk01");
+        $laudcall = $request->input("audcall");
+        $lresol = $request->input("resol");
+        $lacccia = $request->input("Acccia");
+        $lcmmcia = $request->input("cmmtcia");  
+
+        $lcmmtup = audit::find($lid);
+        if($lapela == "on") {
+            $lcmmtup->Apelacion  = "1";           
+        } else {
+            $lcmmtup->Apelacion  = "0";
+        }
+        $lcmmtup->CommentsCall  = $lcmmtcall;
+        $lcmmtup->AuditorCall  = $laudcall;
+        $lcmmtup->ResolucionBECS  = $lresol;
+        $lcmmtup->AccionesBECS  = $lacccia;
+        $lcmmtup->CommentsCIA  = $lcmmcia;
+        $lcmmtup->cmmuser  = $userid;
+        $lcmmtup->cmmdate  = now();
+
+
+        $lcmmtup->save();
+        
+        return redirect()->route('home');
+
+    }
+
+    public function importccindex() {
+        $titulo = 'Importacion de Comentarios de Auditorias';
+        return view('Auditorias.Import',[
+            'titulo' => $titulo,
+        ]);
+    }
+
+    public function importcomments(Request $request) {      
+
+        $Excelup =  Excel::toCollection(new CommentsImport,request()->file('file')); 
+        $userid = Auth::user()->id;
+      
+        foreach($Excelup[0] as $cmm)
+        {            
+            if($cmm['apelacion'] == null  or $cmm['apelacion'] <> 1) {
+                $lapelac = 0;
+                $napelac = "";
+            } else {
+                $lapelac = 1;
+                $napelac = "APELA";
+            }       
+            audit::where('id', $cmm['id'])->update([               
+                'Apelacion' => $lapelac,
+                'apelaname'=> $napelac,
+                'CommentsCall' => $cmm['comentcallcenter'],
+                'AuditorCall' => $cmm['auditorcallcenter'],
+                'ResolucionBECS' => $cmm['resolbecs'],
+                'AccionesBECS' => $cmm['accionesbecs'],
+                'CommentsCIA' => $cmm['comentcia'],
+                'cmmuser' => $userid,
+                'cmmdate' =>now(),
+            ]);            
+        }
+
+        $titulo = 'Importacion de Comentarios de Auditorias: Actualizados Correctamente';
+        return view('Auditorias.Import',[
+            'titulo' => $titulo,
+        ]);
+
+    }
+    
+
 
 }
 

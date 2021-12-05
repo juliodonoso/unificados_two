@@ -70,7 +70,8 @@
                                             <option value="4">SUPERVISOR LLAMADAS</option>
                                             <option value="5">AGENTE LLAMADAS</option>
                                             <option value="7">SUPERVISOR DE AUDITORIA</option> 
-                                            <option value="8">CLIENTE</option>   
+                                            <option value="8">CLIENTE</option>
+                                            <option value="9">CANAL</option>   
                                         @endif
                                         <option value="6">AUDITOR</option>                                         
                                 </select> 

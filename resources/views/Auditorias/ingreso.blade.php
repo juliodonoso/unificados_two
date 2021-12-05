@@ -5,7 +5,7 @@
                                  
 <div class="col-md-12">
     <div class="card ">
-        <form method="POST" action="{{ route('gingreso') }}" name="formedit">
+        <form method="POST" action="{{ route('gingreso') }}" name="formedit" enctype="multipart/form-data">
             @csrf          
             <div class="card-body ">                                                   
                 <!-- Datos de la campaña-->
@@ -23,7 +23,7 @@
                                 </div>    
                                 <div class="col-sm-6">                                 
                                     <select data-old="" id="cia" name="cia" class="form-control" required>Seleccione Campaña       
-                                        <option value=''>Seleccione Campaña</option>    
+                                        <option value='' selected disabled>Seleccione Campaña</option>    
                                         @foreach($campanias as $select2)
                                             <option value="{{ $select2->id }}">{{ $select2->name }}</option>
                                         @endforeach
@@ -417,10 +417,16 @@
             
                         </div>
                     </div>
-                <!-- Observaciones  -->
+                <!-- Cargar Grabacion de alerta  -->
+                    <div id="cargagrab" style="display:none;">               
+                        <label for="file-0b">Ingrese Grabacion de Alerta</label>
+                        <input id="file-0b"  class="form-control" name="file-0b" type="file" enctype="multipart/form-data" accept="audio/*" required>
+                        <br>                     
+                    </div>   
+               <!-- Observaciones  -->
                     <div class="form-group">
                         <label for="exampleFormControlTextarea1">Observaciones</label>
-                        <textarea class="form-control" id="tt01" rows="4" name="observ" style="text-transform:uppercase"></textarea>
+                        <textarea class="form-control" id="tt01" rows="4" name="observ" style="text-transform:uppercase; height: 90px;"></textarea>
                     </div>       
             </div> 
             <input type="hidden" name="estado" id="estado" value="CUMPLE">        
@@ -733,13 +739,15 @@
                 $( "#cumple" ).hide(); 
                 $('#pct2').text("0"); 
                 $('#ntlt').val(0); 
-                $('#estado').val("ALERTA");            
+                $('#estado').val("ALERTA"); 
+                $("#cargagrab").show();           
             } else {   
                 $( "#alert" ).hide();
                 $( "#cumple" ).show();
                 $('#pct2').text(tH);
                 $('#ntlt').val(tH); 
                 $('#estado').val("CUMPLE"); 
+                $("#cargagrab").hide();
             }
 
             if(tH<100)   {
@@ -756,12 +764,14 @@
                 $( "#cumple" ).hide();                
                 $('#ntlt').val(0);                
                 $('#pct2').text(0);
-                $('#estado').val("ALERTA");            
+                $('#estado').val("ALERTA");
+                $("#cargagrab").show();             
             } else {   
                 $( "#alert" ).hide();
                 $( "#cumple" ).show();                
                 $('#ntlt').val(tH); 
                 $('#estado').val("CUMPLE"); 
+                $("#cargagrab").hide(); 
             }
             
     });
@@ -811,7 +821,7 @@
         });
     }
 </script>
-<!-- Funcion para limitar el tamaño de los input  -->
+<!-- Funcion para limitar el tamaño de los input Rut y dvrut -->
 <script>
     var input=  document.getElementById('rutcar');
     input.addEventListener('input',function(){
@@ -828,7 +838,6 @@
 </script>
 
 <!-- funcion para habilitar asignar ejecutiva -->
-
 <script>
     $('#chkasig').on('change', function() {
         if ($(this).is(':checked') ) {
@@ -898,7 +907,7 @@
 <script>
     function validar(){
         var $spon=$('#super');
-        var $camp=$('#cia');
+        var $camp=$('#cia').val();      
         var $cana=$('#canal');
         var $oper=$('#telop');
         var $fgrab=$('#datetimepicker');
@@ -913,19 +922,16 @@
         //     swal("Dato Requerido", "Ingrese Fecha de Venta",'warning');
         //     cant = cant+1;
         // }
-        // if($fasig.val()==""){
-        //     swal("Dato Requerido", "Ingrese Fecha de Asignacion",'warning');
-        //     cant = cant+1;
-        // }
-
-
+        if($fasig.val()==""){
+            swal("Dato Requerido", "Ingrese Fecha de Asignacion",'warning');
+            cant = cant+1;
+        }
         if($spon.val()==0 ||
             $spon.val()==""){   
             swal("Dato Requerido", "Seleccione un Sponsor",'warning');
             cant = cant+1;
         } 
-        if($camp.val()==0 ||
-            $camp.val()==""){   
+        if($camp == null){   
             swal("Dato Requerido", "Seleccione una Campaña",'warning');
             cant = cant+1;
         } 
@@ -947,32 +953,6 @@
 </script>
 
 
-<style>    
-    .text-left {
-        padding: 0px;
-        height:0px;
-        color: red;
-    }
-    #evalAC {
-        color: red;
-    }
-
-    #lines {
-        display:flex;
-    }
-
-    #not {
-        width:50%;
-        height:145px;
-        text-align: center;
-        display: inline; 
-   vertical-align: middle;
-       
-    }
-    #tit {
-       display:flex; 
-    }
-</style>
 
 @endsection
 @endauth
@@ -988,5 +968,6 @@ document.addEventListener('keyup', event => {
 }, false)
 
 </script>
+
 
 

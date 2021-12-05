@@ -496,35 +496,7 @@ class ProposalController extends Controller
         $lregup = 0;
         foreach($Excelup[0] as $upgestion)
 
-        //  $lgestion = $upgestion['gestion'];
-        //  if($lgestion == !null){           
-        //      $lqupdate = "'gestion' => $upgestion[gestion]," ;            
-        //  }
-        //  $ltipifi = $upgestion['tipificacion'];
-        //  if($ltipifi == !null){
-        //     $lqupdate = $lqupdate."'tipificacion' => $upgestion[tipificacion]," ;            
-        //  }
-        //  $lgtcall= $upgestion['gtcall'];
-        //  if($lgtcall == !null){
-          
-        //      $lqupdate = $lqupdate."'gtcall' => $upgestion[gtcall]," ;         
-        //  }
-        //  $ltpcall= $upgestion['tpcall'];
-        //  if($ltpcall == !null){      
-        //      $lqupdate = $lqupdate."'tpcall'=> $upgestion[tpcall]," ;          
-        //  }
-        //  $lobser= $upgestion['observaciones'];
-        //  if($lobser == !null){
-        //      $lqupdate = $lqupdate."'observaciones'=> $upgestion[observaciones]," ;          
-        //  }
-        //  $lstipif= $upgestion['subtipif'];
-        //  if($lstipif == !null){            
-        //      $lqupdate = $lqupdate."'subtipif'=> $upgestion[subtipif]," ;            
-        //  }
-        // //  $int = strlen ( $lqupdate )-1;
-        //  $rest = substr($lqupdate, 0, -1);  // devuelve "abcde"
-
-        //  dd($rest);
+      
         {         
             $wordlist = Proposal::where('rutcar', $upgestion['rutcar'])
                 ->where('mes',$lmes)

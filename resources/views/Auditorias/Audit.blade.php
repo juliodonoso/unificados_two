@@ -126,7 +126,8 @@
                             <th data-field="name" data-sortable="true">Del</th>
                             @endif                                    
                             <th data-field="name" data-sortable="true">Det</th> 
-                            <th data-field="name" data-sortable="true">Alt</th> 
+                            <th data-field="name" data-sortable="true">Alt</th>
+                            <th data-field="name" data-sortable="true">edit</th>                          
                         </thead>
                         <tbody>
                             @foreach($auditadas as $resp)                                                                                                                
@@ -141,29 +142,36 @@
                                     @else 
                                         <td>{!! $resp->nombre !!}</td> 
                                     @endif
-                                    <td>{!! $resp->rutcli !!}-{!! $resp->dvcli !!}</td>   
-                                    <td>{!! date('d-m-Y H:i', strtotime($resp->created_at)) !!}</td>
+                                        <td>{!! $resp->rutcli !!}-{!! $resp->dvcli !!}</td>   
+                                        <td>{!! date('d-m-Y H:i', strtotime($resp->created_at)) !!}</td>
                                     @if($resp->Estado == "ALERTA")                 
-                                    <td class="text-center" style="color:red;"><i class="fa fa-times" aria-hidden="true"></i>ALERTA</td>
+                                        <td class="text-center" style="color:red;"><i class="fa fa-times" aria-hidden="true"></i>ALERTA</td>
                                     @else
                                         <td class="text-center" style="color:green;"><i class="fa fa-check" aria-hidden="true"></i>CUMPLE</td>
                                     @endif 
-                                    <td class="text-right">{!! $resp->npartial !!} %</td> 
-                                    <td class="text-right">{!! $resp->nfinal !!} %</td>
+                                        <td class="text-right">{!! $resp->npartial !!} %</td> 
+                                        <td class="text-right">{!! $resp->nfinal !!} %</td>
                                     @if($emp_type == 7) 
                                         <td>{!! $resp->name !!}</td>                                                                                 
                                         <td class="text-right">                                    
                                             <button id="del" onclick="eliminarArticulo({{$resp->id}})" class="btn btn-outline btn-danger"><i class="fa fa-trash"></i></button>
                                         </td>  
                                     @endif
-                                    <td class="text-right">
-                                        <a href="#PlaceModal-{{$resp->id}}" data-toggle="modal"><i class="fa fa-search" aria-hidden="true"></i></a>
-                                    </td>
+                                        <td class="text-right">
+                                            <a href="#PlaceModal-{{$resp->id}}" data-toggle="modal"><i class="fa fa-search" aria-hidden="true"></i></a>
+                                        </td>
                                     @if($resp->alert == 1)  
-                                     <td  class="text-right" style="color:#f3abf3;"><i class="fa fa-envelope" id="altmail" aria-hidden="true"></i></td>
+                                        <td  class="text-right" style="color:#e509e5;"><i class="fa fa-envelope" id="altmail" aria-hidden="true"></i></td>
                                     @else
-                                    <td></td>
-                                    @endif                                                                                                                
+                                        <td></td>
+                                    @endif 
+                                    @if(Carbon\Carbon::parse($resp->created_at)->format('Y-m-d') ==  Carbon\Carbon::today()->format('Y-m-d'))
+                                        <td class="text-left">
+                                            <a href="{{ route('editarudit',array('lid' =>$resp->id)) }}"><i class="fa fa-edit text-success" aria-hidden="true"></i></a>
+                                        </td>
+                                    @else
+                                         <td  class="text-left" style="color:grey;"><i class="fa fa-lock" id="altmail" aria-hidden="true"></i></td>
+                                    @endif                                                                                                               
                                 </tr>                                        
                             @endforeach 
                         </tbody>                   
@@ -247,7 +255,12 @@
                         <div class="row" id="det01">
                             <div class="col-sm-12" id="obs01">Observaciones : {{$resp->observ}} </div>                           
                         </div>
-                        <hr>                                    
+                        <hr>
+                        @if($resp->grabacion != null)
+                            <div class="row" id="det01">
+                                <div class="col-sm-12" id="grab01">Grabacion Alerta : <a href="{{ route('uploads',array('file' =>$resp->grabacion)) }}"> {{$resp->grabacion}}</a>  </div>              
+                            </div>  
+                        @endif                                  
                     </div>
                     <div class="modal-footer">
                         @if($resp->Estado == "ALERTA")
@@ -379,6 +392,11 @@
 
     #obs01, #det01 {
         font-size:10px;
+    }
+
+    #obs01 { 
+        white-space: nowrap;
+        overflow: hidden;
     }
 
 </style>
