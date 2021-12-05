@@ -144,11 +144,32 @@
                                 </p>
                             </a>
                             <div class="collapse " id="tablesaudir">                                
-                                
                                 <ul class="nav">
                                     <li class="nav-item ">
                                         <a class="nav-link" href="{{ route('ingresoaudit') }}">                                       
                                             <span class="sidebar-normal"> <i class="nc-icon nc-zoom-split"></i>Auditar</span>
+                                        </a>
+                                    </li>                             
+                                </ul>
+                            </div>
+                        </li>
+                    @endif 
+                    <!-- Heramientas de clientes auditoria  -->
+                    @if(Auth::user()->idtype  == 8 or Auth::user()->idtype  == 1 ) 
+                        <li class="nav-item">                        
+                            <p class="logo"></p>
+                            <a class="nav-link" data-toggle="collapse" href="#tablesaudir">
+                                <i class="nc-icon nc-settings-90"></i>
+                                <p>
+                                    Herramientas
+                                    <b class="caret"></b>
+                                </p>
+                            </a>
+                            <div class="collapse " id="tablesaudir">                                
+                                <ul class="nav">
+                                    <li class="nav-item ">
+                                    <a class="nav-link" href="{{ route('indexscomments') }}">                                                
+                                            <span class="sidebar-normal"> <i class="nc-icon nc-cloud-upload-94"></i>Importar</span>
                                         </a>
                                     </li>                             
                                 </ul>
@@ -189,7 +210,7 @@
                                                 <span class="sidebar-normal"> <i class="nc-icon nc-settings-gear-64"></i>Conceptos</span>
                                             </a>
                                         </li>                             
-                                    </ul>
+                                    </ul>                                    
                                 @endif
                             </div>
                         </li>
@@ -289,8 +310,8 @@
                                 @if(Auth::user()->idtype  == 1) 
                                     <ul class="nav">
                                         <li class="nav-item ">
-                                            <a class="nav-link" href="{{ route('pdfindex') }}">                                        
-                                                <span class="sidebar-normal"><i class="nc-icon nc-key-25"></i>Importar pdf</span>
+                                            <a class="nav-link" href="{{ route('pruebas') }}">                                        
+                                                <span class="sidebar-normal"><i class="nc-icon nc-key-25"></i>Pruebas</span>
                                             </a>
                                         </li> 
                                     </ul>  

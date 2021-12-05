@@ -48,10 +48,17 @@ class ConceptsExport implements FromCollection, WithHeadings, WithStyles,ShouldA
             'Nota Final %',
             'Estado',            
             'observaciones',
+            'Apelacion',
+            'ComentCallCenter',
+            'AuditorCallCenter',
+            'ResolBECS',
+            'AccionesBECS',
+            'ComentCia',
             'mes',
             'anio',
             'Sponsor',
-            'Canal'
+            'Canal'            
+
        ];
     }
 
@@ -73,12 +80,26 @@ class ConceptsExport implements FromCollection, WithHeadings, WithStyles,ShouldA
     {
         return [
             AfterSheet::class    => function(AfterSheet $event) {
-                $event->sheet
-                    ->getDelegate()->getStyle('A1:BM1')
+                    $event->sheet
+                    ->getDelegate()->getStyle('A1:BI1')
                     ->getFill()
                     ->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
                     ->getStartColor()
-                    ->setARGB('f2f6f7');                
+                    ->setARGB('f2f6f7');
+                    
+                    $event->sheet
+                    ->getDelegate()->getStyle('BJ1:BO1')
+                    ->getFill()
+                    ->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
+                    ->getStartColor()
+                    ->setARGB('b1f1b1'); 
+
+                    $event->sheet
+                    ->getDelegate()->getStyle('BP1:BS1')
+                    ->getFill()
+                    ->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
+                    ->getStartColor()
+                    ->setARGB('f2f6f7');
 
                     $styleArray = [
                         'fill' => [
@@ -95,7 +116,7 @@ class ConceptsExport implements FromCollection, WithHeadings, WithStyles,ShouldA
                        $event->sheet->getStyle($k)->applyFromArray($styleArray);
                    }
                    $event->sheet->getColumnDimension('BI')->setAutoSize(false);
-                   $event->sheet->getColumnDimension('BI')->setWidth(150);     
+                   $event->sheet->getColumnDimension('BI')->setWidth(100);     
 
                     
                     // $event->sheet->getStyle('I')->applyFromArray($styleArray);

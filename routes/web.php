@@ -130,10 +130,13 @@ Route::POST('/savesacs/{Nrocar}/{ldid}', [App\Http\Controllers\CallController::c
 
 Route::get('/Audit', [App\Http\Controllers\Auditcontroller::class, 'index'])->name('ingresoaudit');
 
+
 // Route::get('/audito', [App\Http\Controllers\Auditcontroller::class, 'indexfil'])->name('filtrarindex');
 
 
 Route::POST('/combos', [App\Http\Controllers\Auditcontroller::class, 'combos'])->name('combos');
+Route::get('/editar/auditorias', [App\Http\Controllers\Auditcontroller::class, 'editarudit'])->name('editarudit');
+Route::POST('/editar/grabar/{lid}', [App\Http\Controllers\Auditcontroller::class, 'upeditaudit'])->name('upeditaudit'); // grabar la edicion de las propuestas
 
 
 Route::get('/newAudit', [App\Http\Controllers\Auditcontroller::class, 'create'])->name('NewAudit');
@@ -144,6 +147,15 @@ Route::post('/del', [App\Http\Controllers\Auditcontroller::class, 'destroy'])->n
 // Correos de alertas
 
 Route::get('/alertas/{idx}', [App\Http\Controllers\Mailcontroller::class, 'sendmail'])->name('alertmail');
+
+// Descargar Grabaciones de alertas 
+
+Route::get('/uploads/{file}', function ($file) {   
+    $path = storage_path().'/'.'app'.'/grabaciones/'.$file;
+    if (file_exists($path)) {
+        return Response::download($path);
+    }
+})->name('uploads');
 
 // Exportar Excel 
 
@@ -164,6 +176,7 @@ Route::get('/exportejecutivos', [App\Http\Controllers\Auditcontroller::class, 'e
 Route::get('/concep', [App\Http\Controllers\Auditcontroller::class, 'repcindex'])->name('conceptos');
 Route::POST('/conceptos', [App\Http\Controllers\Auditcontroller::class, 'resultcpt'])->name('concept');
 
+// Pruebas 
 
 Route::get('/pruebas', [App\Http\Controllers\testcontoller::class, 'pruebas'])->name('pruebas');
 // Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
@@ -178,6 +191,13 @@ Route::POST('/grabarOper', [App\Http\Controllers\Auditcontroller::class, 'grabar
 Route::POST('/editopers', [App\Http\Controllers\Auditcontroller::class, 'editop'])->name('opersedit');
 Route::POST('/grabeditopers', [App\Http\Controllers\Auditcontroller::class, 'Grabeditop'])->name('Grabeditop');
 Route::POST('/histope', [App\Http\Controllers\Auditcontroller::class, 'histope'])->name('histope');
+
+// Clientes 
+Route::get('/comentar/{lid}', [App\Http\Controllers\Auditcontroller::class, 'commentsaudit'])->name('editaudit');
+Route::POST('/Grabar', [App\Http\Controllers\Auditcontroller::class, 'upcomments'])->name('comments');
+Route::get('/comments/index', [App\Http\Controllers\Auditcontroller::class, 'importccindex'])->name('indexscomments');
+
+Route::POST('/importcmm', [App\Http\Controllers\Auditcontroller::class, 'importcomments'])->name('importcmm');
 
 
 // Campañas

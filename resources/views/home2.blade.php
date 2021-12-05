@@ -17,6 +17,6 @@
 
 <!-- Clientes  -->
 
-@if(Auth::user()->idtype  == 8)  
+@if(Auth::user()->idtype  == 8 or Auth::user()->idtype  == 9)  
     @include('dash.home-clients')
 @endif
