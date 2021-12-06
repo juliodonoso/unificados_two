@@ -77,7 +77,7 @@ class Auditcontroller extends Controller
                 ->join('sponsors','sponsors.id', '=', 'audits.sponsor') 
                 ->join('teleoperadores','teleoperadores.id', '=', 'audits.idoper')               
                 ->orderby('id','DESC')
-                ->paginate(15);   
+                ->paginate(250);   
             } else {
                 $auditadasf =  $query->get();  
                 $auditadas = $query->select('audits.*','sponsors.name as sname','users.name as name','teleoperadores.name as nombre')             
@@ -85,7 +85,7 @@ class Auditcontroller extends Controller
                 ->leftjoin('users','users.id', '=', 'audits.emp_id')
                 ->join('teleoperadores','teleoperadores.id', '=', 'audits.idoper')
                 ->orderby('id','DESC')
-                ->paginate(15);                          
+                ->paginate(250);                          
             }           
         }            
         $auditCount = $auditadas->total();      
