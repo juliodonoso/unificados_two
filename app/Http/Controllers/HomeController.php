@@ -147,6 +147,7 @@ class HomeController extends Controller
                     $dashsponsor = $query->select('sponame','canal',\DB::raw('count(*) as cant'),
                     \DB::raw('COUNT(CASE WHEN Estado ="ALERTA" THEN Estado END) as alerta'),
                     \DB::raw('COUNT(CASE WHEN Estado ="CUMPLE" THEN Estado END) as cumple'))  
+                    
                     ->groupby('sponame','canal')
                     ->get();
                     $dashcount = $dashsponsor->count();

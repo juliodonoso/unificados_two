@@ -134,8 +134,8 @@
                                 <tr>
                                     <td>{!! $resp->id !!}</td>  
                                     <td>{!! $resp->sname !!}</td>
-                                    <td>{!! $resp->canal !!}</td>  
-                                    <td>{!! $resp->campania !!}</td>  
+                                    <td>{{$resp->ncanal}}</td>  
+                                    <td> {{$resp->cname}}</td>  
                                     <td class="text-right">{!! $resp->mes !!}/{!! $resp->anio !!}</td>                                     
                                     @if($resp->nombre == "EJECUTIVO SIN PRESENTACION")
                                         <td style="color:red;">{!! $resp->nombre !!}</td> 
@@ -208,13 +208,13 @@
                     <div class="modal-body">   
                         <hr> 
                         <div class="row" id="det01">
-                            <div class="col-sm-12" > Sponsor : {{$resp->sname}}  -  Canal: {{$resp->canal}} - Campaña : {{$resp->campania}} </div>                           
+                            <div class="col-sm-12" > Sponsor : {{$resp->sname}}  -  Canal: {{$resp->ncanal}} - Campaña : {{$resp->cname}} </div>                           
                         </div>                       
                         <div class="row" id="det01">                           
                             <div class="col-sm-8" >Rut-Tit : {{$resp->rutcli}}-{{$resp->dvcli}}</div>
                         </div>
                         <div class="row" id="det01">
-                            <div class="col-sm-8" >Operador Evaluado: {{$resp->opereva}}</div>                           
+                            <div class="col-sm-8" >Operador Evaluado: {{$resp->nombre}}</div>                           
                         </div> 
                         <div class="row" id="det01">  
                             <div class="col-sm-12" >Fecha Venta : @if(is_null($resp->Fvta)) XXX @else {{date('d-m-Y', strtotime($resp->Fvta))}} @endif    / Fecha Asig: {{date('d-m-Y', strtotime($resp->Fgrab))}}  / Fecha Audit: {{date('d-m-Y', strtotime($resp->created_at))}}  </div> 
