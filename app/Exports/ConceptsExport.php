@@ -118,16 +118,7 @@ class ConceptsExport implements FromCollection, WithHeadings, WithStyles,ShouldA
                    $event->sheet->getColumnDimension('BI')->setAutoSize(false);
                    $event->sheet->getColumnDimension('BI')->setWidth(100);     
 
-                    
-                    // $event->sheet->getStyle('I')->applyFromArray($styleArray);
-                    // $event->sheet->getStyle('O')->applyFromArray($styleArray);
-                    // $event->sheet->getStyle('T')->applyFromArray($styleArray);
-                    // $event->sheet->getStyle('AA')->applyFromArray($styleArray);
-                    // $event->sheet->getStyle('AJ')->applyFromArray($styleArray);
-                    // $event->sheet->getStyle('AO')->applyFromArray($styleArray);
-                    // $event->sheet->getStyle('AS')->applyFromArray($styleArray);
-                    // $event->sheet->getStyle('AY')->applyFromArray($styleArray);
-                    // $event->sheet->getStyle('BG')->applyFromArray($styleArray);
+               
                               
                 },
         ];

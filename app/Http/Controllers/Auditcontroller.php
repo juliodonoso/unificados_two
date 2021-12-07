@@ -73,17 +73,21 @@ class Auditcontroller extends Controller
         if($emp_type == 6  OR  $emp_type == 7) {
             if($emp_type == 6){
                 $auditadasf =  $query_emp->get();  
-                $auditadas = $query_emp->select('audits.*','sponsors.name as sname','teleoperadores.name as nombre')          
+                $auditadas = $query_emp->select('audits.*','sponsors.name as sname','teleoperadores.name as nombre','canal.name as ncanal','campanias.name as cname')          
                 ->join('sponsors','sponsors.id', '=', 'audits.sponsor') 
-                ->join('teleoperadores','teleoperadores.id', '=', 'audits.idoper')               
+                ->join('teleoperadores','teleoperadores.id', '=', 'audits.idoper')      
+                ->join('canal','canal.id', '=', 'audits.idcanal')
+                ->join('campanias','campanias.id', '=', 'audits.idcia')         
                 ->orderby('id','DESC')
                 ->paginate(250);   
             } else {
                 $auditadasf =  $query->get();  
-                $auditadas = $query->select('audits.*','sponsors.name as sname','users.name as name','teleoperadores.name as nombre')             
+                $auditadas = $query->select('audits.*','sponsors.name as sname','users.name as name','teleoperadores.name as nombre','canal.name as ncanal','campanias.name as cname')             
                 ->leftjoin('sponsors','sponsors.id', '=', 'audits.sponsor')
                 ->leftjoin('users','users.id', '=', 'audits.emp_id')
                 ->join('teleoperadores','teleoperadores.id', '=', 'audits.idoper')
+                ->join('canal','canal.id', '=', 'audits.idcanal')
+                ->join('campanias','campanias.id', '=', 'audits.idcia')
                 ->orderby('id','DESC')
                 ->paginate(250);                          
             }           
@@ -138,28 +142,20 @@ class Auditcontroller extends Controller
     public function upeditaudit(Request $request, $lid) {       // Edicionde auditorias 
 
         $lgrabaraudit = audit::find($lid);
-        if($request->hisuper !== null) {
-            $lgrabaraudit->sponsor = $request->input("sponsor");
-            $lgrabaraudit->sponame = $request->input("hisuper");
-        }
-        if($request->hisuper !== null) {
-            $lgrabaraudit->idcia = $request->input("cia");
-            $lgrabaraudit->campania = $request->input("hicia");
-        }
-        if($request->hisuper !== null) {
-            $lgrabaraudit->idcanal = $request->input("canal");
-            $lgrabaraudit->canal = $request->input("hicanal");
-        }
-        if($request->hisuper !== null) {
-            $lgrabaraudit->idoper = $request->input("telop");
-            $lgrabaraudit->opereva = $request->input("hioper");
-        }
-            $lgrabaraudit->Fvta = $request->input("fventa");
-            $lgrabaraudit->Fgrab = $request->input("fasig");
-            $lgrabaraudit->rutcli = $request->input("rutcar");
-            $lgrabaraudit->dvcli = $request->input("dvcar");
-            $lgrabaraudit->observ = $request->input("observ");
-            $lgrabaraudit->idGrab = $request->input("idgrab"); 
+      
+         
+        $lgrabaraudit->sponsor = $request->input("sponsor");     
+        $lgrabaraudit->idcia = $request->input("cia");    
+        $lgrabaraudit->idcanal = $request->input("canal");    
+        $lgrabaraudit->idoper = $request->input("telop");
+       
+    
+        $lgrabaraudit->Fvta = $request->input("fventa");
+        $lgrabaraudit->Fgrab = $request->input("fasig");
+        $lgrabaraudit->rutcli = $request->input("rutcar");
+        $lgrabaraudit->dvcli = $request->input("dvcar");
+        $lgrabaraudit->observ = $request->input("observ");
+        $lgrabaraudit->idGrab = $request->input("idgrab"); 
 
             $lgrab = $request->file('file-0b');
 
@@ -619,41 +615,49 @@ class Auditcontroller extends Controller
 
         if($emp_type == 6  OR  $emp_type == 7) {
             if($emp_type == 6){
-                $auditadas = $query_emp->select('audits.id','sponsors.name as sname','audits.canal as canal',
-                'audits.campania',\DB::raw("CONCAT(rutcli, '-', dvcli) AS rut"),'audits.fvta','teleoperadores.name as nombre','audits.idGrab','users.name',
+                $auditadas = $query_emp->select('audits.id','campanias.name as cname',\DB::raw("CONCAT(rutcli, '-', dvcli) AS rut"),'audits.fvta','teleoperadores.name as nombre','audits.idGrab','users.name',
                 'audits.Fgrab',
-                'audits.PrgA','audits.PrgA1','audits.PrgA2','audits.PrgA3','audits.PrgA4','audits.PrgA5',
-                'audits.PrgB','audits.PrgB1','audits.PrgB2','audits.PrgB3','audits.PrgB4',
-                'audits.PrgC','audits.PrgC1','audits.PrgC2','audits.PrgC3','audits.PrgC4','audits.PrgC5','audits.PrgC6',
-                'audits.PrgD','audits.PrgD1','audits.PrgD2','audits.PrgD3','audits.PrgD4','audits.PrgD5','audits.PrgD6','audits.PrgD7','audits.PrgD8',
-                'audits.PrgE','audits.PrgE1','audits.PrgE2','audits.PrgE3','audits.PrgE4',
-                'audits.PrgF','audits.PrgF1','audits.PrgF2','audits.PrgF3',
-                'audits.PrgG','audits.PrgG1','audits.PrgG2','audits.PrgG3','audits.PrgG4','audits.PrgG5',
-                'audits.npartial',
+                \DB::raw("CONCAT(audits.PrgA,'%') AS PrA"),'audits.PrgA1','audits.PrgA2','audits.PrgA3','audits.PrgA4','audits.PrgA5',
+                \DB::raw("CONCAT(audits.PrgB,'%') AS PrB"),'audits.PrgB1','audits.PrgB2','audits.PrgB3','audits.PrgB4',
+                \DB::raw("CONCAT(audits.PrgC,'%') AS PrC"),'audits.PrgC1','audits.PrgC2','audits.PrgC3','audits.PrgC4','audits.PrgC5','audits.PrgC6',
+                \DB::raw("CONCAT(audits.PrgD,'%') AS PrD"),'audits.PrgD1','audits.PrgD2','audits.PrgD3','audits.PrgD4','audits.PrgD5','audits.PrgD6','audits.PrgD7','audits.PrgD8',
+                \DB::raw("CONCAT(audits.PrgE,'%') AS PrE"),'audits.PrgE1','audits.PrgE2','audits.PrgE3','audits.PrgE4',
+                \DB::raw("CONCAT(audits.PrgF,'%') AS PrF"),'audits.PrgF1','audits.PrgF2','audits.PrgF3',
+                \DB::raw("CONCAT(audits.PrgG,'%') AS PrG"),'audits.PrgG1','audits.PrgG2','audits.PrgG3','audits.PrgG4','audits.PrgG5',
+                \DB::raw("CONCAT(audits.npartial,'%') AS partial"),
                 'audits.PrgH1','audits.PrgH2','audits.PrgH3','audits.PrgH4','audits.PrgH5','audits.PrgH6','audits.PrgH7',
-                'audits.nfinal','audits.Estado','audits.observ','audits.mes','audits.anio')            
-                ->leftjoin('sponsors','sponsors.id', '=', 'audits.sponsor') 
-                ->leftjoin('users','users.id', '=', 'audits.emp_id') 
-                ->join('teleoperadores','teleoperadores.id', '=', 'audits.idoper')   
+                \DB::raw("CONCAT(audits.nfinal,'%') AS final"),'audits.Estado','audits.observ','audits.apelaname','audits.CommentsCall',
+                'audits.AuditorCall','resolbecs.name as resol','accbecs.name as acciones','audits.CommentsCIA','audits.mes','audits.anio','sponsors.name as sname','canal.name as ncanal')     
+                 ->leftjoin('accbecs','accbecs.id', '=', 'audits.accionesbecs')         
+                 ->leftjoin('resolbecs','resolbecs.id', '=', 'audits.resolucionbecs')         
+                ->join('sponsors','sponsors.id', '=', 'audits.sponsor') 
+                ->join('users','users.id', '=', 'audits.emp_id') 
+                ->join('teleoperadores','teleoperadores.id', '=', 'audits.idoper') 
+                ->join('canal','canal.id', '=', 'audits.idcanal')
+                ->join('campanias','campanias.id', '=', 'audits.idcia')              
                 ->orderby('id','DESC')    
                 ->get();
             } else {
-                $auditadas = $query->select('audits.id','sponsors.name as sname','audits.canal as canal',
-                'audits.campania',\DB::raw("CONCAT(rutcli, '-', dvcli) AS rut"),'audits.fvta','teleoperadores.name as nombre','audits.idGrab','users.name',
+                $auditadas = $query->select('audits.id','campanias.name as cname',\DB::raw("CONCAT(rutcli, '-', dvcli) AS rut"),'audits.fvta','teleoperadores.name as nombre','audits.idGrab','users.name',
                 'audits.Fgrab',
-                'audits.PrgA','audits.PrgA1','audits.PrgA2','audits.PrgA3','audits.PrgA4','audits.PrgA5',
-                'audits.PrgB','audits.PrgB1','audits.PrgB2','audits.PrgB3','audits.PrgB4',
-                'audits.PrgC','audits.PrgC1','audits.PrgC2','audits.PrgC3','audits.PrgC4','audits.PrgC5','audits.PrgC6',
-                'audits.PrgD','audits.PrgD1','audits.PrgD2','audits.PrgD3','audits.PrgD4','audits.PrgD5','audits.PrgD6','audits.PrgD7','audits.PrgD8',
-                'audits.PrgE','audits.PrgE1','audits.PrgE2','audits.PrgE3','audits.PrgE4',
-                'audits.PrgF','audits.PrgF1','audits.PrgF2','audits.PrgF3',
-                'audits.PrgG','audits.PrgG1','audits.PrgG2','audits.PrgG3','audits.PrgG4','audits.PrgG5',
-                'audits.npartial',
+                \DB::raw("CONCAT(audits.PrgA,'%') AS PrA"),'audits.PrgA1','audits.PrgA2','audits.PrgA3','audits.PrgA4','audits.PrgA5',
+                \DB::raw("CONCAT(audits.PrgB,'%') AS PrB"),'audits.PrgB1','audits.PrgB2','audits.PrgB3','audits.PrgB4',
+                \DB::raw("CONCAT(audits.PrgC,'%') AS PrC"),'audits.PrgC1','audits.PrgC2','audits.PrgC3','audits.PrgC4','audits.PrgC5','audits.PrgC6',
+                \DB::raw("CONCAT(audits.PrgD,'%') AS PrD"),'audits.PrgD1','audits.PrgD2','audits.PrgD3','audits.PrgD4','audits.PrgD5','audits.PrgD6','audits.PrgD7','audits.PrgD8',
+                \DB::raw("CONCAT(audits.PrgE,'%') AS PrE"),'audits.PrgE1','audits.PrgE2','audits.PrgE3','audits.PrgE4',
+                \DB::raw("CONCAT(audits.PrgF,'%') AS PrF"),'audits.PrgF1','audits.PrgF2','audits.PrgF3',
+                \DB::raw("CONCAT(audits.PrgG,'%') AS PrG"),'audits.PrgG1','audits.PrgG2','audits.PrgG3','audits.PrgG4','audits.PrgG5',
+                \DB::raw("CONCAT(audits.npartial,'%') AS partial"),
                 'audits.PrgH1','audits.PrgH2','audits.PrgH3','audits.PrgH4','audits.PrgH5','audits.PrgH6','audits.PrgH7',
-                'audits.nfinal','audits.Estado','audits.observ','audits.mes','audits.anio')              
-                ->leftjoin('sponsors','sponsors.id', '=', 'audits.sponsor') 
-                ->leftjoin('users','users.id', '=', 'audits.emp_id')  
-                ->join('teleoperadores','teleoperadores.id', '=', 'audits.idoper')  
+                \DB::raw("CONCAT(audits.nfinal,'%') AS final"),'audits.Estado','audits.observ','audits.apelaname','audits.CommentsCall',
+                'audits.AuditorCall','resolbecs.name as resol','accbecs.name as acciones','audits.CommentsCIA','audits.mes','audits.anio','sponsors.name as sname','canal.name as ncanal')     
+                 ->leftjoin('accbecs','accbecs.id', '=', 'audits.accionesbecs')         
+                 ->leftjoin('resolbecs','resolbecs.id', '=', 'audits.resolucionbecs')         
+                ->join('sponsors','sponsors.id', '=', 'audits.sponsor') 
+                ->join('users','users.id', '=', 'audits.emp_id') 
+                ->join('teleoperadores','teleoperadores.id', '=', 'audits.idoper') 
+                ->join('canal','canal.id', '=', 'audits.idcanal')
+                ->join('campanias','campanias.id', '=', 'audits.idcia')              
                 ->orderby('id','DESC')    
                 ->get();
             }
@@ -1052,7 +1056,7 @@ class Auditcontroller extends Controller
 
      
 
-        $conceptos = $query->select('audits.id','audits.campania',\DB::raw("CONCAT(rutcli, '-', dvcli) AS rut"),'audits.fvta','teleoperadores.name as nombre','audits.idGrab','users.name',
+        $conceptos = $query->select('audits.id','campanias.name as cname',\DB::raw("CONCAT(rutcli, '-', dvcli) AS rut"),'audits.fvta','teleoperadores.name as nombre','audits.idGrab','users.name',
         'audits.Fgrab',
         \DB::raw("CONCAT(audits.PrgA,'%') AS PrA"),'audits.PrgA1','audits.PrgA2','audits.PrgA3','audits.PrgA4','audits.PrgA5',
         \DB::raw("CONCAT(audits.PrgB,'%') AS PrB"),'audits.PrgB1','audits.PrgB2','audits.PrgB3','audits.PrgB4',
@@ -1064,16 +1068,18 @@ class Auditcontroller extends Controller
         \DB::raw("CONCAT(audits.npartial,'%') AS partial"),
         'audits.PrgH1','audits.PrgH2','audits.PrgH3','audits.PrgH4','audits.PrgH5','audits.PrgH6','audits.PrgH7',
         \DB::raw("CONCAT(audits.nfinal,'%') AS final"),'audits.Estado','audits.observ','audits.apelaname','audits.CommentsCall',
-        'audits.AuditorCall','resolbecs.name as resol','accbecs.name as acciones','audits.CommentsCIA','audits.mes','audits.anio','audits.sponame','audits.canal')     
+        'audits.AuditorCall','resolbecs.name as resol','accbecs.name as acciones','audits.CommentsCIA','audits.mes','audits.anio','sponsors.name as sname','canal.name as ncanal')     
          ->leftjoin('accbecs','accbecs.id', '=', 'audits.accionesbecs')         
          ->leftjoin('resolbecs','resolbecs.id', '=', 'audits.resolucionbecs')         
         ->join('sponsors','sponsors.id', '=', 'audits.sponsor') 
         ->join('users','users.id', '=', 'audits.emp_id') 
-        ->join('teleoperadores','teleoperadores.id', '=', 'audits.idoper')            
+        ->join('teleoperadores','teleoperadores.id', '=', 'audits.idoper') 
+        ->join('canal','canal.id', '=', 'audits.idcanal')
+        ->join('campanias','campanias.id', '=', 'audits.idcia')              
         ->orderby('id','DESC')    
         ->get();
 
-
+        
 
         // $conceptos = $query->select('audits.*')->get();
         $concepCount = $conceptos->count();

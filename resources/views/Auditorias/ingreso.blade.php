@@ -575,21 +575,21 @@
                 $('#pC').val(tC); 
             // D 
                 if(lid == "chkD1"){      
-                    lchkD1 = 2; 
+                    lchkD1 = 0.5; 
                     lcount = lcount+1;      
                 } 
                 if(lid == "chkD2"){       
-                    lchkD2 = 2; 
-                    lcount = lcount+1;     
+                    lchkD2 = 0; 
+                    // lcount = lcount+1;     
                 } 
                 if(lid == "chkD3"){      
                     lchkD3 = 0.5;       
                 } 
                 if(lid == "chkD4"){       
-                    lchkD4 = 0.5;      
+                    lchkD4 = 3;      
                 } 
                 if(lid == "chkD5"){      
-                    lchkD5 = 2;   
+                    lchkD5 = 3;   
                     lcount = lcount+1;    
                 } 
                 if(lid == "chkD6"){      
@@ -759,7 +759,7 @@
             }
 
 
-            if( lcount < 29)   {      
+            if( lcount < 28)   {      
                 $( "#alert" ).show(); 
                 $( "#cumple" ).hide();                
                 $('#ntlt').val(0);                
