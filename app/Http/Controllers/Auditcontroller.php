@@ -1254,7 +1254,8 @@ class Auditcontroller extends Controller
 
         $lcmmtup = audit::find($lid);
         if($lapela == "on") {
-            $lcmmtup->Apelacion  = "1";           
+            $lcmmtup->Apelacion  = "1";        
+            $lcmmtup->apelaname = "APELA";
         } else {
             $lcmmtup->Apelacion  = "0";
         }
