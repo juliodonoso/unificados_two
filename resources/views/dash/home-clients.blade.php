@@ -259,7 +259,14 @@
                                 <div class="row" id="divgrab01">
                                     <div class="col-sm-12" id="grab01">Grabacion Alerta : <a href="{{ route('uploads',array('file' =>$resp->grabacion)) }}"> {{$resp->grabacion}}</a>  </div>              
                                 </div>  
-                            @endif                                         
+                                <hr>
+                            @endif 
+                           
+                            @if($resp->Apelacion == 1) 
+                            <div class="row" id="det01">
+                                <div class="col-sm-12" style="color:red;">*** APELACION ***</div>                           
+                            </div>    
+                            @endif                   
                         </div>
                         <div class="modal-footer"> 
                             <a href="{{ route('editaudit',array('lid' =>$resp->id)) }}" class="btn btn-warning" ><i class="fa fa-comment" aria-hidden="true"></i>Comentar</a>                    
