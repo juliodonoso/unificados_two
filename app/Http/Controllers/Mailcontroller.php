@@ -43,4 +43,34 @@ class Mailcontroller extends Controller
         return redirect()->route('ingresoaudit');
     }
 
+    public function indexcorreos() {
+        $destinatarios = \DB::table('destalert')->first();
+        $para = $destinatarios->dest;
+        $cc = $destinatarios->cc;
+        $iddest = $destinatarios->id;  
+    
+        $titulo = 'Destinatarios de alertas';
+        return view('mails.destinatarios',[
+            'titulo'=>$titulo,
+            'para'=>$para,
+            'cc'=>$cc,
+            'iddest'=>$iddest,
+        ]);
+
+    }
+
+    public function updestinatarios(Request $request, $iddest) {
+        $para = $_POST['para'];
+        $cc = $_POST['cc'];
+        $updesti = \DB::table('destalert')->where('id',$iddest)
+        ->update(['dest' => $para,'cc' => $cc]); 
+        $titulo = 'Destinatarios de alertas';
+        return view('mails.destinatarios',[
+            'titulo'=>$titulo,
+            'para'=>$para,
+            'cc'=>$cc,
+            'iddest'=>$iddest,
+        ]);
+    }
+
 }

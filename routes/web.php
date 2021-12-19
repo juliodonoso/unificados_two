@@ -148,6 +148,9 @@ Route::post('/del', [App\Http\Controllers\Auditcontroller::class, 'destroy'])->n
 
 Route::get('/alertas/{idx}', [App\Http\Controllers\Mailcontroller::class, 'sendmail'])->name('alertmail');
 
+
+
+
 // Descargar Grabaciones de alertas 
 
 Route::get('/uploads/{file}', function ($file) {   
@@ -207,4 +210,28 @@ Route::get('/newcia', [App\Http\Controllers\Auditcontroller::class, 'newcia'])->
 Route::POST('/grabarcia', [App\Http\Controllers\Auditcontroller::class, 'upcia'])->name('upcia');
 Route::POST('/editcia', [App\Http\Controllers\Auditcontroller::class, 'editcia'])->name('ciaedit');
 Route::POST('/grabeditcias', [App\Http\Controllers\Auditcontroller::class, 'Grabeditcia'])->name('Grabeditcia');
+
+// Destinatarios 
+
+Route::get('/destinatarios', [App\Http\Controllers\Mailcontroller::class, 'indexcorreos'])->name('indexmail');
+Route::POST('/savedestinos/{iddest}', [App\Http\Controllers\Mailcontroller::class, 'updestinatarios'])->name('updest');
+
+// sponsor
+Route::get('/sponsors', [App\Http\Controllers\Auditcontroller::class, 'close'])->name('cierre');
+
+Route::get('/editspon/{lid}/{lstatus}', [App\Http\Controllers\Auditcontroller::class, 'editspon'])->name('editarsponsor');
+
+Route::POST('/grabarspst', [App\Http\Controllers\Auditcontroller::class, 'upstattusp'])->name('statusp');
+
+Route::POST('/cambioperiodo', [App\Http\Controllers\Auditcontroller::class, 'changeperiodo'])->name('changep');
+
+
+// Clinicas
+
+Route::get('/importmovs', [App\Http\Controllers\ClinicController::class, 'index'])->name('importmov');
+
+Route::POST('/importclinicas', [App\Http\Controllers\ClinicController::class, 'store'])->name('importprop');
+
+
+
 

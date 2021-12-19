@@ -61,6 +61,7 @@ class ProposalController extends Controller
         } else {
             $pCount = 0;
         }
+
         $titulo = "Importacion de Propuestas";
         return view('Calidad.importar')
         ->with('titulo',$titulo)
