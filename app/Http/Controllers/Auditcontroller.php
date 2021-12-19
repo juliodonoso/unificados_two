@@ -217,6 +217,15 @@ class Auditcontroller extends Controller
 
     public function grabaudi (Request $request) {  
         // dd($request);        
+        if($_POST['dvcar'] == null) {
+            $ldvrut = 'X';
+        } else {  
+            $ldvrut = $_POST['dvcar'];           
+        }
+       
+        $lrut = $_POST['rutcar'];
+
+        $lrut = str_replace('.', '', $lrut);       
 
         if(isset($_POST['chkasig']) ){
             if($_POST['chkasig'] == 1 ) {
@@ -487,14 +496,14 @@ class Auditcontroller extends Controller
             $audit->canal =  $_POST['hicanal'];
             $audit->opereva =  $_POST['hioper'];
             $audit->idgrab =  strtoupper($_POST['idgrab']);
-            $audit->rutcli =  $_POST['rutcar'];
-            $audit->dvcli =  $_POST['dvcar'];
+            // $audit->rutcli =  $_POST['rutcar'];
+            // $audit->dvcli =  $_POST['dvcar'];
             if($lgrabafecha == 1) {
                 $audit->fvta =  $datevta;
             }
             $audit->fgrab =  $dateasi;          
-            $audit->rutcli =  $_POST['rutcar'];
-            $audit->dvcli =  $_POST['dvcar'];      
+            $audit->rutcli =  $lrut;
+            $audit->dvcli = $ldvrut;      
             // A 
             $audit->PrgA = $_POST['pA'];
             $audit->PrgA1 = $lA1;
@@ -1315,6 +1324,65 @@ class Auditcontroller extends Controller
 
     }
     
+    public function close() {
+        $sponsors = sponsor::get();
+        $titulo = 'Sponsors';
+        return view('Auditorias.close', [
+            'sponsors' =>$sponsors,
+            'titulo'=>$titulo,
+        ]);
+    }
+
+
+    public function editspon(request $request, $lid, $lstatus) {
+      
+        $spon = sponsor::find($lid);
+        $lksponsor = $spon->name;
+        $lstatus = $spon->is_act;
+        $mes = $spon->mes;
+        $anio = $spon->anio;
+
+        if($mes == 12){
+            $mesopen = 1;
+            $aniopen = $anio+1;
+        }else {
+            $mesopen = $mes+1;
+            $aniopen = $anio;
+        } 
+
+        $lregaudit = audit::where('sponsor',$lid)->get();
+        $regcount = $lregaudit->count();
+        $titulo = 'EDICION SPONSOR: '.$lksponsor;
+     
+        return view('Auditorias.editspon', [
+            'titulo'=>$titulo,
+            'spon'=>$spon,
+            'mesopen'=>$mesopen,
+            'aniopen'=>$aniopen,
+            'regcount'=>$regcount,
+            'lksponsor'=>$lksponsor,
+        ]);
+    }
+    public function upstattusp() {      
+        $lid = $_POST['lid'];
+        $lstatus = $_POST['lstatus'];        
+        $spon = sponsor::find($lid);
+        $spon->is_act = $lstatus;
+        $spon->save();       
+    }
+
+    public function changeperiodo() {
+
+        $lid = $_POST['lid'];
+        $lmes = $_POST['lmes'];  
+        $lanio = $_POST['lanio'];        
+        $spon = sponsor::find($lid);
+        $spon->mes = $lmes;
+        $spon->anio = $lanio;
+        $spon->save();  
+        $sponsors = sponsor::get();      
+      
+    }
 
 
 }

@@ -65,7 +65,7 @@
                                 <div class="col-md-4">
                                     <label class="title">fecha Asignacion</label>
                                     <div class="form-group">
-                                        <input type='date'  class="form-control datepicker" placeholder="Date Picker Here" name="fasig" />
+                                        <input type='date'  class="form-control datepicker" placeholder="Date Picker Here" name="fasig" id="fasig" />
                                     </div>
                                 </div>
                                 <div class="col-md-4">
@@ -96,7 +96,7 @@
                                         </label>
                                         <input id="dvcar" name ="dvcar" class="form-control"/>                                                            
                                     </div>
-                                </div> 
+                                </div>   					
                             </div>
                             <div class="row" >   
                                 @if($emp_type == 7) 
@@ -133,7 +133,7 @@
                                         <label>
                                             Id Grabacion                                           
                                         </label>
-                                        <input id="idgr" name ="idgrab" class="form-control" required  style="text-transform:uppercase" value=""/>                                                            
+                                        <input id="idgr" name ="idgrab" class="form-control" style="text-transform:uppercase" value="" required/>                                                            
                                     </div>
                                 </div>                                                                                                                                                                      
                             </div>
@@ -423,7 +423,7 @@
                         <input id="file-0b"  class="form-control" name="file-0b" type="file" enctype="multipart/form-data" accept="audio/*" required>
                         <br>                     
                     </div>   
-               <!-- Observaciones  -->
+                <!-- Observaciones  -->
                     <div class="form-group">
                         <label for="exampleFormControlTextarea1">Observaciones</label>
                         <textarea class="form-control" id="tt01" rows="4" name="observ" style="text-transform:uppercase; height: 90px;"></textarea>
@@ -432,7 +432,7 @@
             <input type="hidden" name="estado" id="estado" value="CUMPLE">        
             <div class="card-footer text-right">
                 <button type="button" class="btn btn-info btn-fill pull-left" onclick="f_salire()">Limpiar</button> 
-                <button type="button" class="btn btn-warning btn-fill pull-right" onclick="validar()">Grabar</button>                                        
+                <button type="button" class="btn btn-warning btn-fill pull-right" onclick="validar2()">Grabar</button>                                        
             </div>
         </form>          
     </div>
@@ -825,7 +825,7 @@
 <script>
     var input=  document.getElementById('rutcar');
     input.addEventListener('input',function(){
-    if (this.value.length > 8) 
+    if (this.value.length > 10) 
         this.value = this.value.slice(0,8); 
     })
 
@@ -861,9 +861,9 @@
         $('#hicia').val(lc);   
     });
     $('#telop').on('change', function() {
-        var li = '';
-        li = $('#telop option:selected').text();
-        $('#hioper').val(li);   
+        var lo = '';
+        lo = $('#telop option:selected').text();
+        $('#hioper').val(lo);   
     });
     $('#canal').on('change', function() {
         var li = '';
@@ -904,7 +904,7 @@
 </script>
 
 <!-- Requerir datos en los select (Sponsor, Campaña y Canal)  -->
-<script>
+<!-- <script>
     function validar(){
         var $spon=$('#super');
         var $camp=$('#cia').val();      
@@ -914,7 +914,8 @@
         var $fasig=$('#datepicker');
         var $grabid=$('#idgr');
         var cant = 0;
-        if($grabid.val() == ""){
+        
+        if($grabid.val().trim() == ""){
             swal("Dato Requerido", "Ingrese ID de Grabacion",'warning');
             cant = cant+1;
         }
@@ -922,12 +923,12 @@
         //     swal("Dato Requerido", "Ingrese Fecha de Venta",'warning');
         //     cant = cant+1;
         // }
-        if($fasig.val()==""){
+        if($fasig.val())==""){
             swal("Dato Requerido", "Ingrese Fecha de Asignacion",'warning');
             cant = cant+1;
         }
         if($spon.val()==0 ||
-            $spon.val()==""){   
+            $spon.val().trim() ==""){   
             swal("Dato Requerido", "Seleccione un Sponsor",'warning');
             cant = cant+1;
         } 
@@ -950,24 +951,166 @@
             f_grabar();
         }
     }
+</script> -->
+
+<script>
+    function validar2(){
+        var incompletos = false; // AQUI inicializamos la variable
+        var ldato = "";
+        $('#super').find("option:selected").each(function() {
+        if ($(this).val().trim() == '') {   
+            incompletos = true; 
+            ldato = ldato+'Sponsor,';
+        } 
+        });
+
+        $('#cia').find("option:selected").each(function() {
+        if ($(this).val().trim() == '') {   
+            incompletos = true; 
+            ldato =  ldato+'Campaña,';
+        } 
+        });
+
+        $('#canal').find("option:selected").each(function() {
+            if ($(this).val().trim() == '') {   
+                incompletos = true; 
+                ldato = ldato+'Canal, Tele Operador,';
+            } 
+        });
+
+        $('#telop').find("option:selected").each(function() {
+            if ($(this).val().trim() == '') {   
+                incompletos = true; 
+                ldato = ldato+'Teleoperador,';
+            } 
+        });
+
+        if($('#idgr').val().trim() == ''){ 
+            incompletos = true; 
+            ldato =  ldato+'ID Grabacion,';
+        } 
+
+        var valor = document.getElementById("fasig").value;
+        if( valor ==  "" ) {
+            incompletos = true; 
+            ldato =  ldato+'Fecha de Asignacion,';
+        }  
+
+        var cant = ldato.length;
+        let result = ldato.substr(0, cant-1);
+
+        if(incompletos == true){
+            swal("Datos Requeridos!", "Verifique la informacion para: "+result,'warning');
+        } else {       
+            validarhidden();
+            // f_grabar();
+        }
+
+    };
+
 </script>
 
+<!-- //  funcion validar los input de nombres  -->
+
+<script>
+
+    function validarhidden(){
+        
+        var lshidden = $('#hisuper').val();  
+        if(lshidden == '') {
+            ls = $('#super option:selected').text();
+            $('#hisuper').val(ls);        
+        }
+        var lchidden = $('#hicia').val();   
+        if(lchidden == '') {
+            lc = $('#cia option:selected').text();
+            $('#hicia').val(lc);        
+        }  
+        var lohidden =  $('#hioper').val();
+        if(lohidden == '') {
+            lo = $('#telop option:selected').text();
+            $('#hioper').val(lo);   
+        }
+        var lihidden =  $('#hicanal').val();
+        if(lohidden == '') {
+            li = $('#canal option:selected').text();
+            $('#hicanal').val(li); 
+        }    
+        // 
+        f_grabar();
+    }
 
 
+</script>
+
+<!-- ingresar digito verificador -->
+
+ <script>
+    var Fn = {
+        // Valida el rut con su cadena completa "XXXXXXXX-X"
+        validaRut : function (rutCompleto) {
+            if (!/^[0-9]+[-|‐]{1}[0-9kK]{1}$/.test( rutCompleto ))
+                return false;
+            var tmp 	= rutCompleto.split('-');
+            var digv	= tmp[1]; 
+            var rut 	= tmp[0];
+            if ( digv == 'K' ) digv = 'K' ;
+            return (Fn.dv(rut) == digv );
+        },
+        
+        // Calcula el dígito verificador
+        dv : function(T){
+            var M=0,S=1;
+            for(;T;T=Math.floor(T/10))
+                S=(S+T%10*(9-M++%6))%11;
+            return S?S-1:'K';
+        },
+        
+        // Valida que el número sea un entero
+        validaEntero : function  ( value ) {
+            var RegExPattern = /[0-9]+$/;
+            return RegExPattern.test( value );
+        },
+        
+        // Formatea un número con puntos de miles
+        formateaNumero : function ( value ) {
+            if ( Fn.validaEntero ( value ) )  {  
+                var retorno = '';
+                value = value.toString().split('').reverse().join('');
+                var i = value.length;
+                while(i>0) retorno += ((i%3==0&&i!=value.length)?'.':'')+value.substring(i--,i);
+                return retorno;
+            }
+                return value;
+        }
+    }
+
+    // Implementación de la funcionalidad a la vista
+    function imprime_dv () {
+        
+        // Traspasa el valor a número entero
+        var numero = $("#rutcar").val();
+        numero = numero.split(".").join("");
+        
+        // Valida que sea realmente entero
+        if ( Fn.validaEntero ( numero )) {
+            $("#dvcar").val( Fn.dv( numero ) );
+        } else {
+            $("#dvcar").val( "" );
+        }
+        
+        // Formatea el valor del rut con sus puntos
+        $("#rutcar").val( Fn.formateaNumero( numero ) );	
+    }
+
+    // Adiciona la ejecución de la acción al dejar de tipear en el campo
+    $("#rutcar").keyup( imprime_dv );
+
+
+ </script>
 @endsection
 @endauth
 
-<script>
-document.addEventListener('keyup', event => {
-  if (event.ctrlKey && event.keyCode === 81) {  
-    var observaciones = document.getElementById('tt01').value; 
-    var text = observaciones+' '+'[TO]'+' '; 
-    document.getElementById('tt01').value =  text;
-    // alert(text);
-  }
-}, false)
-
-</script>
 
 
 

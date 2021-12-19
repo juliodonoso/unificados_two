@@ -40,7 +40,7 @@
                         </li>
                     <!-- Calidad  -->
                     @if(Auth::user()->idtype  == 1 or Auth::user()->idtype  == 2 or Auth::user()->idtype  == 3)                  
-                        <li class="nav-item">
+                        <!-- <li class="nav-item">
                             <p class="logo"></p>                 
                             <a class="nav-link" data-toggle="collapse" href="#componentsExamples">
                                 <i class="nc-icon nc-paper-2"></i>
@@ -84,7 +84,7 @@
                                     @endif                              
                                 </ul>
                             </div>                      
-                        </li>                      
+                        </li>                       -->
                     @endif
                     <!-- Reportes de Calidad  -->
                     @if(Auth::user()->idtype  == 1 or Auth::user()->idtype  == 4 or Auth::user()->idtype  == 5 or Auth::user()->idtype  == 2)                      
@@ -288,6 +288,13 @@
                             <div class="collapse " id="tablesExamples">
                                 <ul class="nav">
                                     <li class="nav-item ">
+                                        <a class="nav-link" href="{{ route('cierre') }}">                                       
+                                            <span class="sidebar-normal"> <i class="nc-icon nc-money-coins"></i>Sponsors</span>
+                                        </a>
+                                    </li>                             
+                                </ul>
+                                <ul class="nav">
+                                    <li class="nav-item ">
                                         <a class="nav-link" href="{{ route('editusers') }}">                                       
                                             <span class="sidebar-normal"> <i class="nc-icon nc-single-02"></i> Usuarios</span>
                                         </a>
@@ -307,6 +314,13 @@
                                         </a>
                                     </li>                             
                                 </ul>
+                                <ul class="nav">
+                                    <li class="nav-item ">
+                                        <a class="nav-link" href="{{ route('indexmail') }}">                                       
+                                            <span class="sidebar-normal"> <i class="nc-icon nc-send"></i>Destinatarios</span>
+                                        </a>
+                                    </li>                             
+                                </ul>
                                 @if(Auth::user()->idtype  == 1) 
                                     <ul class="nav">
                                         <li class="nav-item ">
@@ -318,7 +332,30 @@
                                 @endif  
                             </div>                                
                         </li>
-                    @endif             
+                    @endif   
+                    <!-- Clinicas  -->
+                    @if(Auth::user()->idtype == 1 )
+                        <li class="nav-item">
+                            <p class="logo"></p>
+                            <a class="nav-link" data-toggle="collapse" href="#clinicas">
+                            <i class="fa fa-hospital-o" aria-hidden="true"></i>
+                                <p>
+                                    Clinicas
+                                    <b class="caret"></b>
+                                </p>
+                            </a>
+                            <div class="collapse " id="clinicas">
+                                <ul class="nav">
+                                    <li class="nav-item ">
+                                        <a class="nav-link" href="{{ route('importmov') }}">                                       
+                                            <span class="sidebar-normal"> <i class="nc-icon nc-cloud-upload-94"></i>Importar</span>
+                                        </a>
+                                    </li>                             
+                                </ul>
+                            </div>
+                        </li>
+                    @endif
+
                 </ul>
             </div>
         </div>
