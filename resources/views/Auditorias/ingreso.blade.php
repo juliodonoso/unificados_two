@@ -825,7 +825,7 @@
 <script>
     var input=  document.getElementById('rutcar');
     input.addEventListener('input',function(){
-    if (this.value.length > 10) 
+    if (this.value.length > 8) 
         this.value = this.value.slice(0,8); 
     })
 
@@ -1045,7 +1045,7 @@
 
 <!-- ingresar digito verificador -->
 
- <script>
+ <!-- <script>
     var Fn = {
         // Valida el rut con su cadena completa "XXXXXXXX-X"
         validaRut : function (rutCompleto) {
@@ -1107,7 +1107,7 @@
     $("#rutcar").keyup( imprime_dv );
 
 
- </script>
+ </script> -->
 @endsection
 @endauth
 
