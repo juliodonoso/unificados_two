@@ -81,7 +81,7 @@
                     </div>
                 </div>
                 @if($emp_type == 7 or $emp_type == 8)
-                    @foreach($dashsponsor as $valor =>$spk)                       
+                    @foreach($lsgraf as $valor =>$spk)                       
                         <div class="col-lg-3 col-sm-6">
                             <div class="card card-stats">
                             <div class="card-header card-header-warning card-header-icon" >                         
@@ -101,7 +101,7 @@
                                 <div class="card-footer "  style="color:red;">
                                     <hr>
                                     <div class="stats" style="color: #12b9f3;">
-                                    <p style="color:grey"> {{$spk->sponame}} / <span style="color:   #a8dcd7  "> {{$spk->canal}} </span></p>
+                                    <p style="color:grey"> {{$spk->sponsor}} / <span style="color:   #a8dcd7  "> {{$spk->canal}} </span></p>
                                     </div>
                                 </div>
                                

@@ -75,6 +75,7 @@ class HomeController extends Controller
                     ->where("audits.mes",$value->mes);                   
                 }       
             } 
+        //  dd($query);
             if( $emp_type == 8 or $emp_type == 9) {     
                 // Filtro por el acceso y mes de los usuarios y sponsos 
                 foreach($array as $key => $value){    
@@ -144,12 +145,28 @@ class HomeController extends Controller
                     ->get();
                     $ltopcount = $ltop->count();
 
-                    $dashsponsor = $query->select('sponame','canal',\DB::raw('count(*) as cant'),
-                    \DB::raw('COUNT(CASE WHEN Estado ="ALERTA" THEN Estado END) as alerta'),
-                    \DB::raw('COUNT(CASE WHEN Estado ="CUMPLE" THEN Estado END) as cumple'))                   
-                    ->groupby('sponame','canal')
-                    ->get();
+                    // $dashsponsor = $query->select('sponsors.name','audits.canal',\DB::raw('count(audits.id) as cant'),
+                    // \DB::raw('COUNT(CASE WHEN audits.Estado ="ALERTA" THEN Estado END) as alerta'),
+                    // \DB::raw('COUNT(CASE WHEN audits.Estado ="CUMPLE" THEN Estado END) as cumple'))
+                    // ->join('sponsors','sponsors.id','=','audits.sponsor')                   
+                    // ->groupby('sponsors.name','audits.canal')
+                    // ->get();
+                    // $dashcount = $dashsponsor->count();
+
+
+                    $dashsponsor = \DB::table('audits')
+                                    ->select('audits.canal',\DB::raw('count(audits.id) as cant'),
+                                    \DB::raw('COUNT(CASE WHEN audits.Estado ="ALERTA" THEN Estado END) as alerta'),
+                                    \DB::raw('COUNT(CASE WHEN audits.Estado ="CUMPLE" THEN Estado END) as cumple'),
+                                    'sponsors.name as sponame')                                                           
+                                    ->join('sponsors','sponsors.id','=','audits.sponsor')
+                                    ->groupby('audits.canal','sponsors.name')
+                                    ->get();
                     $dashcount = $dashsponsor->count();
+
+
+
+
                 }                
                     $lcounta = $auditorias->count();
                     $pctpartial = $auditorias->avg('npartial');
@@ -218,7 +235,8 @@ class HomeController extends Controller
                     ->with('ltopcount',$ltopcount)
                     ->with('today',$today)
                     ->with('ejeccount',$ejeccount)
-                    ->with('calend',$calend);                
+                    ->with('calend',$calend)
+                    ->with('lsgraf',$lsgraf);                
                
             }
           

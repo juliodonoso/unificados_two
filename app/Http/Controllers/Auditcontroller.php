@@ -1065,7 +1065,7 @@ class Auditcontroller extends Controller
 
      
 
-        $conceptos = $query->select('audits.id','campanias.name as cname',\DB::raw("CONCAT(rutcli, '-', dvcli) AS rut"),'audits.fvta','teleoperadores.name as nombre','audits.idGrab','users.name',
+        $conceptos = $query->select('audits.id','campanias.name as cname',\DB::raw("CONCAT(audits.rutcli, '-', audits.dvcli) AS rut"),'audits.fvta','teleoperadores.name as nombre','audits.idGrab','users.name',
         'audits.Fgrab',
         \DB::raw("CONCAT(audits.PrgA,'%') AS PrA"),'audits.PrgA1','audits.PrgA2','audits.PrgA3','audits.PrgA4','audits.PrgA5',
         \DB::raw("CONCAT(audits.PrgB,'%') AS PrB"),'audits.PrgB1','audits.PrgB2','audits.PrgB3','audits.PrgB4',
