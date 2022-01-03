@@ -137,9 +137,7 @@
                             lanio : lanio,
                         },                     
                         success: function (response) {
-                            // console.log(response)  
-                          
-                                                  
+                            // console.log(response)        
                         
                         }
                     });           
