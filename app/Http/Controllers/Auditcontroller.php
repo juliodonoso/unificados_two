@@ -217,13 +217,19 @@ class Auditcontroller extends Controller
 
     public function grabaudi (Request $request) {  
         // dd($request);        
-        // if($_POST['dvcar'] == null) {
-        //     $ldvrut = 'X';
-        // } else {  
-        //     $ldvrut = $_POST['dvcar'];           
-        // }
-        $ldvrut = $_POST['dvcar'];     
-        $lrut = $_POST['rutcar'];
+        if($_POST['dvcar'] == null) {
+            $ldvrut = '';
+        } else {  
+            $ldvrut = $_POST['dvcar'];           
+        }
+
+        if($_POST['rutcar'] == null) {
+            $lrut = '';
+        } else {  
+            $lrut = $_POST['rutcar'];           
+        }
+        // $ldvrut = $_POST['dvcar'];     
+        // $lrut = $_POST['rutcar'];
 
         $lrut = str_replace('.', '', $lrut);       
 
