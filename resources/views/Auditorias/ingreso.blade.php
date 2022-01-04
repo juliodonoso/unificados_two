@@ -59,13 +59,13 @@
                                 <div class="col-md-4">
                                     <label class="title">fecha Venta</label>
                                     <div class="form-group">
-                                        <input type='date' class="form-control datepicker" placeholder="Date Picker Here" name="fventa"/>
+                                        <input type='date'  value =""  class="form-control datepicker" placeholder="Date Picker Here" name="fventa"/>
                                     </div>
                                 </div>
                                 <div class="col-md-4">
                                     <label class="title">fecha Asignacion</label>
                                     <div class="form-group">
-                                        <input type='date'  class="form-control datepicker" placeholder="Date Picker Here" name="fasig" id="fasig" />
+                                        <input type='date'  value ="" class="form-control datepicker" placeholder="Date Picker Here" name="fasig" id="fasig" />
                                     </div>
                                 </div>
                                 <div class="col-md-4">
@@ -86,7 +86,7 @@
                                         <label>
                                             Rut Cliente                                            
                                         </label>
-                                        <input id="rutcar" name ="rutcar" class="form-control"/>                                                            
+                                        <input id="rutcar" name ="rutcar" value = "" class="form-control"/>                                                            
                                     </div>
                                 </div>   
                                 <div class="col-sm-1">
@@ -94,7 +94,7 @@
                                         <label>
                                             Dv-Rut                                             
                                         </label>
-                                        <input id="dvcar" name ="dvcar" class="form-control"/>                                                            
+                                        <input id="dvcar" name ="dvcar" value = "" class="form-control"/>                                                            
                                     </div>
                                 </div>   					
                             </div>
