@@ -352,7 +352,14 @@
                                         </a>
                                     </li>                             
                                 </ul>
-                            </div>
+                                <ul class="nav">
+                                    <li class="nav-item ">
+                                        <a class="nav-link" href="{{ route('buscarclinics') }}">                                       
+                                            <span class="sidebar-normal"> <i class="nc-icon nc-zoom-split"></i>Busqueda</span>
+                                        </a>
+                                    </li>                             
+                                </ul>
+                            </div>                          
                         </li>
                     @endif
 

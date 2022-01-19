@@ -232,6 +232,10 @@ Route::get('/importmovs', [App\Http\Controllers\ClinicController::class, 'index'
 
 Route::POST('/importclinicas', [App\Http\Controllers\ClinicController::class, 'store'])->name('importprop');
 
+Route::get('/clinics/buscar', [App\Http\Controllers\ClinicController::class, 'show'])->name('buscarclinics');
+
+Route::POST('/Result/buscar', [App\Http\Controllers\ClinicController::class, 'busqueda'])->name('resultb');
+
 
 
 

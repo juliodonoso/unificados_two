@@ -4,8 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\Clinic;
 use App\Models\proposal;
+use App\Models\import;
 use App\Models\period;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use App\Imports\proposalimport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ClinicController extends Controller
 {
@@ -60,10 +64,25 @@ class ClinicController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request) // Importacion 
-    {
-       
-        return ("si");
+    public function store(Request $request) // Importacion    
+    {       
+        $agree = period::where('is_act','=',true)->first();
+        $lox = $agree->mes; 
+        $loa = $agree->anio;       
+        $nxfile  = $_FILES['file']['name'];          
+        $ruser = Auth::user()->id;                     
+        $rcarga = new import();        
+        $rcarga->fileimp = $nxfile;        
+        $rcarga->emp_id = $ruser;         
+        $rid = import::latest('id')->first();
+        $idimp = $rid->id;          
+        $nroexp = $rid->id+1;      
+        $import = new proposalimport($lox,$loa,$nroexp);
+        Excel::import($import,request()->file('file'));
+        $nroreg = $import->getrowCount();
+        $rcarga->noreg = $nroreg; 
+        $rcarga->save(); 
+        return back();       
         
     }
 
@@ -73,10 +92,59 @@ class ClinicController extends Controller
      * @param  \App\Models\Clinic  $clinic
      * @return \Illuminate\Http\Response
      */
-    public function show(Clinic $clinic)
+    public function show(Clinic $clinic)   // Index de Busqueda 
     {
         //
+        $titulo = 'Busqueda';
+        return view('Clinicas.buscar',[
+            'titulo' => $titulo,
+
+        ]);
+
     }
+
+
+    public function busqueda(Request $request){
+        // dd($_REQUEST);
+     
+        $query= proposal::Query()->where('rel','AS');
+        $queryadic= proposal::Query()->where('rel','!=','AS');
+
+        $lopcion = $request->input('select1');
+        $lbuscar = $request->input('buscar');
+
+      
+
+        if($lopcion == 'rut') {   
+            $query->Where(trim('rutcar'),$lbuscar)->where('borrado','0')
+            ->orwhere(trim('rutter'),$lbuscar)->where('borrado','0');
+            $queryadic->where('ruttit',$lbuscar);
+        } else {
+            $query->where($lopcion,$lbuscar);
+            $queryadic->where($lopcion,$lbuscar);
+        }
+        $adicionales = $queryadic->get();       
+        $Nrocar = $adicionales->count();
+       
+        $propuestas = $query->select('proposals.*','gt1.gestion as gt','tp1.ntipif as tipif', 
+        'gt2.gestion as gtcall','tp2.ntipif as tpcall', 'bancos.name as bank')
+        ->leftjoin('gestion as gt1','gt1.id', '=', 'proposals.gestion')
+        ->leftjoin('gestion as gt2','gt2.id', '=', 'proposals.gtcall')
+        ->leftjoin('tipificacion as tp1','tp1.id', '=', 'proposals.tipificacion')
+        ->leftjoin('tipificacion as tp2','tp2.id', '=', 'proposals.tpcall')
+        ->leftjoin('Bancos','bancos.codban','=','proposals.banco')                 
+        ->get();            
+        $titulo = 'Resultado de Busqueda';
+        return view('Clinicas.buscar_response', [
+            'propuestas' => $propuestas,
+            'titulo'=>$titulo,
+            'lopcion'=>$lopcion,
+            'lbuscar'=>$lbuscar,
+            'Nrocar'=>$Nrocar,
+            'adicionales'=>$adicionales
+        ]);
+    }
+
 
     /**
      * Show the form for editing the specified resource.

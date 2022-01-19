@@ -8,7 +8,7 @@
       <div class="col-md-12">
         <div class="card ">                                
           <div class="card-body ">            
-            <form method="POST" id="formedit" name="formedit" action="{{ route('importprop') }}">  
+            <form method="POST" id="formedit" name="formedit" action="{{ route('importprop') }}" enctype="multipart/form-data">  
                 {{ csrf_field() }}                
                 <div class="card-header">
                     <h4 class="card-title">Importacion de Datos</h4>
@@ -16,7 +16,7 @@
                 </div>
                 <div class="card-body ">      
                   <div class="custom-file" id="inputval">                                   
-                    <input type="file" id="fuSubirExcel" name="file_1" class="custom-file-input" accept=".xlsx" />                    
+                    <input type="file" id="fuSubirExcel" name="file" class="custom-file-input" accept=".xlsx" />                    
                     <label id="lblArchivo" class="custom-file-label" for="fuSubirExcel"></label> 
                   </div> 
                 </div> 
@@ -33,6 +33,12 @@
       <div class="col-md-12">     
         <div class="card ">                                
           <div class="card-body ">
+          <div class="card-body d-flex justify-content-between align-items-center">
+            <p class="card-category">Detalle de los ultimos 15 Archivos Importados</p>						
+            <input type="submit" class="btn btn-danger submitBtn" name="bt03" id="bt03"  style="display:none" Value="Eliminar" onclick='f_delete();' disabled />       
+         
+          </div>
+          <hr>
           <div class="card-body table-full-width table-responsive">
           <table class="table table-hover">
             <thead>
@@ -114,22 +120,78 @@
     }
 </script>
 
+<!-- Boton para borrar  -->
+<script>   
+    $(document).ready(function(){       
+        $('input[type=checkbox]').click(function() {  
+            if($('input[type=checkbox]').is(':checked')) {               
+                document.getElementById('bt03').disabled = false; 
+                $('#bt03').show(); 
+                $('input[type=checkbox]').val();                    
+            } else {             
+                document.getElementById('bt03').disabled = true; 
+                $('input[type=checkbox]').val();
+                $('#bt03').hide(); 
+            }  
+        }); 
+    });   
+    $(document).ready(function() {
+        selected = true;
+        $('#BtnSeleccionar').click(function() {     
+        if (selected) {
+            $('input[type=checkbox]').prop("checked", true);        
+            $('#BtnSeleccionar').val('Deseleccionar');
+            document.getElementById('bt03').disabled = false;        
+        } else {
+            $('input[type=checkbox]').prop("checked", false);
+            $('#BtnSeleccionar').val('Seleccionar');
+            document.getElementById('bt03').disabled = true;
+        }
+        selected = !selected;
+        });
+    });
+</script>
+
+<!-- Borrar  -->
+<script> 
+    function f_delete() {
+    swal({
+      title: "BORRADO DE REGISTROS!",
+      text: "Desea eliminar los registros seleccionados?",       
+      type: "warning",
+      showCancelButton: true,       
+      confirmButtonText: "ok",
+      cancelButtonText: "No",
+      closeOnConfirm: true,
+      closeOnCancel: true,
+    },
+    function(isConfirm){
+      if (isConfirm) {						
+            document.f03.submit() 
+      } 
+    }
+    );
+  }
+</script>
+
 <style>
+  table td {
+    font-size:11px;
+    color:grey;
+    padding: 0px;
+    height: 20px;
+  }
 
 
-table td {
-  font-size:12px;
-  color:grey;
-}
+  #ckBox {
+    font-size: 12px;
+    width:15px;
+    height:15px;
+  }
+  .alc  {
+  text-align: center; 
+  padding: 0px;
 
-
-#ckBox {
-  font-size: 12px;
-  width:15px;
-  height:15px;
-}
- .alc  {
- text-align: center; 
-
-}
+  }
 </style>
+
