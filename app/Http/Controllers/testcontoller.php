@@ -17,9 +17,8 @@ class testcontoller extends Controller
     $operadores =  \DB::table('teleoperadores')
     ->get();
 
-    return view('pruebas.pruebas')
-    ->with('operadores',$operadores)
-    ->with('canal',$canal);
+    return view('Clinicas.scriptsclinics');
+   
 
 
     }

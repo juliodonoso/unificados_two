@@ -70,7 +70,7 @@ class Auditcontroller extends Controller
                 ->where("audits.mes",$value->mes);                                 
             } 
         }       
-        if($emp_type == 6  OR  $emp_type == 7) {
+        if($emp_type == 6  OR  $emp_type == 7 OR  $emp_type == 1) {
             if($emp_type == 6){
                 $auditadasf =  $query_emp->get();  
                 $auditadas = $query_emp->select('audits.*','sponsors.name as sname','teleoperadores.name as nombre','canal.name as ncanal','campanias.name as cname')          
@@ -141,24 +141,32 @@ class Auditcontroller extends Controller
     }
     public function upeditaudit(Request $request, $lid) {       // Edicionde auditorias 
 
-        $lgrabaraudit = audit::find($lid);
-      
-         
+        // dd($_REQUEST);
+
+        if($_POST['dvcar'] == null) {
+            $ldvrut = '';
+        } else {  
+            $ldvrut = $_POST['dvcar'];           
+        }
+
+        if($_POST['rutcar'] == null) {
+            $lrut = '';
+        } else {  
+            $lrut = $_POST['rutcar'];           
+        }        
+        $lgrabaraudit = audit::find($lid);         
         $lgrabaraudit->sponsor = $request->input("sponsor");     
         $lgrabaraudit->idcia = $request->input("cia");    
         $lgrabaraudit->idcanal = $request->input("canal");    
-        $lgrabaraudit->idoper = $request->input("telop");
-       
-    
+        $lgrabaraudit->idoper = $request->input("telop");    
         $lgrabaraudit->Fvta = $request->input("fventa");
         $lgrabaraudit->Fgrab = $request->input("fasig");
-        $lgrabaraudit->rutcli = $request->input("rutcar");
-        $lgrabaraudit->dvcli = $request->input("dvcar");
-        $lgrabaraudit->observ = $request->input("observ");
-        $lgrabaraudit->idGrab = $request->input("idgrab"); 
+        $lgrabaraudit->rutcli = $lrut;
+        $lgrabaraudit->dvcli = $ldvrut;
+        $lgrabaraudit->observ =  strtoupper($request->input("observ"));
+        $lgrabaraudit->idGrab =  strtoupper($request->input("idgrab")); 
 
             $lgrab = $request->file('file-0b');
-
             if($lgrab !==null) {
                 $file = $request->file('file-0b');
                 $nombre =  $file->getClientOriginalName();//depende de como lo nombren
@@ -215,8 +223,7 @@ class Auditcontroller extends Controller
        
     }
 
-    public function grabaudi (Request $request) {  
-        // dd($request);        
+    public function grabaudi (Request $request) {            
         if($_POST['dvcar'] == null) {
             $ldvrut = '';
         } else {  
