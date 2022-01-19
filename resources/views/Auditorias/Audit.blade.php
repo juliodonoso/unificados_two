@@ -192,7 +192,7 @@
 </div>
 <!-- modal  -->
     @foreach($auditadas as $resp)
-        <div class="modal fade bd-example-modal-lg" id="PlaceModal-{{$resp->id}}" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        <div class="modal fade bd-example-modal-lg" id="PlaceModal-{{$resp->id}}" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" style="word-wrap: break-word;">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -252,8 +252,10 @@
                             </tbody>
                         </table>  
                         <hr>
-                        <div class="row" id="det01">
-                            <div class="col-sm-12" id="obs01">Observaciones : {{$resp->observ}} </div>                           
+                        <div class="row" id="det01" style="word-wrap: break-word;hyphens: auto;word-break: break-all;">
+                            <!-- <div class="col-sm-12" id="obs01">Observaciones : {{$resp->observ}} </div>    -->
+                            <label for="p01obs">OBSERVACIONES:</label>
+                            <p id="p01obs"style="word-wrap: break-word;font-size:10px;color:grey;">{{$resp->observ}}</p>                            
                         </div>
                         <hr>
                         @if($resp->grabacion != null)
@@ -360,6 +362,7 @@
 </script>
 
 <style>
+
     #del {
         border: none;text-align: center;
         padding:0px;
@@ -394,10 +397,7 @@
         font-size:10px;
     }
 
-    #obs01 { 
-        white-space: nowrap;
-        overflow: hidden;
-    }
+  
 
 </style>
 
