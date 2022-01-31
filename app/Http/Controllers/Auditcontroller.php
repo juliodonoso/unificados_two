@@ -223,7 +223,8 @@ class Auditcontroller extends Controller
        
     }
 
-    public function grabaudi (Request $request) {            
+    public function grabaudi (Request $request) {   
+        
         if($_POST['dvcar'] == null) {
             $ldvrut = '';
         } else {  

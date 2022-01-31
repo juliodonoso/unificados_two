@@ -215,6 +215,8 @@ class HomeController extends Controller
                         $infograb = [$lsalertas];                           
                         array_push($infograb,$lscumple,$lcounta);                 
 
+                    } else {
+                        $lsgraf = 0;
                     }      
                   
                     return view('home2')
