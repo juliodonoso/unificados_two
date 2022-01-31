@@ -95,54 +95,116 @@ class ClinicController extends Controller
     public function show(Clinic $clinic)   // Index de Busqueda 
     {
         //
+        
         $titulo = 'Busqueda';
         return view('Clinicas.buscar',[
             'titulo' => $titulo,
-
         ]);
 
     }
 
 
-    public function busqueda(Request $request){
-        // dd($_REQUEST);
-     
-        $query= proposal::Query()->where('rel','AS');
-        $queryadic= proposal::Query()->where('rel','!=','AS');
-
-        $lopcion = $request->input('select1');
-        $lbuscar = $request->input('buscar');
-
-      
-
-        if($lopcion == 'rut') {   
-            $query->Where(trim('rutcar'),$lbuscar)->where('borrado','0')
-            ->orwhere(trim('rutter'),$lbuscar)->where('borrado','0');
-            $queryadic->where('ruttit',$lbuscar);
+    public function busqueda(Request $request){  
+         
+        $ult = Period::where('is_act',true)->first();  // Periodo         
+        $periodx = Period::all();
+        $last = $periodx->last();       
+        if($ult == true) {
+            $lmes = $ult->mes;
+            $lanio = $ult->anio;
+            $period = $lmes.$lanio; 
+            $cierre = 1;
         } else {
-            $query->where($lopcion,$lbuscar);
-            $queryadic->where($lopcion,$lbuscar);
+            $lmes = $last->mes;
+            $lanio = $last->anio;
+            $period = $lmes.$lanio;
+            $cierre = 0;
+        }      
+        // dd($period);
+
+        $input = $request->all();
+
+        if($request->get('buscar')){
+     
+            $query= proposal::Query()->where('rel','AS');
+            $queryadic= proposal::Query()->where('rel','!=','AS');
+
+            $lopcion = $request->input('select1');
+            $lbuscar = $request->input('buscar');        
+
+            if($lopcion == 'rut') {   
+                $query->Where(trim('rutcar'),$lbuscar)->where('borrado','0')
+                ->orwhere(trim('rutter'),$lbuscar)->where('borrado','0');
+                $queryadic->where('ruttit',$lbuscar);
+            } else {
+                $query->where($lopcion,$lbuscar);
+                $queryadic->where($lopcion,$lbuscar);
+            }
+            $lscargas = $queryadic->get();       
+            $Nrocar = $lscargas->count();
+        
+            $propuestas = $query->select('proposals.*','gt1.gestion as gt','tp1.ntipif as tipif', 
+            'gt2.gestion as gtcall','tp2.ntipif as tpcall', 'bancos.name as bank')
+            ->leftjoin('gestion as gt1','gt1.id', '=', 'proposals.gestion')
+            ->leftjoin('gestion as gt2','gt2.id', '=', 'proposals.gtcall')
+            ->leftjoin('tipificacion as tp1','tp1.id', '=', 'proposals.tipificacion')
+            ->leftjoin('tipificacion as tp2','tp2.id', '=', 'proposals.tpcall')
+            ->leftjoin('Bancos','bancos.codban','=','proposals.banco')                 
+            ->get();            
+            $titulo = 'Busqueda por '.strtoupper($lopcion).' : '.strtoupper($lbuscar);
+            $Nroprop = $propuestas->count();         
+         
+            return view('Clinicas.buscar_response', [
+                'propuestas' => $propuestas,
+                'titulo'=>$titulo,
+                'lopcion'=>$lopcion,
+                'lbuscar'=>$lbuscar,
+                'Nrocar'=>$Nrocar,
+                'adicionales'=>$lscargas,
+                'Nroprop'=>$Nroprop,
+                'period'=>$period,
+                'cierre'=>$cierre
+            ]);
+        } else {
+            $titulo = 'Busqueda';
+            return view('Clinicas.buscar_response',[
+                'titulo' => $titulo,
+            ]);
         }
-        $adicionales = $queryadic->get();       
-        $Nrocar = $adicionales->count();
-       
-        $propuestas = $query->select('proposals.*','gt1.gestion as gt','tp1.ntipif as tipif', 
-        'gt2.gestion as gtcall','tp2.ntipif as tpcall', 'bancos.name as bank')
-        ->leftjoin('gestion as gt1','gt1.id', '=', 'proposals.gestion')
-        ->leftjoin('gestion as gt2','gt2.id', '=', 'proposals.gtcall')
-        ->leftjoin('tipificacion as tp1','tp1.id', '=', 'proposals.tipificacion')
-        ->leftjoin('tipificacion as tp2','tp2.id', '=', 'proposals.tpcall')
-        ->leftjoin('Bancos','bancos.codban','=','proposals.banco')                 
-        ->get();            
-        $titulo = 'Resultado de Busqueda';
-        return view('Clinicas.buscar_response', [
-            'propuestas' => $propuestas,
+    }
+
+
+    public function editpropuestas($lid) {     
+        
+        $propedit =  proposal::select('proposals.*','gestion.gestion as gt','tipificacion.ntipif as tp','bancos.name as bank','users.name as ejea')
+        ->where('proposals.id',$lid)
+        ->leftjoin('gestion','gestion.id', '=', 'proposals.gestion')
+        ->leftjoin('tipificacion','tipificacion.id', '=', 'proposals.tipificacion')
+        ->leftjoin('users','users.id', '=', 'proposals.emp_id')
+        ->leftjoin('Bancos','bancos.codban','=','proposals.banco')       
+        ->where('borrado', "0")    
+        ->get();        
+        $lrut = $propedit[0]->rutcar;
+        $lprop = $propedit[0]->propuesta;    
+        
+        $lscargas = proposal::where('ruttit',$lrut)
+                    ->where('propuesta',$lprop)
+                    ->wherenotin('rel',['AS'])
+                    ->get();
+        $Nrocar = $lscargas->count();
+        $lscoutn = 0;
+      
+        $titulo = 'Edicion de Propuesta: '.$lid;      
+
+        return view('Clinicas.edit_propuestas',[
             'titulo'=>$titulo,
-            'lopcion'=>$lopcion,
-            'lbuscar'=>$lbuscar,
+            'propedit'=>$propedit,
+            'lscargas'=>$lscargas,
             'Nrocar'=>$Nrocar,
-            'adicionales'=>$adicionales
+            'ldid'=>$lid,
+            'lscoutn'=>$lscoutn
         ]);
+
     }
 
 

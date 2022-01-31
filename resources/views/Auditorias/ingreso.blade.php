@@ -422,7 +422,7 @@
                         <label for="file-0b">Ingrese Grabacion de Alerta</label>
                         <input id="file-0b"  class="form-control" name="file-0b" type="file" enctype="multipart/form-data" accept="audio/*" required>
                         <br>                     
-                    </div>   
+                    </div>                    
                 <!-- Observaciones  -->
                     <div class="form-group">
                         <label for="exampleFormControlTextarea1">Observaciones</label>
@@ -1041,6 +1041,16 @@
     }
 
 
+</script>
+
+
+<script>
+  $(document).ready(function() {
+    $("#file-0b").on('change', function() {
+        var fileName = $(this).val().split("\\").pop();
+        $(this).siblings(".custom-file-label").addClass("selected").html(fileName);        
+    })
+  });
 </script>
 
 <!-- ingresar digito verificador -->
