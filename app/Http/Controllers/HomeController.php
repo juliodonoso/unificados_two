@@ -218,6 +218,8 @@ class HomeController extends Controller
                     } else {
                         $lsgraf = 0;
                     }      
+
+                  
                   
                     return view('home2')
                     ->with('lcounta',$lcounta)
