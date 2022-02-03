@@ -81,6 +81,7 @@
                     </div>
                 </div>
                 @if($emp_type == 7 or $emp_type == 8)
+                @if($lsgraf !== 0)
                     @foreach($lsgraf as $valor =>$spk)                       
                         <div class="col-lg-3 col-sm-6">
                             <div class="card card-stats">
@@ -103,11 +104,12 @@
                                     <div class="stats" style="color: #12b9f3;">
                                     <p style="color:grey"> {{$spk->sponsor}} / <span style="color:   #a8dcd7  "> {{$spk->canal}} </span></p>
                                     </div>
-                                </div>
-                               
+                                </div>                               
                             </div>
                         </div>
+                  
                     @endforeach  
+                    @endif
                 @endif            
             </div>                    
         </div> 
