@@ -207,11 +207,11 @@ Route::POST('/importcmm', [App\Http\Controllers\Auditcontroller::class, 'importc
 
 // Semestral
 
-Route::get('/campañas', [App\Http\Controllers\Campaniacontroller::class, 'index'])->name('companias');
-Route::get('/camp2/{ldid}', [App\Http\Controllers\Campaniacontroller::class, 'create'])->name('gtcamp');
-Route::POST('/savegt/{lid}', [App\Http\Controllers\Campaniacontroller::class, 'store'])->name('upgt');
+Route::get('/campañas', [App\Http\Controllers\CampaniaController::class, 'index'])->name('companias');
+Route::get('/camp2/{ldid}', [App\Http\Controllers\CampaniaController::class, 'create'])->name('gtcamp');
+Route::POST('/savegt/{lid}', [App\Http\Controllers\CampaniaController::class, 'store'])->name('upgt');
 
-Route::get('/export', [App\Http\Controllers\Campaniacontroller::class, 'export'])->name('excelc1');
+Route::get('/export', [App\Http\Controllers\CampaniaController::class, 'export'])->name('excelc1');
 
 
 
