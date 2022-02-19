@@ -243,8 +243,8 @@
                             </li>  
                     @endif  
                     <!-- Campañas  -->
-                    @if(Auth::user()->idtype  == 5 or Auth::user()->idtype  == 1) 
-                        <!-- <li class="nav-item">
+                    @if(Auth::user()->idtype  == 5 or Auth::user()->idtype  == 1 or Auth::user()->idtype  == 10) 
+                        <li class="nav-item">
                             <p class="logo"></p>
                                 <a class="nav-link" data-toggle="collapse" href="#Camp">
                                 <i class="nc-icon nc-grid-45"></i> 
@@ -256,23 +256,13 @@
                                 <div class="collapse " id="Camp">
                                     <ul class="nav">
                                         <li class="nav-item ">
-                                            <a class="nav-link" href="{{ route('call') }}">                                       
-                                                <span class="sidebar-normal"> <i class="nc-icon nc-money-coins"></i>Expansion</span>
+                                            <a class="nav-link" href="{{ route('companias') }}">                                       
+                                                <span class="sidebar-normal"> <i class="nc-icon nc-money-coins"></i>Gallagher</span>
                                             </a>
-                                        </li> 
-                                        <li class="nav-item ">
-                                            <a class="nav-link" href="{{ route('callsacs') }}">                                       
-                                                <span class="sidebar-normal"><i class="nc-icon nc-money-coins"></i>Auto</span>
-                                            </a>
-                                        </li>
-                                        <li class="nav-item ">
-                                            <a class="nav-link" href="{{ route('callsacs') }}">                                       
-                                                <span class="sidebar-normal"><i class="nc-icon nc-money-coins"></i>Siniestros</span>
-                                            </a>
-                                        </li>                                 
+                                        </li>                                                                    
                                     </ul>
                                 </div>                          
-                            </li>   -->
+                            </li>  
                     @endif  
                     <!-- Mantenimiento  -->
                     @if(Auth::user()->idtype  == 1 or Auth::user()->idtype  == 7) 

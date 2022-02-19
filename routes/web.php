@@ -205,11 +205,17 @@ Route::POST('/importcmm', [App\Http\Controllers\Auditcontroller::class, 'importc
 
 // Campañas
 
-Route::get('/campañas', [App\Http\Controllers\Auditcontroller::class, 'cias'])->name('companias');
-Route::get('/newcia', [App\Http\Controllers\Auditcontroller::class, 'newcia'])->name('newcia');
-Route::POST('/grabarcia', [App\Http\Controllers\Auditcontroller::class, 'upcia'])->name('upcia');
-Route::POST('/editcia', [App\Http\Controllers\Auditcontroller::class, 'editcia'])->name('ciaedit');
-Route::POST('/grabeditcias', [App\Http\Controllers\Auditcontroller::class, 'Grabeditcia'])->name('Grabeditcia');
+// Semestral
+
+Route::get('/campañas', [App\Http\Controllers\Campaniacontroller::class, 'index'])->name('companias');
+Route::get('/camp2/{ldid}', [App\Http\Controllers\Campaniacontroller::class, 'create'])->name('gtcamp');
+Route::POST('/savegt/{lid}', [App\Http\Controllers\Campaniacontroller::class, 'store'])->name('upgt');
+
+Route::get('/export', [App\Http\Controllers\Campaniacontroller::class, 'export'])->name('excelc1');
+
+
+
+
 
 // Destinatarios 
 
