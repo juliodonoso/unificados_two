@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\proposal;
 use App\Models\sponsor;
+use App\Models\campania;
 use App\Models\period;
 use Illuminate\Support\Arr;
 use App\Models\Audit;
@@ -359,8 +360,25 @@ class HomeController extends Controller
                
             }
 
+        // CAMPAÑAS TEMPORALES
+
+        if( $emp_type == 10 ) {     
           
-    }
+             
+            $datos = campania::select('campanias1.*','gtcampania1.gt as gtc1')
+            ->leftjoin('gtcampania1','gtcampania1.id', '=', 'campanias1.gestion') 
+            ->get();
+            // dd($datos);
+            return view('Campanias.Semestral.index', [
+                'datos'=>$datos,
+            ]);             
+           
+        }
+
+
+    
+    
+        }
 
     public function pruebas() 
     {
