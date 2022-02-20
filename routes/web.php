@@ -210,8 +210,7 @@ Route::POST('/importcmm', [App\Http\Controllers\Auditcontroller::class, 'importc
 Route::get('/campañas', [App\Http\Controllers\CampaniaController::class, 'index'])->name('companias');
 Route::get('/camp2/{ldid}', [App\Http\Controllers\CampaniaController::class, 'create'])->name('gtcamp');
 Route::POST('/savegt/{lid}', [App\Http\Controllers\CampaniaController::class, 'store'])->name('upgt');
-
-Route::get('/export', [App\Http\Controllers\CampaniaController::class, 'export'])->name('excelc1');
+Route::get('/exportc1', [App\Http\Controllers\CampaniaController::class, 'export'])->name('excelc1');
 
 
 
