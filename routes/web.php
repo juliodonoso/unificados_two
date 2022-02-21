@@ -149,8 +149,6 @@ Route::post('/del', [App\Http\Controllers\Auditcontroller::class, 'destroy'])->n
 Route::get('/alertas/{idx}', [App\Http\Controllers\Mailcontroller::class, 'sendmail'])->name('alertmail');
 
 
-
-
 // Descargar Grabaciones de alertas 
 
 Route::get('/uploads/{file}', function ($file) {   
@@ -212,10 +210,6 @@ Route::get('/camp2/{ldid}', [App\Http\Controllers\CampaniaController::class, 'cr
 Route::POST('/savegt/{lid}', [App\Http\Controllers\CampaniaController::class, 'store'])->name('upgt');
 Route::get('/exportc1', [App\Http\Controllers\CampaniaController::class, 'export'])->name('excelc1');
 
-
-
-
-
 // Destinatarios 
 
 Route::get('/destinatarios', [App\Http\Controllers\Mailcontroller::class, 'indexcorreos'])->name('indexmail');
@@ -229,7 +223,6 @@ Route::get('/editspon/{lid}/{lstatus}', [App\Http\Controllers\Auditcontroller::c
 Route::POST('/grabarspst', [App\Http\Controllers\Auditcontroller::class, 'upstattusp'])->name('statusp');
 
 Route::POST('/cambioperiodo', [App\Http\Controllers\Auditcontroller::class, 'changeperiodo'])->name('changep');
-
 
 // Clinicas
 
