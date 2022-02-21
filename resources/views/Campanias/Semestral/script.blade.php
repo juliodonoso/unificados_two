@@ -245,6 +245,9 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        <br>
+                                        <p>Sr@ <strong>{{$lgestion->contacto}}</strong>, <strong> SANTANDER CORREDORA DE SEGUROS </strong> en conjunto con <strong> GALLAGHER</strong>, agradece su confianza al habernos permitido proteger sus bienes</p>
+                                        <p>¡Muchas Gracias!</p>
                                     </div>
                                     </div>
                                     <div id="NO-Acep4" style="display:none;">
@@ -288,15 +291,14 @@
                         </div>
                         <div>
                         <div class="form-group">
-                                            <div class="form-check">
-                                                <label class="form-check-label">
-                                                    <input class="form-check-input" type="checkbox" value="1" name="conchk">
-                                                    <span class="form-check-sign"></span>
-                                                    Solicita Consulta de ejecutivo
-                                                </label>
-                                            </div>
-                                        </div>
-                   
+                            <div class="form-check">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" type="checkbox" value="1" name="conchk">
+                                    <span class="form-check-sign"></span>
+                                    Solicita Consulta de ejecutivo
+                                </label>
+                            </div>
+                        </div>                   
                         <div class="card-footer text-right">  
                             <hr>            
                             <button type="button" class="btn btn-warning btn-fill pull-right" onclick="f_validar()">Grabar</button>                                        
