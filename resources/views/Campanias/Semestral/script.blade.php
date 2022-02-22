@@ -286,7 +286,7 @@
                                     <option value="1">VOLVER A LLAMAR</option>
                                     <option value="2">VENTA IMPERFECTA</option>
                                     <option value="3">BUENA VENTA</option>
-                                    <option value="3">CONTACTO TERCERO</option>                                                                                                           
+                                    <option value="4">CONTACTO TERCERO</option>                                                                                                           
                                 </select>
                             </div>
                         </div>
