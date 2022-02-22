@@ -283,9 +283,10 @@
                             <hr>
                             <div class="col-md-6">
                                 <select name="gestion" id="gestion" class="selectpicker" data-title="Seleccione gestion" data-style="btn-default btn-outline" data-menu-style="dropdown-blue" required="true">
-                                    <option value="1">NO CONTACTO</option>
-                                    <option value="2">DESCONOCE</option>
-                                    <option value="3">BUENA VENTA</option>                                                                                                           
+                                    <option value="1">VOLVER A LLAMAR</option>
+                                    <option value="2">VENTA IMPERFECTA</option>
+                                    <option value="3">BUENA VENTA</option>
+                                    <option value="3">CONTACTO TERCERO</option>                                                                                                           
                                 </select>
                             </div>
                         </div>
