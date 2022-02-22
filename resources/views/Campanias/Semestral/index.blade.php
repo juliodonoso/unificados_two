@@ -65,7 +65,7 @@ table td {
 <script>
     function f_copiar() {       
         $('table tr td:last-child').click(function(){
-            var valor = $(this).siblings('td:nth-child(4)').text();  
+            var valor = $(this).siblings('td:nth-child(6)').text();  
             var aux = document.createElement("input");   
             aux.setAttribute("value", valor);
             document.body.appendChild(aux);
