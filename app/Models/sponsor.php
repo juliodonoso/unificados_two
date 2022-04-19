@@ -8,8 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class sponsor extends Model
 {
     use HasFactory;
-    
+
     protected $table = 'sponsors';
+    public $timestamps = false;
 
     protected $fillable = [
         'id',
