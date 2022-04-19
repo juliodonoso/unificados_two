@@ -24,7 +24,7 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 
 //*************************************** Calidad ***************************************
 
-// Periodo 
+// Periodo
 
 Route::get('/periodo', [App\Http\Controllers\PeriodController::class, 'index'])->name('periodo');
 Route::get('/periodo/cerrar/{id}', [App\Http\Controllers\PeriodController::class, 'close'])->name('pclose');
@@ -34,7 +34,7 @@ Route::get('/periodo/abrir', [App\Http\Controllers\PeriodController::class, 'abr
 
 Route::get('/importarr', [App\Http\Controllers\ProposalController::class, 'index'])->name('importreg');
 Route::post('/carga', [App\Http\Controllers\ProposalController::class, 'create'])->name('Cargaprop');
-Route::post('/mntobd', [App\Http\Controllers\ProposalController::class, 'destroy'])->name('Mnto'); // Borrar archivos cargados ---- los coloca en 
+Route::post('/mntobd', [App\Http\Controllers\ProposalController::class, 'destroy'])->name('Mnto'); // Borrar archivos cargados ---- los coloca en
 
 // Busqueda
 
@@ -72,7 +72,7 @@ Route::get('/upgestion', [App\Http\Controllers\ProposalController::class, 'updat
 Route::POST('/updategt', [App\Http\Controllers\ProposalController::class, 'updateexcel'])->name('Upgtexcel');
 Route::get('/up/{sep}', [App\Http\Controllers\ProposalController::class, 'pdfupdate'])->name('pdfup');
 
-// Mantenimiento 
+// Mantenimiento
 
 //Usuarios
 
@@ -80,7 +80,7 @@ Route::get('/usuarioslist', [App\Http\Controllers\Auth\ConfirmPasswordController
 Route::POST('/usuariosedit', [App\Http\Controllers\Auth\ConfirmPasswordController::class, 'edituser'])->name('usersedit');
 Route::POST('/updateusers/{luserid}', [App\Http\Controllers\Auth\ConfirmPasswordController::class, 'upuser'])->name('upusers');
 
-// Reportes 
+// Reportes
 
 // Gestion
 
@@ -126,7 +126,7 @@ Route::get('/llsacs/{ldid}', [App\Http\Controllers\CallController::class, 'gtsac
 Route::POST('/savesacs/{Nrocar}/{ldid}', [App\Http\Controllers\CallController::class, 'grabacallsacs'])->name('grabarsacs');
 
 
-// Auditorias 
+// Auditorias
 
 Route::get('/Audit', [App\Http\Controllers\Auditcontroller::class, 'index'])->name('ingresoaudit');
 
@@ -149,16 +149,16 @@ Route::post('/del', [App\Http\Controllers\Auditcontroller::class, 'destroy'])->n
 Route::get('/alertas/{idx}', [App\Http\Controllers\Mailcontroller::class, 'sendmail'])->name('alertmail');
 
 
-// Descargar Grabaciones de alertas 
+// Descargar Grabaciones de alertas
 
-Route::get('/uploads/{file}', function ($file) {   
+Route::get('/uploads/{file}', function ($file) {
     $path = storage_path().'/'.'app'.'/grabaciones/'.$file;
     if (file_exists($path)) {
         return Response::download($path);
     }
 })->name('uploads');
 
-// Exportar Excel 
+// Exportar Excel
 
 Route::get('/export', [App\Http\Controllers\Auditcontroller::class, 'export'])->name('excelaud');
 
@@ -177,14 +177,14 @@ Route::get('/exportejecutivos', [App\Http\Controllers\Auditcontroller::class, 'e
 Route::get('/concep', [App\Http\Controllers\Auditcontroller::class, 'repcindex'])->name('conceptos');
 Route::POST('/conceptos', [App\Http\Controllers\Auditcontroller::class, 'resultcpt'])->name('concept');
 
-// Pruebas 
+// Pruebas
 
 Route::get('/pruebas', [App\Http\Controllers\testcontoller::class, 'pruebas'])->name('pruebas');
 // Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 // Mantenedor de Auditoria
 
-// Operadores 
+// Operadores
 
 Route::get('/teleoperadores', [App\Http\Controllers\Auditcontroller::class, 'teleop'])->name('teleop');
 Route::get('/newoper', [App\Http\Controllers\Auditcontroller::class, 'newop'])->name('newoper');
@@ -193,7 +193,7 @@ Route::POST('/editopers', [App\Http\Controllers\Auditcontroller::class, 'editop'
 Route::POST('/grabeditopers', [App\Http\Controllers\Auditcontroller::class, 'Grabeditop'])->name('Grabeditop');
 Route::POST('/histope', [App\Http\Controllers\Auditcontroller::class, 'histope'])->name('histope');
 
-// Clientes 
+// Clientes
 Route::get('/comentar/{lid}', [App\Http\Controllers\Auditcontroller::class, 'commentsaudit'])->name('editaudit');
 Route::POST('/Grabar', [App\Http\Controllers\Auditcontroller::class, 'upcomments'])->name('comments');
 Route::get('/comments/index', [App\Http\Controllers\Auditcontroller::class, 'importccindex'])->name('indexscomments');
@@ -205,12 +205,18 @@ Route::POST('/importcmm', [App\Http\Controllers\Auditcontroller::class, 'importc
 
 // Semestral
 
-Route::get('/campañas', [App\Http\Controllers\CampaniaController::class, 'index'])->name('companias');
+//Route::get('/campañas', [App\Http\Controllers\CampaniaController::class, 'index'])->name('companias');
+Route::get('/campañas', [App\Http\Controllers\Auditcontroller::class, 'cias'])->name('companias');
+Route::get('/newcia', [App\Http\Controllers\Auditcontroller::class, 'newcia'])->name('newcia');
+Route::POST('/grabarcia', [App\Http\Controllers\Auditcontroller::class, 'upcia'])->name('upcia');
+Route::POST('/editcia', [App\Http\Controllers\Auditcontroller::class, 'editcia'])->name('ciaedit');
+Route::POST('/grabeditcias', [App\Http\Controllers\Auditcontroller::class, 'Grabeditcia'])->name('Grabeditcia');
+
 Route::get('/camp2/{ldid}', [App\Http\Controllers\CampaniaController::class, 'create'])->name('gtcamp');
 Route::POST('/savegt/{lid}', [App\Http\Controllers\CampaniaController::class, 'store'])->name('upgt');
 Route::get('/exportc1', [App\Http\Controllers\CampaniaController::class, 'export'])->name('excelc1');
 
-// Destinatarios 
+// Destinatarios
 
 Route::get('/destinatarios', [App\Http\Controllers\Mailcontroller::class, 'indexcorreos'])->name('indexmail');
 Route::POST('/savedestinos/{iddest}', [App\Http\Controllers\Mailcontroller::class, 'updestinatarios'])->name('updest');
