@@ -6,6 +6,7 @@ use App\Models\campania;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\c1Export;
+use App\Models\campaign;
 
 class CampaniaController extends Controller
 {
@@ -17,8 +18,10 @@ class CampaniaController extends Controller
     public function index()
     {
         //
+
+        $data= campania::all();
         return view('Campanias.Semestral.index', [
-        
+        "datos"=>$data,
         ]);
     }
 
@@ -29,10 +32,10 @@ class CampaniaController extends Controller
      */
     public function create( $ldid)
     {
-        $lgestion = campania::find($ldid);      
+        $lgestion = campania::find($ldid);
         return view('Campanias.Semestral.script', [
             'ldid'=>$ldid,
-            'lgestion'=>$lgestion,         
+            'lgestion'=>$lgestion,
         ]);
     }
 
@@ -52,7 +55,7 @@ class CampaniaController extends Controller
         $lck = 1;
        }
 
-       $lcontra =  $request->input("exampleRadio"); 
+       $lcontra =  $request->input("exampleRadio");
        $lrecepc = $request->input("exampleRadio2");
        $lencuesta = $request->input("exampleRadio4");
        if($lcontra == "NO") {
@@ -69,7 +72,7 @@ class CampaniaController extends Controller
        if($lrecepc == "NO"){
         $linfo = "NO";
         $lencu = "NO";
-        $lescala = 0; 
+        $lescala = 0;
        }else {
         $linfo =  $request->input("exampleRadio3");
         $lencu = $request->input("exampleRadio4");
@@ -79,32 +82,32 @@ class CampaniaController extends Controller
        if($lencuesta == "NO"){
         $lescala = 0;
        }else {
-        $lescala = $request->input("exampleRadio5"); 
+        $lescala = $request->input("exampleRadio5");
        }
 
-        $lgrabaraudit = campania::find($lid);         
-        $lgrabaraudit->contratacion = $request->input("exampleRadio");     
-        $lgrabaraudit->receppoliza = $lrecep;    
-        $lgrabaraudit->infor = $linfo;    
-        $lgrabaraudit->encuesta = $lencu;    
+        $lgrabaraudit = campania::find($lid);
+        $lgrabaraudit->contratacion = $request->input("exampleRadio");
+        $lgrabaraudit->receppoliza = $lrecep;
+        $lgrabaraudit->infor = $linfo;
+        $lgrabaraudit->encuesta = $lencu;
         $lgrabaraudit->escala = $lescala;
         $lgrabaraudit->observaciones = $request->input("observ");
-        $lgrabaraudit->contacto = $request->input("name");    
-        $lgrabaraudit->rut = $request->input("rut");    
+        $lgrabaraudit->contacto = $request->input("name");
+        $lgrabaraudit->rut = $request->input("rut");
         $lgrabaraudit->mail = $request->input("mail");
         $lgrabaraudit->fono = $request->input("telf");
         $lgrabaraudit->gestion = $request->input("gestion");
         $lgrabaraudit->consulta = $lck;
 
-        $lgrabaraudit->save(); 
-        
+        $lgrabaraudit->save();
+
         $datos = campania::select('campanias1.*','gtcampania1.gt as gtc1')
-        ->leftjoin('gtcampania1','gtcampania1.id', '=', 'campanias1.gestion') 
+        ->leftjoin('gtcampania1','gtcampania1.id', '=', 'campanias1.gestion')
         ->get();
         // dd($datos);
         return view('Campanias.Semestral.index', [
             'datos'=>$datos,
-        ]);                
+        ]);
     }
 
     /**
@@ -154,11 +157,11 @@ class CampaniaController extends Controller
 
 
     public function export() {
-         
+
         $datos = campania::select('campanias1.*','gtcampania1.gt as gtc1')
-        ->leftjoin('gtcampania1','gtcampania1.id', '=', 'campanias1.gestion') 
+        ->leftjoin('gtcampania1','gtcampania1.id', '=', 'campanias1.gestion')
         ->get();
-        $lname = 'c1-'.'-'.'.xlsx';        
+        $lname = 'c1-'.'-'.'.xlsx';
         return Excel::download(new c1Export($datos), $lname);
 
     }
