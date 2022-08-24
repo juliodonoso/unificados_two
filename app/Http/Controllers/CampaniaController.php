@@ -48,12 +48,19 @@ class CampaniaController extends Controller
     public function store(Request $request, $lid)
     {
         $lck = $request->input("conchk");
+        $enviopoliza = $request->input("conchk");
 
        if($lck == null) {
         $lck = 0;
        } else {
         $lck = 1;
        }
+       if($enviopoliza == null) {
+        $enviopoliza = 0;
+       } else {
+        $enviopoliza = 1;
+       }
+
 
        $lcontra =  $request->input("exampleRadio");
        $lrecepc = $request->input("exampleRadio2");
@@ -98,6 +105,7 @@ class CampaniaController extends Controller
         $lgrabaraudit->fono = $request->input("telf");
         $lgrabaraudit->gestion = $request->input("gestion");
         $lgrabaraudit->consulta = $lck;
+        $lgrabaraudit->enviopoliza = $enviopoliza;
 
         $lgrabaraudit->save();
 
