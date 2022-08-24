@@ -314,7 +314,7 @@
                                 <label class="form-check-label">
                                     <input class="form-check-input" type="checkbox" value="1" name="enviopoliza">
                                     <span class="form-check-sign"></span>
-                                    Solicita envio de poliza
+                                    Solicita envio de póliza
                                 </label>
                             </div>
                         </div>
