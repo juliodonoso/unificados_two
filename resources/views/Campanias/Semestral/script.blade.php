@@ -311,6 +311,11 @@
                                     <span class="form-check-sign"></span>
                                     Solicita Consulta de ejecutivo
                                 </label>
+                                <label class="form-check-label">
+                                    <input class="form-check-input" type="checkbox" value="1" name="enviopoliza">
+                                    <span class="form-check-sign"></span>
+                                    Solicita envio de poliza
+                                </label>
                             </div>
                         </div>
                         <div class="card-footer text-right">
