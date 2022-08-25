@@ -379,6 +379,20 @@ class HomeController extends Controller
 
 
         }
+    public function buscar_rut($rut){
+        if( Auth::user()->idtype == 10 ) {
+            $datos = campania::select('campanias1.*','gtcampania1.gt as gtc1')
+            ->where('rut',trim($rut))
+            ->leftjoin('gtcampania1','gtcampania1.id', '=', 'campanias1.gestion')
+            ->orderBy('id','desc')->paginate(15);
+            // dd($datos);
+            return view('Campanias.Semestral.index', [
+                'datos'=>$datos,
+            ]);
+        }else{
+            $this->index();
+        }
+    }
 
     public function pruebas()
     {

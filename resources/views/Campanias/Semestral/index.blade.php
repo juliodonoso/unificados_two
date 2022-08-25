@@ -4,10 +4,30 @@
 <div class="col-md-12">
     <div class="card ">
         <div class="card-body ">
-            <div class="card-footer text-right">
+            <div class="row">
+                <div class="col col-4">
 
-                <a href="{{ route('excelc1') }}" class="btn btn-success" ><i class="fa fa-file-excel-o" aria-hidden="true"></i>Excel</a>
+                    <div class="form-group row">
+                        <label for="rut" class="col-4 col-form-label">buscar por rut</label>
+                        <div class="col col-6">
+                            <div >
+                            <input type="text" class="form-control" id="rut" placeholder="rut">
+                            </div>
+                        </div>
+
+                        <div class="col col-2 text-left">
+                            <button class="btn btn-success" onclick="_buscarRut()">Buscar</button>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="col">
+                    <div class="card-footer text-right">
+                        <a href="{{ route('excelc1') }}" class="btn btn-success" ><i class="fa fa-file-excel-o" aria-hidden="true"></i>Excel</a>
+                    </div>
+                </div>
             </div>
+
         </div>
         <div class="card-body ">
                 {{ csrf_field() }}
@@ -16,6 +36,7 @@
                     <th>id</th>
                     <th>Rut</th>
                     <th>Empresa</th>
+                    <th>Fecha carga</th>
                     <th>Contacto</th>
                     <th>mail</th>
                     <th>Fono</th>
@@ -29,6 +50,7 @@
                             <td>{!! $resp->id!!}</td>
                             <td>{!! $resp->rut !!}</td>
                             <td>{!! $resp->Apellidop !!}</td>
+                            <td>{!! $resp->created_at->format('Y/m/d') !!}</td>
                             <td>{!! $resp->contacto !!}</td>
                             <td>{!! $resp->mail !!}</td>
                             <td>{!! $resp->fono !!}</td>
@@ -86,4 +108,10 @@ table td {
             });
         })
     }
+     function _buscarRut(){
+        if($("#rut").val().trim() !== ""){
+            document.location.href="{{asset('home')}}"+"/"+$("#rut").val();
+        }
+     }
+
 </script>

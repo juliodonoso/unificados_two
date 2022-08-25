@@ -21,6 +21,7 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/home/{rut}', [App\Http\Controllers\HomeController::class, 'buscar_rut'])->name('buscar_rut');
 
 //*************************************** Calidad ***************************************
 
