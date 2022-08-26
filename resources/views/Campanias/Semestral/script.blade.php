@@ -298,7 +298,7 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="tt02">Observaciones 2</label>
-                                    <textarea class="form-control" id="tt02" rows="4" name="observaciones2" style="text-transform:uppercase; height: 90px;"></textarea>
+                                    <textarea class="form-control" id="tt02" rows="4" name="observaciones2" style="text-transform:uppercase; height: 90px;">{{$lgestion->observaciones2}}</textarea>
                                 </div>
                             </div>
 
