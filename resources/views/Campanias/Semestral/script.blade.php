@@ -90,7 +90,7 @@
                                         condiciones y exclusiones de su seguro estan informados y detallados en esta poliza o certificado para su mayor conocimiento</p>
 
                                     <p>Tambien le recuerdo Sr@: <strong>(NOMBRE DEL ENCARGADO DE SEGUROS)</strong> que usted cuenta con la disponibilidad de su
-                                        ejecutivo <strong>EJECUTIVO ESPECIALISTA DE GALLAGHER</strong> frente a cualquier duda, consulta o asistencia en siniestros que le pudiera ocurrir.</p>
+                                         <strong>EJECUTIVO ESPECIALISTA DE GALLAGHER</strong> frente a cualquier duda, consulta o asistencia en siniestros que le pudiera ocurrir.</p>
                                     <p>Adicionalmente le informo que sera contactado por  GALLAGHER, cuando su poliza termine su vigencia, para acordar la renovacion de su seguro y asi continuar con la proteccion para su bien asegurado</p>
                                     <p><strong>¿USTED SABIA ESTO?</strong></p>
 
