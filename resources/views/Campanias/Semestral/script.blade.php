@@ -303,7 +303,7 @@
                                     <option value="5">NÚMERO EQUIVOCADO</option>
                                     <option value="6">SIN NÚMERO</option>
                                     <option value="7">RECHAZA BIENVENIDA</option>
-                                    <option value="7">NO CONTESTA</option>
+                                    <option value="8">NO CONTESTA</option>
                                 </select>
                             </div>
                         </div>
