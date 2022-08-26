@@ -50,7 +50,7 @@
                             <td>{!! $resp->id!!}</td>
                             <td>{!! $resp->rut !!}</td>
                             <td>{!! $resp->Apellidop !!}</td>
-                            <td>{!! $resp->created_at->format('Y/m/d') !!}</td>
+                            <td>{!! isset($resp->created_at)?$resp->created_at->format('Y/m/d'):$resp->created_at !!}</td>
                             <td>{!! $resp->contacto !!}</td>
                             <td>{!! $resp->mail !!}</td>
                             <td>{!! $resp->fono !!}</td>
