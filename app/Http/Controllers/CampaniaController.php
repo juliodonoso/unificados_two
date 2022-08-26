@@ -99,6 +99,7 @@ class CampaniaController extends Controller
         $lgrabaraudit->encuesta = $lencu;
         $lgrabaraudit->escala = $lescala;
         $lgrabaraudit->observaciones = $request->input("observ");
+        $lgrabaraudit->observaciones2 = $request->input("observaciones2");
         $lgrabaraudit->contacto = $request->input("name");
         $lgrabaraudit->rut = $request->input("rut");
         $lgrabaraudit->mail = $request->input("mail");
@@ -111,7 +112,7 @@ class CampaniaController extends Controller
 
         $datos = campania::select('campanias1.*','gtcampania1.gt as gtc1')
         ->leftjoin('gtcampania1','gtcampania1.id', '=', 'campanias1.gestion')
-        ->get();
+        ->orderBy('id','desc')->paginate(15);
         // dd($datos);
         return view('Campanias.Semestral.index', [
             'datos'=>$datos,

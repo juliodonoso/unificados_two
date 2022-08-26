@@ -232,6 +232,7 @@
                                             <label for="exampleFormControlTextarea1">Observaciones</label>
                                             <textarea class="form-control" id="tt01" rows="4" name="observ" style="text-transform:uppercase; height: 90px;"></textarea>
                                         </div>
+
                                         <hr>
                                         <p>Para finalizar este llamado me gustaria confirmar algunos datos de contacto con usted:</p>
                                         <div class="row">
@@ -295,6 +296,16 @@
                         <div class="row">
                             <hr>
                             <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="tt02">Observaciones 2</label>
+                                    <textarea class="form-control" id="tt02" rows="4" name="observaciones2" style="text-transform:uppercase; height: 90px;"></textarea>
+                                </div>
+                            </div>
+
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="gestion">Gestión</label>
                                 <select name="gestion" id="gestion" class="selectpicker" data-title="Seleccione gestion" data-style="btn-default btn-outline" data-menu-style="dropdown-blue" required="true">
                                     <option value="1">VOLVER A LLAMAR</option>
                                     <option value="2">VENTA IMPERFECTA</option>
@@ -305,6 +316,7 @@
                                     <option value="7">RECHAZA BIENVENIDA</option>
                                     <option value="8">NO CONTESTA</option>
                                 </select>
+                                </div>
                             </div>
                         </div>
                         <div>
