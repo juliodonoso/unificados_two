@@ -300,6 +300,9 @@
                                     <option value="2">VENTA IMPERFECTA</option>
                                     <option value="3">BUENA VENTA</option>
                                     <option value="4">CONTACTO TERCERO</option>
+                                    <option value="5">NÚMERO EQUIVOCADO</option>
+                                    <option value="6">SIN NÚMERO</option>
+                                    <option value="7">RECHAZA BIENVENIDA</option>
                                 </select>
                             </div>
                         </div>
