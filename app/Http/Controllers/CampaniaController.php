@@ -8,6 +8,8 @@ use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\c1Export;
 use App\Models\campaign;
 
+use Illuminate\Support\Facades\Route;
+
 class CampaniaController extends Controller
 {
     /**
@@ -110,13 +112,7 @@ class CampaniaController extends Controller
 
         $lgrabaraudit->save();
 
-        $datos = campania::select('campanias1.*','gtcampania1.gt as gtc1')
-        ->leftjoin('gtcampania1','gtcampania1.id', '=', 'campanias1.gestion')
-        ->orderBy('id','desc')->paginate(15);
-        // dd($datos);
-        return view('Campanias.Semestral.index', [
-            'datos'=>$datos,
-        ]);
+        return redirect()->route('home');;
     }
 
     /**
@@ -170,7 +166,7 @@ class CampaniaController extends Controller
         $datos = campania::select('campanias1.*','gtcampania1.gt as gtc1')
         ->leftjoin('gtcampania1','gtcampania1.id', '=', 'campanias1.gestion')
         ->get();
-        $lname = 'c1-'.'-'.'.xlsx';
+        $lname = 'c1-'.date('YmdHis').'-'.'.xlsx';
         return Excel::download(new c1Export($datos), $lname);
 
     }

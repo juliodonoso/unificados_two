@@ -18,26 +18,26 @@ class c1Export implements FromCollection,WithStrictNullComparison, WithHeadings,
     /**
     * @return \Illuminate\Support\Collection
     */
-  
+
 
     function __construct($datos) {
-      
-        $this->datos = $datos;                         
+
+        $this->datos = $datos;
  }
 
  public function collection()
  {
      // return campania::all();
-     return $this->datos; 
+     return $this->datos;
  }
 
     public function headings(): array
 
     {
-        return [ 
+        return [
             'id','fecha','Rut','Apellido','contacto','mail','fono','poliza',
             'compania',
-            'ramo',            
+            'ramo',
             'inicio vigencia',
             'fin vigencia',
             'moneda',
@@ -47,7 +47,7 @@ class c1Export implements FromCollection,WithStrictNullComparison, WithHeadings,
             'Comision',
             'Ejec Comercial',
             'Ejec gallagher',
-            '',
+            'Fecha Carga',
             'Fecha Gestion',
             'Gtid',
             'Contratacion',
@@ -57,7 +57,9 @@ class c1Export implements FromCollection,WithStrictNullComparison, WithHeadings,
             'Escala',
             'Observaciones',
             'consulta',
-            'Gestion'          
+            'GestionID',
+            '',
+            'Gestion'
         ];
     }
 
@@ -68,14 +70,14 @@ class c1Export implements FromCollection,WithStrictNullComparison, WithHeadings,
             1    => ['font' => ['bold' => true]],
 
             // Styling a specific cell by coordinate.
-            1  => ['font' => ['italic' => true]],        
+            1  => ['font' => ['italic' => true]],
 
             // Styling an entire column.
             // 'C'  => ['font' => ['size' => 16]],
         ];
     }
 
-    
+
 
 
     public function registerEvents(): array
@@ -89,7 +91,7 @@ class c1Export implements FromCollection,WithStrictNullComparison, WithHeadings,
                 ->getFill()
                 ->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
                 ->getStartColor()
-                ->setARGB('f2f6f7');             
+                ->setARGB('f2f6f7');
             },
         ];
 
